@@ -1,0 +1,6 @@
+@HeThongThiBangLai.Api_HostAddress = http://localhost:5017
+
+GET {{HeThongThiBangLai.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

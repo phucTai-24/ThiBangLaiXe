@@ -1,23 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "D:\\ASP_Backend\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {}
+    "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {}
   },
   "projects": {
-    "D:\\ASP_Backend\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {
+    "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ASP_Backend\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
+        "projectUniqueName": "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
         "projectName": "HeThongThiBangLai.Api",
-        "projectPath": "D:\\ASP_Backend\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
-        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "D:\\ASP_Backend\\HeThongThiBangLai.Api\\obj\\",
+        "projectPath": "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
+        "packagesPath": "C:\\Users\\onoso\\.nuget\\packages\\",
+        "outputPath": "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\moto_license_project\\ThiBangLaiXe\\NuGet.Config",
+          "C:\\Users\\onoso\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -25,7 +28,6 @@
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,7 +46,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -88,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

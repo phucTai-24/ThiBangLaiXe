@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {}
+    "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {}
   },
   "projects": {
-    "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {
+    "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
+        "projectUniqueName": "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
         "projectName": "HeThongThiBangLai.Api",
-        "projectPath": "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
+        "projectPath": "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
         "packagesPath": "C:\\Users\\onoso\\.nuget\\packages\\",
-        "outputPath": "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\obj\\",
+        "outputPath": "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\moto_license_project\\ThiBangLaiXe\\NuGet.Config",
+          "c:\\moto_license_project\\ThiBangLaiXe\\NuGet.Config",
           "C:\\Users\\onoso\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
@@ -52,9 +48,29 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "DotNetEnv": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.9.0, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.10, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Versioning": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -63,6 +79,12 @@
               "version": "[8.0.10, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.10, )"
             },

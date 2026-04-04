@@ -1,0 +1,26 @@
+# Build artifacts
+**/bin/
+**/obj/
+
+# User settings
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Local env / secrets
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# ASP.NET local config overrides
+**/appsettings.Local.json
+**/appsettings.*.Local.json
+
+# Logs / temp
+*.log
+logs/
+temp/

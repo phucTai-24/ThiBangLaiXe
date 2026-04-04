@@ -41,5 +41,9 @@ public partial class hoc_vien
 
     public virtual ICollection<phieu_thu> phieu_thus { get; set; } = new List<phieu_thu>();
 
+    public virtual ICollection<exam_results> exam_results { get; set; } = new List<exam_results>();
+
+    public virtual ICollection<certificates> certificates { get; set; } = new List<certificates>();
+
     public virtual ICollection<vi_pham_quy_che> vi_pham_quy_ches { get; set; } = new List<vi_pham_quy_che>();
 }

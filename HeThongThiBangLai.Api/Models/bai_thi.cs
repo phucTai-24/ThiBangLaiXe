@@ -35,5 +35,7 @@ public partial class bai_thi
 
     public virtual hoc_vien hoc_vien { get; set; } = null!;
 
+    public virtual exam_results? exam_result { get; set; }
+
     public virtual ICollection<vi_pham_quy_che> vi_pham_quy_ches { get; set; } = new List<vi_pham_quy_che>();
 }

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {}
+    "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {}
   },
   "projects": {
-    "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {
+    "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
+        "projectUniqueName": "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
         "projectName": "HeThongThiBangLai.Api",
-        "projectPath": "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
+        "projectPath": "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
         "packagesPath": "C:\\Users\\onoso\\.nuget\\packages\\",
-        "outputPath": "c:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\obj\\",
+        "outputPath": "C:\\moto_license_project\\ThiBangLaiXe\\HeThongThiBangLai.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "c:\\moto_license_project\\ThiBangLaiXe\\NuGet.Config",
+          "C:\\moto_license_project\\ThiBangLaiXe\\NuGet.Config",
           "C:\\Users\\onoso\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",

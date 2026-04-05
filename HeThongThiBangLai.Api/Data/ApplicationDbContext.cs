@@ -48,6 +48,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<ky_thi> ky_this { get; set; }
 
+    public virtual DbSet<loai_nguoi_dung> loai_nguoi_dungs { get; set; }
+
     public virtual DbSet<loai_khoan_thu> loai_khoan_thus { get; set; }
 
     public virtual DbSet<loai_vi_pham> loai_vi_phams { get; set; }
@@ -58,9 +60,29 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<nguoi_dung> nguoi_dungs { get; set; }
 
+    public virtual DbSet<nguoi_dung_loai> nguoi_dung_loais { get; set; }
+
     public virtual DbSet<nguoi_dung_vai_tro> nguoi_dung_vai_tros { get; set; }
 
     public virtual DbSet<nhat_ky_he_thong> nhat_ky_he_thongs { get; set; }
+
+    public virtual DbSet<goi_quyen> goi_quyens { get; set; }
+
+    public virtual DbSet<quyen_su_dung> quyen_su_dungs { get; set; }
+
+    public virtual DbSet<files> files { get; set; }
+
+    public virtual DbSet<file_usages> file_usages { get; set; }
+
+    public virtual DbSet<categories> categories { get; set; }
+
+    public virtual DbSet<posts> posts { get; set; }
+
+    public virtual DbSet<post_categories> post_categories { get; set; }
+
+    public virtual DbSet<exam_results> exam_results { get; set; }
+
+    public virtual DbSet<certificates> certificates { get; set; }
 
     public virtual DbSet<phien_on_tap> phien_on_taps { get; set; }
 
@@ -753,6 +775,364 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.nguoi_xac_nhan).WithMany(p => p.phieu_thunguoi_xac_nhans)
                 .HasForeignKey(d => d.nguoi_xac_nhan_id)
                 .HasConstraintName("fk_phieu_thu_nguoi_xac_nhan");
+        });
+
+        modelBuilder.Entity<loai_nguoi_dung>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("loai_nguoi_dung");
+
+            entity.HasIndex(e => e.ma_loai, "uq_loai_nguoi_dung_ma_loai").IsUnique();
+
+            entity.Property(e => e.ma_loai)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.mo_ta).HasMaxLength(255);
+            entity.Property(e => e.ten_loai).HasMaxLength(100);
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.updated_at).HasDefaultValueSql("(getdate())");
+        });
+
+        modelBuilder.Entity<nguoi_dung_loai>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("nguoi_dung_loai");
+
+            entity.HasIndex(e => new { e.nguoi_dung_id, e.loai_nguoi_dung_id }, "uq_nguoi_dung_loai").IsUnique();
+
+            entity.HasIndex(e => e.nguoi_dung_id, "ix_nguoi_dung_loai_nguoi_dung_id");
+
+            entity.HasIndex(e => e.loai_nguoi_dung_id, "ix_nguoi_dung_loai_loai_id");
+
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.nguoi_dung).WithMany()
+                .HasForeignKey(d => d.nguoi_dung_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_ndl_nguoi_dung");
+
+            entity.HasOne(d => d.loai_nguoi_dung).WithMany(p => p.nguoi_dung_loais)
+                .HasForeignKey(d => d.loai_nguoi_dung_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_ndl_loai_nguoi_dung");
+        });
+
+        modelBuilder.Entity<goi_quyen>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("goi_quyen");
+
+            entity.HasIndex(e => e.ma_goi, "uq_goi_quyen_ma_goi").IsUnique();
+
+            entity.Property(e => e.ma_goi)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.ten_goi).HasMaxLength(150);
+            entity.Property(e => e.mo_ta).HasMaxLength(500);
+            entity.Property(e => e.is_active).HasDefaultValue(true);
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.updated_at).HasDefaultValueSql("(getdate())");
+        });
+
+        modelBuilder.Entity<quyen_su_dung>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("quyen_su_dung");
+
+            entity.HasIndex(e => e.goi_quyen_id, "ix_qsd_goi_quyen_id");
+
+            entity.HasIndex(e => e.ngay_het_han, "ix_qsd_ngay_het_han");
+
+            entity.HasIndex(e => new { e.nguoi_dung_id, e.trang_thai }, "ix_qsd_nguoi_dung_trang_thai");
+
+            entity.Property(e => e.nguon_cap)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.trang_thai)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.ghi_chu).HasMaxLength(500);
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.updated_at).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.created_by_nguoi_dung).WithMany()
+                .HasForeignKey(d => d.created_by)
+                .HasConstraintName("fk_qsd_created_by");
+
+            entity.HasOne(d => d.goi_quyen).WithMany(p => p.quyen_su_dungs)
+                .HasForeignKey(d => d.goi_quyen_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_qsd_goi_quyen");
+
+            entity.HasOne(d => d.nguoi_dung).WithMany()
+                .HasForeignKey(d => d.nguoi_dung_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_qsd_nguoi_dung");
+        });
+
+        modelBuilder.Entity<files>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("files");
+
+            entity.HasIndex(e => e.storage_provider, "ix_files_storage_provider");
+
+            entity.HasIndex(e => e.created_at, "ix_files_created_at");
+
+            entity.HasIndex(e => e.created_by, "ix_files_created_by");
+
+            entity.Property(e => e.storage_provider)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.bucket_name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.object_key)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.public_url)
+                .HasMaxLength(1000)
+                .IsUnicode(false);
+            entity.Property(e => e.file_name).HasMaxLength(255);
+            entity.Property(e => e.mime_type)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.checksum_sha256)
+                .HasMaxLength(128)
+                .IsUnicode(false);
+            entity.Property(e => e.trang_thai)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasDefaultValue("active");
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.updated_at).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.created_by_nguoi_dung).WithMany()
+                .HasForeignKey(d => d.created_by)
+                .HasConstraintName("fk_files_created_by");
+        });
+
+        modelBuilder.Entity<file_usages>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("file_usages");
+
+            entity.HasIndex(e => new { e.file_id, e.entity_name, e.entity_id, e.field_name }, "uq_file_usages").IsUnique();
+
+            entity.HasIndex(e => new { e.entity_name, e.entity_id }, "ix_file_usages_entity");
+
+            entity.HasIndex(e => e.file_id, "ix_file_usages_file_id");
+
+            entity.Property(e => e.entity_name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.field_name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.is_primary).HasDefaultValue(false);
+            entity.Property(e => e.sort_order).HasDefaultValue(0);
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.file).WithMany(p => p.file_usages)
+                .HasForeignKey(d => d.file_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_fu_file");
+        });
+
+        modelBuilder.Entity<categories>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("categories");
+
+            entity.HasIndex(e => e.ma_danh_muc, "uq_categories_ma_danh_muc").IsUnique();
+
+            entity.HasIndex(e => e.slug, "uq_categories_slug").IsUnique();
+
+            entity.HasIndex(e => e.parent_id, "ix_categories_parent_id");
+
+            entity.HasIndex(e => e.is_active, "ix_categories_is_active");
+
+            entity.Property(e => e.ma_danh_muc)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.ten_danh_muc).HasMaxLength(150);
+            entity.Property(e => e.slug)
+                .HasMaxLength(200)
+                .IsUnicode(false);
+            entity.Property(e => e.mo_ta).HasMaxLength(500);
+            entity.Property(e => e.is_active).HasDefaultValue(true);
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.updated_at).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.created_by_nguoi_dung).WithMany()
+                .HasForeignKey(d => d.created_by)
+                .HasConstraintName("fk_categories_created_by");
+
+            entity.HasOne(d => d.parent).WithMany(p => p.inverse_parent)
+                .HasForeignKey(d => d.parent_id)
+                .HasConstraintName("fk_categories_parent");
+        });
+
+        modelBuilder.Entity<posts>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("posts");
+
+            entity.HasIndex(e => e.ma_bai_viet, "uq_posts_ma_bai_viet").IsUnique();
+
+            entity.HasIndex(e => e.slug, "uq_posts_slug").IsUnique();
+
+            entity.HasIndex(e => e.post_type, "ix_posts_post_type");
+
+            entity.HasIndex(e => e.trang_thai, "ix_posts_trang_thai");
+
+            entity.HasIndex(e => e.published_at, "ix_posts_published_at");
+
+            entity.HasIndex(e => e.author_id, "ix_posts_author_id");
+
+            entity.Property(e => e.ma_bai_viet)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.title).HasMaxLength(255);
+            entity.Property(e => e.slug)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.summary).HasMaxLength(1000);
+            entity.Property(e => e.post_type)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.meta_title).HasMaxLength(255);
+            entity.Property(e => e.meta_description).HasMaxLength(500);
+            entity.Property(e => e.canonical_url)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.trang_thai)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasDefaultValue("draft");
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.updated_at).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.author).WithMany()
+                .HasForeignKey(d => d.author_id)
+                .HasConstraintName("fk_posts_author");
+
+            entity.HasOne(d => d.thumbnail_file).WithMany(p => p.posts)
+                .HasForeignKey(d => d.thumbnail_file_id)
+                .HasConstraintName("fk_posts_thumbnail_file");
+        });
+
+        modelBuilder.Entity<post_categories>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("post_categories");
+
+            entity.HasIndex(e => new { e.post_id, e.category_id }, "uq_post_categories").IsUnique();
+
+            entity.HasIndex(e => e.post_id, "ix_post_categories_post_id");
+
+            entity.HasIndex(e => e.category_id, "ix_post_categories_category_id");
+
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.category).WithMany(p => p.post_categories)
+                .HasForeignKey(d => d.category_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_post_categories_category");
+
+            entity.HasOne(d => d.post).WithMany(p => p.post_categories)
+                .HasForeignKey(d => d.post_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_post_categories_post");
+        });
+
+        modelBuilder.Entity<exam_results>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("exam_results");
+
+            entity.HasIndex(e => e.bai_thi_id, "uq_exam_results_bai_thi_id").IsUnique();
+
+            entity.HasIndex(e => e.hoc_vien_id, "ix_exam_results_hoc_vien_id");
+
+            entity.HasIndex(e => e.ket_qua, "ix_exam_results_ket_qua");
+
+            entity.HasIndex(e => e.xac_nhan_luc, "ix_exam_results_xac_nhan_luc");
+
+            entity.Property(e => e.diem).HasColumnType("decimal(5, 2)");
+            entity.Property(e => e.ket_qua)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.updated_at).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.bai_thi).WithOne(p => p.exam_result)
+                .HasForeignKey<exam_results>(d => d.bai_thi_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_exam_results_bai_thi");
+
+            entity.HasOne(d => d.hoc_vien).WithMany(p => p.exam_results)
+                .HasForeignKey(d => d.hoc_vien_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_exam_results_hoc_vien");
+
+            entity.HasOne(d => d.xac_nhan_boi_nguoi_dung).WithMany()
+                .HasForeignKey(d => d.xac_nhan_boi)
+                .HasConstraintName("fk_exam_results_xac_nhan_boi");
+        });
+
+        modelBuilder.Entity<certificates>(entity =>
+        {
+            entity.HasKey(e => e.id);
+
+            entity.ToTable("certificates");
+
+            entity.HasIndex(e => e.ma_chung_chi, "uq_certificates_ma_chung_chi").IsUnique();
+
+            entity.HasIndex(e => e.exam_result_id, "uq_certificates_exam_result_id").IsUnique();
+
+            entity.HasIndex(e => e.hoc_vien_id, "ix_certificates_hoc_vien_id");
+
+            entity.HasIndex(e => e.trang_thai, "ix_certificates_trang_thai");
+
+            entity.HasIndex(e => e.ngay_cap, "ix_certificates_ngay_cap");
+
+            entity.Property(e => e.ma_chung_chi)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.trang_thai)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.created_at).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.updated_at).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.certificate_file).WithMany(p => p.certificates)
+                .HasForeignKey(d => d.certificate_file_id)
+                .HasConstraintName("fk_certificates_file");
+
+            entity.HasOne(d => d.created_by_nguoi_dung).WithMany()
+                .HasForeignKey(d => d.created_by)
+                .HasConstraintName("fk_certificates_created_by");
+
+            entity.HasOne(d => d.exam_result).WithMany(p => p.certificates)
+                .HasForeignKey(d => d.exam_result_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_certificates_exam_result");
+
+            entity.HasOne(d => d.hoc_vien).WithMany(p => p.certificates)
+                .HasForeignKey(d => d.hoc_vien_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_certificates_hoc_vien");
         });
 
         modelBuilder.Entity<quyen_han>(entity =>

@@ -1,4 +1,5 @@
 using HeThongThiBangLai.Api.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace HeThongThiBangLai.Api.Services;
 

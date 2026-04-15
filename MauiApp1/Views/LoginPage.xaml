@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MauiApp1.Views.LoginPage"
+    BackgroundColor="#F8F6F2"
+    Padding="0">
+
+    <Grid RowDefinitions="*">
+
+        <!-- Background -->
+        <AbsoluteLayout InputTransparent="True">
+
+            <Border
+                AbsoluteLayout.LayoutBounds="1,0,160,160"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                BackgroundColor="#10FFB800"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 999"
+                TranslationX="40"
+                TranslationY="-35" />
+
+            <Border
+                AbsoluteLayout.LayoutBounds="0,1,140,140"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                BackgroundColor="#104A90E2"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 999"
+                TranslationX="-28"
+                TranslationY="28" />
+
+            <Border
+                AbsoluteLayout.LayoutBounds="0.18,0.18,56,56"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                BackgroundColor="#08FFB800"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 999" />
+
+        </AbsoluteLayout>
+
+        <!-- Main content -->
+        <ScrollView>
+            <VerticalStackLayout
+                Padding="20,42,20,28"
+                Spacing="0"
+                HorizontalOptions="Fill">
+
+                <!-- Header -->
+                <VerticalStackLayout
+                    Spacing="6"
+                    HorizontalOptions="Fill"
+                    Margin="0,4,0,0">
+
+                    <Label Text="ThiXeMay"
+                           FontAttributes="Bold,Italic"
+                           FontSize="38"
+                           TextColor="#8A5C00"
+                           HorizontalTextAlignment="Center"
+                           HorizontalOptions="Fill" />
+
+                    <Label Text="Chinh phục bằng lái, vững tay lái"
+                           FontSize="14"
+                           TextColor="#6C604E"
+                           HorizontalTextAlignment="Center"
+                           HorizontalOptions="Fill" />
+                </VerticalStackLayout>
+
+                <!-- Card -->
+                <Border
+                    Margin="0,26,0,0"
+                    Padding="20,22"
+                    BackgroundColor="White"
+                    Stroke="#14B89B6A"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 28"
+                    HorizontalOptions="Fill"
+                    Shadow="0,12,28,#14000000">
+
+                    <VerticalStackLayout Spacing="16">
+
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Đăng nhập"
+                                   FontSize="26"
+                                   FontAttributes="Bold"
+                                   TextColor="#1C1C18" />
+
+                            <Label Text="Đăng nhập để tiếp tục học và ôn thi bằng lái"
+                                   FontSize="13"
+                                   TextColor="#8D806D"
+                                   LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+
+                        <!-- Username -->
+                        <VerticalStackLayout Spacing="7">
+                            <Label Text="TÊN ĐĂNG NHẬP HOẶC EMAIL"
+                                   FontSize="11"
+                                   FontAttributes="Bold"
+                                   TextColor="#9A8C78"
+                                   CharacterSpacing="1.2" />
+
+                            <Border
+                                BackgroundColor="#FAF8F4"
+                                Stroke="#D9D2C7"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 16"
+                                Padding="14,4"
+                                HorizontalOptions="Fill">
+
+                                <Grid ColumnDefinitions="Auto,*,Auto"
+                                      ColumnSpacing="10">
+
+                                    <Label Text="👤"
+                                           FontSize="18"
+                                           VerticalOptions="Center" />
+
+                                    <Entry x:Name="UsernameEntry"
+                                           Grid.Column="1"
+                                           Placeholder="example@email.com"
+                                           PlaceholderColor="#B0A392"
+                                           BackgroundColor="Transparent"
+                                           TextColor="#1C1C18"
+                                           FontSize="15"
+                                           HorizontalOptions="Fill"
+                                           ClearButtonVisibility="WhileEditing" />
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!-- Password -->
+                        <VerticalStackLayout Spacing="7">
+                            <Label Text="MẬT KHẨU"
+                                   FontSize="11"
+                                   FontAttributes="Bold"
+                                   TextColor="#9A8C78"
+                                   CharacterSpacing="1.2" />
+
+                            <Border
+                                BackgroundColor="#FAF8F4"
+                                Stroke="#D9D2C7"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 16"
+                                Padding="14,4"
+                                HorizontalOptions="Fill">
+
+                                <Grid ColumnDefinitions="Auto,*,Auto"
+                                      ColumnSpacing="10">
+
+                                    <Label Text="🔒"
+                                           FontSize="18"
+                                           VerticalOptions="Center" />
+
+                                    <Entry x:Name="PasswordEntry"
+                                           Grid.Column="1"
+                                           Placeholder="••••••••"
+                                           PlaceholderColor="#B0A392"
+                                           BackgroundColor="Transparent"
+                                           TextColor="#1C1C18"
+                                           FontSize="15"
+                                           IsPassword="True"
+                                           HorizontalOptions="Fill" />
+
+                                    <Label Grid.Column="2"
+                                           Text="👁"
+                                           FontSize="18"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!-- Remember + Forgot -->
+                        <Grid ColumnDefinitions="Auto,*,Auto"
+                              ColumnSpacing="8"
+                              Margin="0,2,0,0">
+
+                            <CheckBox Grid.Column="0"
+                                      Color="#8A5C00"
+                                      VerticalOptions="Center" />
+
+                            <Label Grid.Column="1"
+                                   Text="Ghi nhớ tôi"
+                                   FontSize="14"
+                                   TextColor="#5D5143"
+                                   VerticalTextAlignment="Center"
+                                   LineBreakMode="TailTruncation" />
+
+                            <Label Grid.Column="2"
+                                   Text="Quên mật khẩu?"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#8A5C00"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="End" />
+                        </Grid>
+
+                        <!-- Login button -->
+                        <Button x:Name="LoginButton"
+                                Text="Đăng nhập"
+                                Margin="0,4,0,0"
+                                HeightRequest="54"
+                                CornerRadius="27"
+                                BackgroundColor="#FFB800"
+                                TextColor="#2B1C00"
+                                FontAttributes="Bold"
+                                FontSize="17"
+                                HorizontalOptions="Fill"
+                                Clicked="OnLoginClicked"
+                                Shadow="0,8,18,#24FFB800" />
+
+                        <!-- Divider -->
+                        <Grid ColumnDefinitions="*,Auto,*"
+                              Margin="0,6,0,0"
+                              ColumnSpacing="0">
+
+                            <BoxView HeightRequest="1"
+                                     Color="#DDD6CA"
+                                     VerticalOptions="Center" />
+
+                            <Label Grid.Column="1"
+                                   Text="HOẶC ĐĂNG NHẬP VỚI"
+                                   Padding="12,0"
+                                   FontSize="10"
+                                   TextColor="#9A8C78"
+                                   BackgroundColor="White"
+                                   VerticalTextAlignment="Center" />
+
+                            <BoxView Grid.Column="2"
+                                     HeightRequest="1"
+                                     Color="#DDD6CA"
+                                     VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- Social -->
+                        <Grid ColumnDefinitions="*,12,*"
+                              Margin="0,2,0,0"
+                              HorizontalOptions="Fill">
+
+                            <Border Grid.Column="0"
+                                    BackgroundColor="#FAF8F4"
+                                    Stroke="#E3DDD2"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 14"
+                                    Padding="12"
+                                    HorizontalOptions="Fill">
+
+                                <HorizontalStackLayout
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Spacing="8">
+                                    <Label Text="G"
+                                           FontSize="17"
+                                           FontAttributes="Bold"
+                                           TextColor="#8A5C00" />
+                                    <Label Text="Google"
+                                           FontSize="13"
+                                           FontAttributes="Bold"
+                                           TextColor="#2D2922" />
+                                </HorizontalStackLayout>
+                            </Border>
+
+                            <Border Grid.Column="2"
+                                    BackgroundColor="#FAF8F4"
+                                    Stroke="#E3DDD2"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 14"
+                                    Padding="12"
+                                    HorizontalOptions="Fill">
+
+                                <HorizontalStackLayout
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center"
+                                    Spacing="8">
+                                    <Label Text="f"
+                                           FontSize="17"
+                                           FontAttributes="Bold"
+                                           TextColor="#1877F2" />
+                                    <Label Text="Facebook"
+                                           FontSize="13"
+                                           FontAttributes="Bold"
+                                           TextColor="#2D2922" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Register -->
+                <HorizontalStackLayout
+                    HorizontalOptions="Center"
+                    Margin="0,22,0,0"
+                    Spacing="3">
+
+                    <Label Text="Bạn chưa có tài khoản?"
+                           FontSize="14"
+                           TextColor="#5D5143" />
+
+                    <Label Text="Đăng ký ngay"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#8A5C00" />
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

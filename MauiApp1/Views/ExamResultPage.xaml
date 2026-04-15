@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels"
+             xmlns:models="clr-namespace:MauiApp1.Models"
+             x:Class="MauiApp1.Views.ExamResultPage"
+             x:DataType="viewmodels:ExamResultViewModel"
+             BackgroundColor="#FCF9F2">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Border Grid.Row="0"
+                Style="{StaticResource AppHeaderContainer}"
+                Shadow="0,8,20,#12000000">
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  Style="{StaticResource AppHeaderGrid}">
+                <Border Style="{StaticResource AppIconButtonCard}"
+                        VerticalOptions="Center">
+                    <Label Text="←"
+                           FontSize="18"
+                           TextColor="{StaticResource AppPrimaryText}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <VerticalStackLayout Grid.Column="1"
+                                     Spacing="2"
+                                     VerticalOptions="Center">
+                    <Label Text="ONTHIBANGLAI"
+                           Style="{StaticResource AppHeaderBrandLabel}" />
+                    <Label Text="Kết quả thi"
+                           Style="{StaticResource AppHeaderTitleLabel}" />
+                </VerticalStackLayout>
+
+                <Border Grid.Column="2"
+                        Style="{StaticResource AppIconButtonCard}"
+                        VerticalOptions="Center">
+                    <Label Text="⤴"
+                           FontSize="16"
+                           TextColor="{StaticResource AppSecondaryText}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,24,24,140" Spacing="24">
+                <Grid>
+                    <VerticalStackLayout Grid.ColumnSpan="2" Spacing="18">
+                        <Border
+                            Padding="28"
+                            BackgroundColor="#F6F3EC"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 28">
+                            <VerticalStackLayout Spacing="16" HorizontalOptions="Center">
+                                <Label
+                                    Text="Điểm số của bạn"
+                                    FontSize="13"
+                                    CharacterSpacing="2"
+                                    TextColor="#6B6257"
+                                    HorizontalTextAlignment="Center" />
+
+                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                                    <Label
+                                        Text="{Binding Score}"
+                                        FontFamily="OpenSans-Semibold"
+                                        FontSize="76"
+                                        FontAttributes="Italic"
+                                        TextColor="#7C5800" />
+                                    <Label
+                                        FontFamily="OpenSans-Semibold"
+                                        FontSize="30"
+                                        TextColor="#6B6257"
+                                        VerticalTextAlignment="End">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="/{0}">
+                                                <Binding Path="TotalQuestions" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                </HorizontalStackLayout>
+
+                                <Border
+                                    Padding="16,8"
+                                    BackgroundColor="{Binding PassStatusColor}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 10"
+                                    HorizontalOptions="Center">
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label Text="{Binding IsPassed, Converter={StaticResource PassIconConverter}}" FontSize="16" TextColor="{Binding PassTextColor}" VerticalTextAlignment="Center" />
+                                        <Label Text="{Binding PassStatusText}" FontFamily="OpenSans-Semibold" FontSize="18" TextColor="{Binding PassTextColor}" VerticalTextAlignment="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                                <ProgressBar Progress="{Binding ProgressPercentage}"
+                                             ProgressColor="#7C5800"
+                                             HeightRequest="10"
+                                             Margin="0,8,0,0"
+                                             ScaleY="2" />
+
+                                <Label
+                                    Text="{Binding ResultMessage}"
+                                    FontSize="14"
+                                    TextColor="#5F564B"
+                                    HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <FlexLayout Wrap="Wrap" Direction="Row" JustifyContent="SpaceBetween" AlignItems="Stretch">
+                    <Border Padding="18" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 22" Shadow="0,12,24,#0A1C1C18" FlexLayout.Basis="48%" FlexLayout.Grow="1">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Đúng" FontFamily="OpenSans-Semibold" FontSize="12" TextColor="#0060AC" />
+                            <Label Text="{Binding CorrectAnswers}" FontFamily="OpenSans-Semibold" FontSize="34" TextColor="#271900" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Padding="18" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 22" Shadow="0,12,24,#0A1C1C18" FlexLayout.Basis="48%" FlexLayout.Grow="1">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Sai" FontFamily="OpenSans-Semibold" FontSize="12" TextColor="#BA1A1A" />
+                            <Label Text="{Binding WrongAnswers}" FontFamily="OpenSans-Semibold" FontSize="34" TextColor="#271900" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Padding="18" BackgroundColor="#FFF1EF" Stroke="#14BA1A1A" StrokeThickness="1" StrokeShape="RoundRectangle 22" FlexLayout.Basis="100%">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFDAD6" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                                <Label Text="!" FontFamily="OpenSans-Semibold" FontSize="20" TextColor="#93000A" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Câu điểm liệt" FontFamily="OpenSans-Semibold" FontSize="16" TextColor="#93000A" />
+                                <Label Text="{Binding CriticalErrorMessage}" FontSize="12" TextColor="#93000A" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="{Binding CriticalErrors}" FontFamily="OpenSans-Semibold" FontSize="28" TextColor="#93000A" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </FlexLayout>
+
+                <Border
+                    Padding="22"
+                    BackgroundColor="#FFFFFF"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 24"
+                    Shadow="0,12,24,#0A1C1C18"
+                    IsVisible="{Binding WrongQuestions.Count, Converter={StaticResource IsNotNullConverter}}">
+                    <VerticalStackLayout Spacing="18">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="Xem lại lỗi sai" FontFamily="OpenSans-Semibold" FontSize="24" TextColor="#271900" />
+                                <Label Text="Học từ những sai lầm để đạt kết quả tốt hơn lần sau" FontSize="13" TextColor="#5F564B" />
+                            </VerticalStackLayout>
+                            <Border Grid.Column="1" WidthRequest="44" HeightRequest="44" BackgroundColor="#F0EEE7" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                <Label Text="✎" FontSize="18" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                        </Grid>
+
+                        <CollectionView ItemsSource="{Binding WrongQuestions}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Question">
+                                    <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 20" Margin="0,0,0,12">
+                                        <VerticalStackLayout Spacing="12">
+                                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                                <Border WidthRequest="32" HeightRequest="32" BackgroundColor="#FFF1EF" StrokeThickness="0" StrokeShape="RoundRectangle 16">
+                                                    <Label Text="{Binding Number}" FontFamily="OpenSans-Semibold" FontSize="12" TextColor="#BA1A1A" HorizontalOptions="Center" VerticalOptions="Center" />
+                                                </Border>
+                                                <Label Grid.Column="1" Text="{Binding Text}" FontFamily="OpenSans-Semibold" FontSize="15" TextColor="#271900" VerticalTextAlignment="Center" LineBreakMode="WordWrap" />
+                                            </Grid>
+                                            
+                                            <Border Padding="12" BackgroundColor="#FFFFFF" Stroke="#14D5C4AB" StrokeThickness="1" StrokeShape="RoundRectangle 14">
+                                                <Label FontFamily="OpenSans-Semibold" FontSize="13" TextColor="#7C5800">
+                                                    <Label.Text>
+                                                        <MultiBinding StringFormat="Đáp án đúng: {0}">
+                                                            <Binding Path="CorrectAnswerText" />
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
+                                            </Border>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border
+            Grid.Row="2"
+            Margin="0"
+            Padding="20,16"
+            BackgroundColor="#CCFCF9F2"
+            Stroke="#14D5C4AB"
+            StrokeThickness="1">
+            <VerticalStackLayout Spacing="12">
+                <Button
+                    Text="Trang chủ"
+                    BackgroundColor="#F0EEE7"
+                    TextColor="#271900"
+                    FontFamily="OpenSans-Semibold"
+                    CornerRadius="28"
+                    HeightRequest="54"
+                    Command="{Binding GoHomeCommand}" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Button
+                        Grid.Column="0"
+                        Text="Xem bài làm"
+                        BackgroundColor="#E5E2DB"
+                        TextColor="#271900"
+                        FontFamily="OpenSans-Semibold"
+                        CornerRadius="28"
+                        HeightRequest="54"
+                        Command="{Binding ReviewAnswersCommand}" />
+                    <Button
+                        Grid.Column="1"
+                        Text="Thi lại ngay"
+                        BackgroundColor="#FFB800"
+                        TextColor="#271900"
+                        FontFamily="OpenSans-Semibold"
+                        CornerRadius="28"
+                        HeightRequest="54"
+                        Command="{Binding RetakeExamCommand}" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+
+</ContentPage>

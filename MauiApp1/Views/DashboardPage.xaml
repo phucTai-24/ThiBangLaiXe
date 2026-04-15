@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.DashboardPage"
+             Style="{StaticResource AppPageStyle}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Border Grid.Row="0"
+                Style="{StaticResource AppHeaderContainer}"
+                Shadow="0,8,20,#12000000">
+            <Grid ColumnDefinitions="*,Auto"
+                  ColumnSpacing="12">
+                <HorizontalStackLayout Spacing="12">
+                    <Border BackgroundColor="{StaticResource AppSurfaceAccent}"
+                            StrokeThickness="0"
+                            WidthRequest="46"
+                            HeightRequest="46"
+                            StrokeShape="RoundRectangle 16">
+                        <Label Text="🏍"
+                               FontSize="22"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+
+                    <VerticalStackLayout Spacing="2"
+                                         VerticalOptions="Center">
+                        <Label Text="ONTHIBANGLAI"
+                               FontFamily="OpenSans-Semibold"
+                               FontSize="10"
+                               CharacterSpacing="2"
+                               TextColor="{StaticResource AppTertiaryText}" />
+                        <Label Text="Dashboard học viên"
+                               FontFamily="OpenSans-Semibold"
+                               FontSize="20"
+                               TextColor="{StaticResource AppPrimaryText}" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <Border Grid.Column="1"
+                        Style="{StaticResource AppIconButtonCard}">
+                    <Label Text="🔔"
+                           FontSize="18"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,24,24,140"
+                                 Spacing="24">
+
+                <Border Style="{StaticResource AppAccentCard}"
+                        Padding="24"
+                        Shadow="0,12,28,#14FFB800">
+                    <VerticalStackLayout Spacing="16">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Xin chào, học viên"
+                                   Style="{StaticResource AppBodyLabel}"
+                                   TextColor="{StaticResource AppTertiaryText}" />
+                            <Label Text="Tiếp tục lộ trình học lái xe của bạn"
+                                   Style="{StaticResource AppSectionTitle}"
+                                   FontSize="26" />
+                            <Label Text="Theo dõi tiến độ học, ôn tập câu hỏi, xem lịch học và chuẩn bị cho kỳ thi sắp tới trên cùng một màn hình."
+                                   Style="{StaticResource AppBodyLabel}"
+                                   LineHeight="1.35" />
+                        </VerticalStackLayout>
+
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="12">
+                            <Border BackgroundColor="#FFF8E8"
+                                    StrokeThickness="0"
+                                    WidthRequest="64"
+                                    HeightRequest="64"
+                                    StrokeShape="RoundRectangle 22">
+                                <Label Text="📘"
+                                       FontSize="30"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Spacing="8"
+                                                 VerticalOptions="Center">
+                                <Label Text="Tiến độ khóa học: 40%"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="16"
+                                       TextColor="{StaticResource AppBrandStrong}" />
+                                <Grid HeightRequest="8"
+                                      ColumnDefinitions="40*,60*">
+                                    <Border Grid.ColumnSpan="2"
+                                            BackgroundColor="#E7DDC7"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 999" />
+                                    <Border Grid.Column="0"
+                                            BackgroundColor="{StaticResource AppBrandAccent}"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 999" />
+                                </Grid>
+                                <Label Text="12/30 buổi đã hoàn thành • A1 cơ bản"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Tổng quan nhanh"
+                           Style="{StaticResource AppSectionTitle}" />
+
+                    <FlexLayout Wrap="Wrap"
+                                Direction="Row"
+                                JustifyContent="SpaceBetween"
+                                AlignItems="Stretch">
+                        <Border Style="{StaticResource AppCard}"
+                                FlexLayout.Basis="48%"
+                                FlexLayout.Grow="1">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="📅"
+                                       FontSize="24" />
+                                <Label Text="Buổi tiếp theo"
+                                       Style="{StaticResource AppCardTitle}" />
+                                <Label Text="10/04 • 08:00"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="16"
+                                       TextColor="{StaticResource AppBrand}" />
+                                <Label Text="Sân tập số 1"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource AppCard}"
+                                FlexLayout.Basis="48%"
+                                FlexLayout.Grow="1">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="📝"
+                                       FontSize="24" />
+                                <Label Text="Thi thử gần nhất"
+                                       Style="{StaticResource AppCardTitle}" />
+                                <Label Text="33/35 câu"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="16"
+                                       TextColor="{StaticResource AppBrand}" />
+                                <Label Text="Đạt chuẩn lần thi thử"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource AppCard}"
+                                FlexLayout.Basis="48%"
+                                FlexLayout.Grow="1">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="💳"
+                                       FontSize="24" />
+                                <Label Text="Học phí"
+                                       Style="{StaticResource AppCardTitle}" />
+                                <Label Text="Đã xác nhận"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="16"
+                                       TextColor="{StaticResource AppSuccess}" />
+                                <Label Text="Biên lai tháng 4/2026"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Style="{StaticResource AppCard}"
+                                FlexLayout.Basis="48%"
+                                FlexLayout.Grow="1">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="🎯"
+                                       FontSize="24" />
+                                <Label Text="Điểm yếu cần ôn"
+                                       Style="{StaticResource AppCardTitle}" />
+                                <Label Text="Biển báo giao thông"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="16"
+                                       TextColor="{StaticResource AppBrand}" />
+                                <Label Text="8 câu cần xem lại"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </FlexLayout>
+                </VerticalStackLayout>
+
+                <Border BackgroundColor="{StaticResource AppBrand}"
+                        Padding="22"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24">
+                    <VerticalStackLayout Spacing="14">
+                        <Label Text="Phiên ôn tập đề xuất"
+                               FontFamily="OpenSans-Semibold"
+                               FontSize="22"
+                               TextColor="#FFF8E8" />
+                        <Label Text="Hôm nay nên ôn 25 câu biển báo và làm 1 đề thi nhanh để giữ nhịp độ học đều trước kỳ sát hạch."
+                               FontSize="13"
+                               LineHeight="1.35"
+                               TextColor="#F5E4B7" />
+
+                        <FlexLayout Wrap="Wrap"
+                                    Direction="Row"
+                                    JustifyContent="Start"
+                                    AlignItems="Center">
+                            <Border BackgroundColor="{StaticResource AppBrandAccent}"
+                                     Padding="14,10"
+                                     StrokeThickness="0"
+                                     StrokeShape="RoundRectangle 999">
+                                <Label Text="Ôn tập ngay"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="13"
+                                       TextColor="{StaticResource AppBrandStrong}" />
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnPracticeTapped" />
+                                </Border.GestureRecognizers>
+                            </Border>
+
+                            <Border BackgroundColor="#19FFFFFF"
+                                    Padding="14,10"
+                                    Margin="10,0,0,0"
+                                    Stroke="#26FFFFFF"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 999">
+                                <Label Text="Xem đề thi"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="13"
+                                       TextColor="#FFF8E8" />
+                            </Border>
+                        </FlexLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Lịch học và hồ sơ"
+                           Style="{StaticResource AppSectionTitle}" />
+
+                    <Border Style="{StaticResource AppCard}">
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="14">
+                            <Border BackgroundColor="#EEF6FF"
+                                    StrokeThickness="0"
+                                    WidthRequest="52"
+                                    HeightRequest="52"
+                                    StrokeShape="RoundRectangle 18">
+                                <Label Text="🕗"
+                                       FontSize="24"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Spacing="4">
+                                <Label Text="Buổi học tiếp theo"
+                                       Style="{StaticResource AppCardTitle}" />
+                                <Label Text="Thứ tư, 10/04/2026 • 08:00 - 11:00"
+                                       Style="{StaticResource AppBodyLabel}" />
+                                <Label Text="Địa điểm: Sân tập số 1 • Nội dung: Làm quen xe và sa hình cơ bản"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <Border Style="{StaticResource AppMutedCard}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Hồ sơ đăng ký"
+                                   Style="{StaticResource AppCardTitle}" />
+
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="10">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Trạng thái hiện tại: Đã duyệt"
+                                           FontFamily="OpenSans-Semibold"
+                                           FontSize="15"
+                                           TextColor="{StaticResource AppSuccess}" />
+                                    <Label Text="Giấy tờ CCCD và ảnh chân dung đã hợp lệ. Bạn có thể tiếp tục theo dõi lịch học và lịch thi ngay trên ứng dụng."
+                                           Style="{StaticResource AppCaptionLabel}" />
+                                </VerticalStackLayout>
+                                <Border Grid.Column="1"
+                                        BackgroundColor="#E8F6EA"
+                                        Padding="12,8"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 999"
+                                        VerticalOptions="Start">
+                                    <Label Text="Sẵn sàng"
+                                           FontFamily="OpenSans-Semibold"
+                                           FontSize="12"
+                                           TextColor="{StaticResource AppSuccess}" />
+                                </Border>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Tin tức và lưu ý"
+                           Style="{StaticResource AppSectionTitle}" />
+
+                    <Border Style="{StaticResource AppCard}">
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="14">
+                            <Border BackgroundColor="{StaticResource AppSurfaceAccent}"
+                                    WidthRequest="72"
+                                    HeightRequest="72"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 18">
+                                <Label Text="📢"
+                                       FontSize="28"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Spacing="6"
+                                                 VerticalOptions="Center">
+                                <Label Text="Lưu ý trước kỳ thi lý thuyết tháng 5"
+                                       Style="{StaticResource AppCardTitle}" />
+                                <Label Text="Kiểm tra kỹ giấy tờ tùy thân, thời gian thi và hoàn thành các đề ôn tập có câu điểm liệt trước ngày dự thi."
+                                       Style="{StaticResource AppCaptionLabel}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <Border Style="{StaticResource AppCard}">
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="14">
+                            <Border BackgroundColor="#EEF6FF"
+                                    WidthRequest="72"
+                                    HeightRequest="72"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 18">
+                                <Label Text="🚦"
+                                       FontSize="28"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Spacing="6"
+                                                 VerticalOptions="Center">
+                                <Label Text="Chủ đề nên ôn hôm nay: Biển báo giao thông"
+                                       Style="{StaticResource AppCardTitle}" />
+                                <Label Text="Ưu tiên nhóm biển cấm, biển chỉ dẫn và nhận diện nhanh các biển dễ nhầm trong bộ câu hỏi mới."
+                                       Style="{StaticResource AppCaptionLabel}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="2"
+                Style="{StaticResource AppBottomBar}"
+                Shadow="0,-8,24,#0A000000">
+            <Grid ColumnDefinitions="*,*,*,*,*"
+                  ColumnSpacing="4">
+                <VerticalStackLayout Spacing="4"
+                                     HorizontalOptions="Center">
+                    <Border Padding="12,8"
+                            BackgroundColor="#FFDEA8"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 22">
+                        <Label Text="⌂"
+                               FontSize="18"
+                               TextColor="{StaticResource AppBrandStrong}"
+                               HorizontalOptions="Center" />
+                    </Border>
+                    <Label Text="Trang chủ"
+                           FontSize="11"
+                           TextColor="{StaticResource AppBrand}" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1"
+                                     Spacing="4"
+                                     HorizontalOptions="Center">
+                    <Label Text="🧪"
+                           FontSize="18"
+                           TextColor="{StaticResource AppSecondaryText}"
+                           HorizontalOptions="Center" />
+                    <Label Text="Thi thử"
+                           FontSize="11"
+                           TextColor="{StaticResource AppSecondaryText}" />
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMockExamTapped" />
+                    </VerticalStackLayout.GestureRecognizers>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2"
+                                     Spacing="4"
+                                     HorizontalOptions="Center">
+                    <Label Text="📚"
+                           FontSize="18"
+                           TextColor="{StaticResource AppSecondaryText}"
+                           HorizontalOptions="Center" />
+                    <Label Text="Ôn tập"
+                           FontSize="11"
+                           TextColor="{StaticResource AppSecondaryText}" />
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPracticeTapped" />
+                    </VerticalStackLayout.GestureRecognizers>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="3"
+                                     Spacing="4"
+                                     HorizontalOptions="Center">
+                    <Label Text="📅"
+                           FontSize="18"
+                           TextColor="{StaticResource AppSecondaryText}"
+                           HorizontalOptions="Center" />
+                    <Label Text="Lịch học"
+                           FontSize="11"
+                           TextColor="{StaticResource AppSecondaryText}" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="4"
+                                     Spacing="4"
+                                     HorizontalOptions="Center">
+                    <Label Text="👤"
+                           FontSize="18"
+                           TextColor="{StaticResource AppSecondaryText}"
+                           HorizontalOptions="Center" />
+                    <Label Text="Cá nhân"
+                           FontSize="11"
+                           TextColor="{StaticResource AppSecondaryText}" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </Grid>
+
+</ContentPage>

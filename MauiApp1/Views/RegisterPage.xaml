@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.RegisterPage"
+             BackgroundColor="#FCF9F2">
+
+    <Grid RowDefinitions="Auto,*">
+        <Grid Grid.Row="0"
+              Padding="20,18"
+              ColumnDefinitions="Auto,*,Auto"
+              BackgroundColor="#FCF9F2">
+            <Button Text="←"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+                    BackgroundColor="Transparent"
+                    TextColor="#7C5800"
+                    FontSize="18" />
+
+            <Label Grid.Column="1"
+                   Text="ThiXeMay"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   FontFamily="OpenSans-Semibold"
+                   FontAttributes="Bold,Italic"
+                   FontSize="22"
+                   TextColor="#7C5800" />
+
+            <Label Grid.Column="2"
+                   Text="Trợ giúp"
+                   VerticalTextAlignment="Center"
+                   FontSize="13"
+                   TextColor="#514532"
+                   HorizontalTextAlignment="End" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,18,24,32"
+                                 Spacing="0">
+                <Border StrokeThickness="0"
+                        BackgroundColor="#A0C7FF"
+                        Padding="12,6"
+                        HorizontalOptions="Start"
+                        StrokeShape="RoundRectangle 8">
+                    <Label Text="BẮT ĐẦU HÀNH TRÌNH"
+                           FontFamily="OpenSans-Semibold"
+                           FontSize="11"
+                           CharacterSpacing="1.8"
+                           TextColor="#005295" />
+                </Border>
+
+                <Label Text="Tạo tài khoản"
+                       Margin="0,18,0,0"
+                       FontFamily="OpenSans-Semibold"
+                       FontSize="38"
+                       FontAttributes="Bold"
+                       TextColor="#1C1C18" />
+
+                <Label Text="Thành viên mới"
+                       FontFamily="OpenSans-Semibold"
+                       FontSize="38"
+                       FontAttributes="Bold,Italic"
+                       TextColor="#7C5800" />
+
+                <Label Text="Chuẩn bị kiến thức vững vàng để chinh phục giấy phép lái xe A1, A2 ngay hôm nay."
+                       Margin="0,14,0,0"
+                       FontSize="17"
+                       TextColor="#514532"
+                       LineBreakMode="WordWrap" />
+
+                <Border Margin="0,28,0,0"
+                        Padding="24"
+                        BackgroundColor="White"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 32"
+                        Shadow="0,18,40,#0F1C1C18">
+                    <VerticalStackLayout Spacing="22">
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="18">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Họ và tên"
+                                       FontSize="14"
+                                       FontFamily="OpenSans-Semibold"
+                                       TextColor="#514532" />
+                                <Entry Placeholder="Nguyễn Văn A"
+                                       BackgroundColor="Transparent"
+                                       TextColor="#1C1C18"
+                                       PlaceholderColor="#99837560" />
+                                <BoxView HeightRequest="2" Color="#33D5C4AB" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="6">
+                                <Label Text="Số điện thoại"
+                                       FontSize="14"
+                                       FontFamily="OpenSans-Semibold"
+                                       TextColor="#514532" />
+                                <Entry Placeholder="090 123 4567"
+                                       Keyboard="Telephone"
+                                       BackgroundColor="Transparent"
+                                       TextColor="#1C1C18"
+                                       PlaceholderColor="#99837560" />
+                                <BoxView HeightRequest="2" Color="#33D5C4AB" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Địa chỉ Email"
+                                   FontSize="14"
+                                   FontFamily="OpenSans-Semibold"
+                                   TextColor="#514532" />
+                            <Entry Placeholder="email@vi-du.com"
+                                   Keyboard="Email"
+                                   BackgroundColor="Transparent"
+                                   TextColor="#1C1C18"
+                                   PlaceholderColor="#99837560" />
+                            <BoxView HeightRequest="2" Color="#33D5C4AB" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Tên đăng nhập"
+                                   FontSize="14"
+                                   FontFamily="OpenSans-Semibold"
+                                   TextColor="#514532" />
+                            <Entry Placeholder="username123"
+                                   BackgroundColor="Transparent"
+                                   TextColor="#1C1C18"
+                                   PlaceholderColor="#99837560" />
+                            <BoxView HeightRequest="2" Color="#33D5C4AB" />
+                        </VerticalStackLayout>
+
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="18">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Mật khẩu"
+                                       FontSize="14"
+                                       FontFamily="OpenSans-Semibold"
+                                       TextColor="#514532" />
+                                <Entry Placeholder="••••••••"
+                                       IsPassword="True"
+                                       BackgroundColor="Transparent"
+                                       TextColor="#1C1C18"
+                                       PlaceholderColor="#99837560" />
+                                <BoxView HeightRequest="2" Color="#33D5C4AB" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1" Spacing="6">
+                                <Label Text="Xác nhận mật khẩu"
+                                       FontSize="14"
+                                       FontFamily="OpenSans-Semibold"
+                                       TextColor="#514532" />
+                                <Entry Placeholder="••••••••"
+                                       IsPassword="True"
+                                       BackgroundColor="Transparent"
+                                       TextColor="#1C1C18"
+                                       PlaceholderColor="#99837560" />
+                                <BoxView HeightRequest="2" Color="#33D5C4AB" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="Hạng giấy phép đăng ký luyện thi"
+                                   FontSize="14"
+                                   FontFamily="OpenSans-Semibold"
+                                   TextColor="#514532" />
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="12">
+                                <Border BackgroundColor="#FFDEA8"
+                                        Stroke="#7C5800"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 20"
+                                        Padding="18">
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                                        <Label Text="A1"
+                                               FontFamily="OpenSans-Semibold"
+                                               FontSize="28"
+                                               TextColor="#7C5800"
+                                               HorizontalTextAlignment="Center" />
+                                        <Label Text="Dưới 175cm3"
+                                               FontSize="11"
+                                               FontFamily="OpenSans-Semibold"
+                                               TextColor="#514532"
+                                               HorizontalTextAlignment="Center" />
+                                    </VerticalStackLayout>
+                                </Border>
+
+                                <Border Grid.Column="1"
+                                        BackgroundColor="#F6F3EC"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 20"
+                                        Padding="18">
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                                        <Label Text="A2"
+                                               FontFamily="OpenSans-Semibold"
+                                               FontSize="28"
+                                               TextColor="#7C5800"
+                                               HorizontalTextAlignment="Center" />
+                                        <Label Text="Trên 175cm3"
+                                               FontSize="11"
+                                               FontFamily="OpenSans-Semibold"
+                                               TextColor="#514532"
+                                               HorizontalTextAlignment="Center" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="10">
+                            <CheckBox Color="#7C5800" />
+                            <Label Text="Tôi đã đọc và đồng ý với Điều khoản sử dụng và Chính sách bảo mật của ThiXeMay."
+                                   FontSize="13"
+                                   TextColor="#514532"
+                                   LineBreakMode="WordWrap"
+                                   VerticalTextAlignment="Center" />
+                        </HorizontalStackLayout>
+
+                        <Button Text="Đăng ký ngay  →"
+                                HeightRequest="58"
+                                CornerRadius="29"
+                                BackgroundColor="#FFB800"
+                                TextColor="#271900"
+                                FontFamily="OpenSans-Semibold"
+                                FontSize="18"
+                                Shadow="0,12,24,#33FFB800" />
+
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label Text="Bạn đã có tài khoản?"
+                                   FontSize="14"
+                                   TextColor="#514532" />
+                            <Label Text="Quay lại Đăng nhập"
+                                   FontSize="14"
+                                   FontFamily="OpenSans-Semibold"
+                                   TextColor="#7C5800" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid Margin="0,24,0,0"
+                      ColumnDefinitions="*,Auto"
+                      Opacity="0.6">
+                    <Label Text="© 2024 THIXEMAY ATELIER"
+                           FontSize="10"
+                           FontFamily="OpenSans-Semibold"
+                           TextColor="#837560" />
+                    <HorizontalStackLayout Grid.Column="1" Spacing="14">
+                        <Label Text="Hỗ trợ"
+                               FontSize="10"
+                               FontFamily="OpenSans-Semibold"
+                               TextColor="#837560" />
+                        <Label Text="Bảo mật"
+                               FontSize="10"
+                               FontFamily="OpenSans-Semibold"
+                               TextColor="#837560" />
+                    </HorizontalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

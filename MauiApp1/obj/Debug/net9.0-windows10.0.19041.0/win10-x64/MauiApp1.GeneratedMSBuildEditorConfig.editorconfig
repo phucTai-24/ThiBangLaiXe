@@ -1,0 +1,149 @@
+is_global = true
+build_property.TargetFramework = net9.0-windows10.0.19041.0
+build_property.TargetPlatformMinVersion = 10.0.17763.0
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 9A19103F-16F7-4668-BE54-9A1E7A4F7556
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = MauiApp1
+build_property.ProjectDir = c:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTAotOptimizerEnabled = true
+build_property.CsWinRTAotExportsEnabled = 
+build_property.CsWinRTRcwFactoryFallbackGeneratorForceOptIn = 
+build_property.CsWinRTRcwFactoryFallbackGeneratorForceOptOut = 
+build_property.CsWinRTCcwLookupTableGeneratorEnabled = true
+build_property.CsWinRTMergeReferencedActivationFactories = 
+build_property.CsWinRTAotWarningLevel = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/App.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.App.xaml
+build_metadata.AdditionalFiles.TargetPath = App.xaml
+build_metadata.AdditionalFiles.RelativePath = App.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/AppShell.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.AppShell.xaml
+build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
+build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Resources/Styles/Colors.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Resources.Styles.Colors.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Colors.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Colors.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Resources/Styles/Styles.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Resources.Styles.Styles.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/DashboardPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.DashboardPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\DashboardPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\DashboardPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/ExamListPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.ExamListPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\ExamListPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\ExamListPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/ExamResultPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.ExamResultPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\ExamResultPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\ExamResultPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/ForgotPasswordPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.ForgotPasswordPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\ForgotPasswordPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\ForgotPasswordPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/HistoryPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.HistoryPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\HistoryPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\HistoryPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/LoginPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.LoginPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\LoginPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\LoginPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/MainPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.MainPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\MainPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\MainPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/MockExamPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.MockExamPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\MockExamPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\MockExamPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/NotificationPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.NotificationPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\NotificationPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\NotificationPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/OnboardingPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.OnboardingPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\OnboardingPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\OnboardingPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/PracticeResultPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.PracticeResultPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\PracticeResultPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\PracticeResultPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/PracticeSessionPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.PracticeSessionPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\PracticeSessionPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\PracticeSessionPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/ProfilePage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.ProfilePage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\ProfilePage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\ProfilePage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/RegisterPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.RegisterPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\RegisterPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\RegisterPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/SettingsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.SettingsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\SettingsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\SettingsPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/TrafficSignsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.TrafficSignsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\TrafficSignsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\TrafficSignsPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/WrongAnswersPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.WrongAnswersPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\WrongAnswersPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\WrongAnswersPage.xaml

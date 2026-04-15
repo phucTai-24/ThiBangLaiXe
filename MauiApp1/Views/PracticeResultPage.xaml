@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MauiApp1.ViewModels"
+             x:Class="MauiApp1.Views.PracticeResultPage"
+             x:DataType="vm:PracticeResultViewModel"
+             Style="{StaticResource AppPageStyle}">
+
+    <Grid RowDefinitions="*,Auto">
+    <ScrollView Grid.Row="0">
+        <VerticalStackLayout Padding="24,24,24,140"
+                             Spacing="18">
+            <Border Style="{StaticResource AppHeaderContainer}">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Border Style="{StaticResource AppIconButtonCard}">
+                        <Label Text="←"
+                               FontSize="18"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoPracticeHomeCommand}" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1"
+                                         Margin="14,0,0,0"
+                                         Spacing="2">
+                        <Label Text="ONTHIBANGLAI"
+                               Style="{StaticResource AppHeaderBrandLabel}" />
+                        <Label Text="Kết quả ôn tập"
+                               Style="{StaticResource AppHeaderTitleLabel}" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <Border BackgroundColor="#FFF8E8"
+                    Padding="22"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 28">
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="{Binding Result.TopicName}"
+                           FontFamily="OpenSans-Semibold"
+                           FontSize="24"
+                           TextColor="{StaticResource AppPrimaryText}" />
+                    <Label Text="{Binding Result.ResultText}"
+                           FontFamily="OpenSans-Semibold"
+                           FontSize="16"
+                           TextColor="{StaticResource AppBrand}" />
+                    <Grid ColumnDefinitions="*,*"
+                          RowDefinitions="Auto,Auto"
+                          ColumnSpacing="12"
+                          RowSpacing="12">
+                        <Border Grid.Row="0"
+                                Grid.Column="0"
+                                Style="{StaticResource AppCard}">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Điểm"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                                <Label Text="{Binding Result.Score, StringFormat='{0}%'}"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="24"
+                                       TextColor="{StaticResource AppBrand}" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border Grid.Row="0"
+                                Grid.Column="1"
+                                Style="{StaticResource AppCard}">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Thời gian"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                                <Label Text="{Binding Result.DurationText}"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="24"
+                                       TextColor="{StaticResource AppPrimaryText}" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border Grid.Row="1"
+                                Grid.Column="0"
+                                Style="{StaticResource AppCard}">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Câu đúng"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                                <Label Text="{Binding Result.CorrectAnswers}"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="24"
+                                       TextColor="{StaticResource AppSuccess}" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border Grid.Row="1"
+                                Grid.Column="1"
+                                Style="{StaticResource AppCard}">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Câu sai"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                                <Label Text="{Binding Result.WrongAnswers}"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="24"
+                                       TextColor="#D32F2F" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="LÀM LẠI CHỦ ĐỀ"
+                    BackgroundColor="{StaticResource AppBrandAccent}"
+                    TextColor="{StaticResource AppPrimaryText}"
+                    FontFamily="OpenSans-Semibold"
+                    CornerRadius="18"
+                    HeightRequest="54"
+                    Command="{Binding RetakeCommand}" />
+
+            <Button Text="VỀ MÀN ÔN TẬP"
+                    BackgroundColor="{StaticResource AppSurfaceMuted}"
+                    TextColor="{StaticResource AppBrand}"
+                    FontFamily="OpenSans-Semibold"
+                    CornerRadius="18"
+                    HeightRequest="54"
+                    Command="{Binding GoPracticeHomeCommand}" />
+
+            <Button Text="VỀ TRANG CHỦ"
+                    BackgroundColor="{StaticResource AppPrimaryText}"
+                    TextColor="{StaticResource AppPageBackground}"
+                    FontFamily="OpenSans-Semibold"
+                    CornerRadius="18"
+                    HeightRequest="54"
+                    Command="{Binding GoHomeCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+    <Border Grid.Row="1"
+            Style="{StaticResource AppBottomBar}"
+            Shadow="0,-8,24,#0A000000">
+        <Grid ColumnDefinitions="*,*,*,*,*"
+              ColumnSpacing="4">
+            <VerticalStackLayout Spacing="4"
+                                 HorizontalOptions="Center">
+                <Label Text="⌂"
+                       FontSize="18"
+                       TextColor="{StaticResource AppSecondaryText}"
+                       HorizontalOptions="Center" />
+                <Label Text="Trang chủ"
+                       FontSize="11"
+                       TextColor="{StaticResource AppSecondaryText}" />
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="1"
+                                 Spacing="4"
+                                 HorizontalOptions="Center">
+                <Label Text="🧪"
+                       FontSize="18"
+                       TextColor="{StaticResource AppSecondaryText}"
+                       HorizontalOptions="Center" />
+                <Label Text="Thi thử"
+                       FontSize="11"
+                       TextColor="{StaticResource AppSecondaryText}" />
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoMockExamCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="2"
+                                 Spacing="4"
+                                 HorizontalOptions="Center">
+                <Border Padding="12,8"
+                        BackgroundColor="{StaticResource AppSurfaceAccent}"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                    <Label Text="📚"
+                           FontSize="18"
+                           TextColor="{StaticResource AppPrimaryText}"
+                           HorizontalOptions="Center" />
+                </Border>
+                <Label Text="Ôn tập"
+                       FontSize="11"
+                       TextColor="{StaticResource AppBrand}" />
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoPracticeHomeCommand}" />
+                </VerticalStackLayout.GestureRecognizers>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="3"
+                                 Spacing="4"
+                                 HorizontalOptions="Center">
+                <Label Text="📅"
+                       FontSize="18"
+                       TextColor="{StaticResource AppSecondaryText}"
+                       HorizontalOptions="Center" />
+                <Label Text="Lịch học"
+                       FontSize="11"
+                       TextColor="{StaticResource AppSecondaryText}" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="4"
+                                 Spacing="4"
+                                 HorizontalOptions="Center">
+                <Label Text="👤"
+                       FontSize="18"
+                       TextColor="{StaticResource AppSecondaryText}"
+                       HorizontalOptions="Center" />
+                <Label Text="Cá nhân"
+                       FontSize="11"
+                       TextColor="{StaticResource AppSecondaryText}" />
+            </VerticalStackLayout>
+        </Grid>
+    </Border>
+    </Grid>
+
+</ContentPage>

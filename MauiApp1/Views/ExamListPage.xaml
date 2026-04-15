@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.ExamListPage"
+             BackgroundColor="#FCF9F2">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Border Grid.Row="0"
+                Style="{StaticResource AppHeaderContainer}"
+                Shadow="0,8,20,#12000000">
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  Style="{StaticResource AppHeaderGrid}">
+                <Border Style="{StaticResource AppIconButtonCard}"
+                        VerticalOptions="Center">
+                    <Label Text="←"
+                           FontSize="18"
+                           TextColor="{StaticResource AppPrimaryText}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+
+                <VerticalStackLayout Grid.Column="1"
+                                     Spacing="2"
+                                     VerticalOptions="Center">
+                    <Label Text="ONTHIBANGLAI"
+                           Style="{StaticResource AppHeaderBrandLabel}" />
+                    <Label Text="Danh sách bộ đề"
+                           Style="{StaticResource AppHeaderTitleLabel}"
+                           FontSize="22" />
+                </VerticalStackLayout>
+
+                <Border Grid.Column="2"
+                        Style="{StaticResource AppIconButtonCard}"
+                        VerticalOptions="Center">
+                    <Label Text="⋯"
+                           FontSize="18"
+                           TextColor="{StaticResource AppPrimaryText}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,24,24,140" Spacing="24">
+                <Border
+                    Padding="22"
+                    BackgroundColor="#FFF8EA"
+                    Stroke="#1AD5C4AB"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 28">
+                    <VerticalStackLayout Spacing="14">
+                        <Label
+                            Text="Tiến độ luyện đề"
+                            FontFamily="OpenSans-Semibold"
+                            FontSize="24"
+                            TextColor="#271900" />
+                        <Label
+                            Text="Hoàn thành từng bộ đề theo lộ trình. Những bộ đã khóa sẽ mở khi bạn đủ điều kiện."
+                            FontSize="14"
+                            LineHeight="1.35"
+                            TextColor="#5F564B" />
+                        <HorizontalStackLayout Spacing="10">
+                            <Border
+                                Padding="12,8"
+                                BackgroundColor="#7C5800"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 999">
+                                <Label Text="3 / 10 hoàn tất" FontSize="12" FontFamily="OpenSans-Semibold" TextColor="#FFF8E8" />
+                            </Border>
+                            <Border
+                                Padding="12,8"
+                                BackgroundColor="#FFEEBF"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 999">
+                                <Label Text="Độ khó tăng dần" FontSize="12" TextColor="#7C5800" />
+                            </Border>
+                        </HorizontalStackLayout>
+                        <Grid HeightRequest="8">
+                            <Border BackgroundColor="#E6E0D4" StrokeThickness="0" StrokeShape="RoundRectangle 999" />
+                            <Border WidthRequest="120" HorizontalOptions="Start" BackgroundColor="#FFB800" StrokeThickness="0" StrokeShape="RoundRectangle 999" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="16" RowSpacing="16">
+                    <Border
+                        Padding="20"
+                        BackgroundColor="#FFFFFF"
+                        Stroke="#14D5C4AB"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 24"
+                        Shadow="0,10,24,#0A1C1C18">
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Bộ đề 01" FontFamily="OpenSans-Semibold" FontSize="20" TextColor="#271900" />
+                                    <Label Text="Cơ bản · 20 câu" FontSize="12" TextColor="#6B6257" />
+                                </VerticalStackLayout>
+                                <Border Grid.Column="1" Padding="10,6" BackgroundColor="#E8F6EA" StrokeThickness="0" StrokeShape="RoundRectangle 999">
+                                    <Label Text="Đã xong" FontSize="11" FontFamily="OpenSans-Semibold" TextColor="#2E7D32" />
+                                </Border>
+                            </Grid>
+                            <Label Text="Bạn đã hoàn thành với điểm số an toàn và có thể xem lại đáp án chi tiết." FontSize="13" LineHeight="1.35" TextColor="#5F564B" />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Điểm gần nhất: 19/20" FontSize="12" TextColor="#7C5800" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="→" FontSize="20" TextColor="#7C5800" VerticalOptions="Center" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="20"
+                        BackgroundColor="#FFF0C7"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24"
+                        Shadow="0,14,28,#14FFB800">
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Bộ đề 02" FontFamily="OpenSans-Semibold" FontSize="20" TextColor="#271900" />
+                                    <Label Text="Đang làm · 20 câu" FontSize="12" TextColor="#735E2C" />
+                                </VerticalStackLayout>
+                                <Border Grid.Column="1" Padding="10,6" BackgroundColor="#271900" StrokeThickness="0" StrokeShape="RoundRectangle 999">
+                                    <Label Text="Tiếp tục" FontSize="11" FontFamily="OpenSans-Semibold" TextColor="#FFF8E8" />
+                                </Border>
+                            </Grid>
+                            <Label Text="Bạn đang dở dang ở câu 12. Tiếp tục để giữ nhịp luyện tập mỗi ngày." FontSize="13" LineHeight="1.35" TextColor="#5A4A2A" />
+                            <Grid HeightRequest="6">
+                                <Border BackgroundColor="#F4DFAB" StrokeThickness="0" StrokeShape="RoundRectangle 999" />
+                                <Border WidthRequest="84" HorizontalOptions="Start" BackgroundColor="#7C5800" StrokeThickness="0" StrokeShape="RoundRectangle 999" />
+                            </Grid>
+                            <Label Text="Tiến độ: 60%" FontSize="12" TextColor="#7C5800" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border
+                        Grid.Row="1"
+                        Padding="20"
+                        BackgroundColor="#FFFFFF"
+                        Stroke="#14D5C4AB"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 24"
+                        Shadow="0,10,24,#0A1C1C18">
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Bộ đề 03" FontFamily="OpenSans-Semibold" FontSize="20" TextColor="#271900" />
+                                    <Label Text="Trọng tâm biển báo" FontSize="12" TextColor="#6B6257" />
+                                </VerticalStackLayout>
+                                <Border Grid.Column="1" Padding="10,6" BackgroundColor="#E8F6EA" StrokeThickness="0" StrokeShape="RoundRectangle 999">
+                                    <Label Text="Đã xong" FontSize="11" FontFamily="OpenSans-Semibold" TextColor="#2E7D32" />
+                                </Border>
+                            </Grid>
+                            <Label Text="Phù hợp để ôn lại nhanh trước kỳ thi thật với nhóm câu nhận diện biển báo." FontSize="13" LineHeight="1.35" TextColor="#5F564B" />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Điểm gần nhất: 18/20" FontSize="12" TextColor="#7C5800" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="→" FontSize="20" TextColor="#7C5800" VerticalOptions="Center" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Padding="20"
+                        BackgroundColor="#FFFFFF"
+                        Stroke="#14D5C4AB"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 24"
+                        Shadow="0,10,24,#0A1C1C18">
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Bộ đề 04" FontFamily="OpenSans-Semibold" FontSize="20" TextColor="#271900" />
+                                    <Label Text="Ôn tổng hợp" FontSize="12" TextColor="#6B6257" />
+                                </VerticalStackLayout>
+                                <Border Grid.Column="1" Padding="10,6" BackgroundColor="#F5F1E8" StrokeThickness="0" StrokeShape="RoundRectangle 999">
+                                    <Label Text="Mới" FontSize="11" FontFamily="OpenSans-Semibold" TextColor="#7A6C56" />
+                                </Border>
+                            </Grid>
+                            <Label Text="Một bài luyện cân bằng giữa mẹo luật, ưu tiên đường và sa hình cơ bản." FontSize="13" LineHeight="1.35" TextColor="#5F564B" />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Sẵn sàng bắt đầu" FontSize="12" TextColor="#7C5800" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="→" FontSize="20" TextColor="#7C5800" VerticalOptions="Center" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border
+                        Grid.Row="2"
+                        Padding="20"
+                        BackgroundColor="#EEE8DD"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24"
+                        Opacity="0.9">
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Bộ đề 05" FontFamily="OpenSans-Semibold" FontSize="20" TextColor="#6B6257" />
+                                    <Label Text="Nâng cao" FontSize="12" TextColor="#8B8277" />
+                                </VerticalStackLayout>
+                                <Border Grid.Column="1" Padding="10,6" BackgroundColor="#D9D0C2" StrokeThickness="0" StrokeShape="RoundRectangle 999">
+                                    <Label Text="Khóa" FontSize="11" FontFamily="OpenSans-Semibold" TextColor="#6B6257" />
+                                </Border>
+                            </Grid>
+                            <Label Text="Mở khóa khi hoàn thành ít nhất 4 bộ đề đầu với tỷ lệ đậu ổn định." FontSize="13" LineHeight="1.35" TextColor="#7A6C56" />
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="🔒" FontSize="14" />
+                                <Label Text="Yêu cầu: hoàn thành lộ trình cơ bản" FontSize="12" TextColor="#7A6C56" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Grid Grid.Row="2" Grid.Column="1" RowDefinitions="Auto,Auto" RowSpacing="16" IsVisible="True">
+                        <Border
+                            Padding="18"
+                            BackgroundColor="#FFFFFF"
+                            Stroke="#14D5C4AB"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 22">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Bộ đề 06" FontFamily="OpenSans-Semibold" FontSize="18" TextColor="#271900" />
+                                <Label Text="Sắp mở khóa sau khi hoàn thành đề 04" FontSize="12" TextColor="#6B6257" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Padding="18"
+                            BackgroundColor="#FFFFFF"
+                            Stroke="#14D5C4AB"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 22">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Bộ đề 07" FontFamily="OpenSans-Semibold" FontSize="18" TextColor="#271900" />
+                                <Label Text="Mở khóa chuỗi đề nâng cao và thi mô phỏng" FontSize="12" TextColor="#6B6257" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+                <Border
+                    Padding="18,16"
+                    BackgroundColor="#F4EFE6"
+                    Stroke="#14D5C4AB"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 999"
+                    HorizontalOptions="Center">
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="＋" FontSize="18" TextColor="#7C5800" VerticalTextAlignment="Center" />
+                        <Label Text="Xem thêm các bộ đề mở rộng" FontFamily="OpenSans-Semibold" FontSize="13" TextColor="#5F564B" VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border
+            Grid.Row="2"
+            Margin="12,0,12,12"
+            Padding="10,10,10,18"
+            BackgroundColor="#CCFCF9F2"
+            Stroke="#14D5C4AB"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 34"
+            Shadow="0,-8,24,#0A000000">
+            <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="6">
+                <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                    <Label Text="⌂" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
+                    <Label Text="Trang chủ" FontSize="11" TextColor="#6B6257" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="Center">
+                    <Border
+                        Padding="12,8"
+                        BackgroundColor="#FFDEA8"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                        <Label Text="🧪" FontSize="18" TextColor="#271900" HorizontalOptions="Center" />
+                    </Border>
+                    <Label Text="Đề thi" FontSize="11" TextColor="#7C5800" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2" Spacing="4" HorizontalOptions="Center">
+                    <Label Text="📚" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
+                    <Label Text="Học" FontSize="11" TextColor="#6B6257" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="3" Spacing="4" HorizontalOptions="Center">
+                    <Label Text="🔔" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
+                    <Label Text="Thông báo" FontSize="11" TextColor="#6B6257" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="4" Spacing="4" HorizontalOptions="Center">
+                    <Label Text="👤" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
+                    <Label Text="Cá nhân" FontSize="11" TextColor="#6B6257" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </Grid>
+
+</ContentPage>

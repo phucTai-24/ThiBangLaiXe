@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.MainPage"
+             BackgroundColor="#FCF9F2">
+
+    <Grid>
+        <AbsoluteLayout InputTransparent="True">
+            <BoxView
+                AbsoluteLayout.LayoutBounds="-120,-80,220,220"
+                AbsoluteLayout.LayoutFlags="None"
+                Color="#FFF4D6"
+                CornerRadius="110"
+                Opacity="0.55" />
+
+            <BoxView
+                AbsoluteLayout.LayoutBounds="300,320,340,340"
+                AbsoluteLayout.LayoutFlags="None"
+                Color="#F6F3EC"
+                CornerRadius="170"
+                Opacity="0.9" />
+
+            <BoxView
+                AbsoluteLayout.LayoutBounds="48,0,1,-1"
+                AbsoluteLayout.LayoutFlags="HeightProportional"
+                Color="#1C1C18"
+                Opacity="0.08" />
+
+            <BoxView
+                AbsoluteLayout.LayoutBounds="346,0,1,-1"
+                AbsoluteLayout.LayoutFlags="HeightProportional"
+                Color="#1C1C18"
+                Opacity="0.08" />
+        </AbsoluteLayout>
+
+        <Grid RowDefinitions="Auto,*,Auto"
+              Padding="32,72,32,32"
+              RowSpacing="0">
+
+            <HorizontalStackLayout
+                Grid.Row="0"
+                HorizontalOptions="Center"
+                Spacing="12">
+                <BoxView
+                    WidthRequest="32"
+                    HeightRequest="2"
+                    Color="#D5C4AB"
+                    Opacity="0.5"
+                    VerticalOptions="Center" />
+
+                <Label
+                    Text="CERTIFICATION JOURNEY"
+                    FontFamily="OpenSans-Semibold"
+                    FontSize="11"
+                    CharacterSpacing="3"
+                    TextColor="#514532"
+                    Opacity="0.7"
+                    VerticalTextAlignment="Center" />
+
+                <BoxView
+                    WidthRequest="32"
+                    HeightRequest="2"
+                    Color="#D5C4AB"
+                    Opacity="0.5"
+                    VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout
+                Grid.Row="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Spacing="0">
+
+                <Grid
+                    WidthRequest="128"
+                    HeightRequest="128"
+                    Margin="0,0,0,32">
+                    <Border
+                        BackgroundColor="#33FFB800"
+                        Rotation="12"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 28"
+                        Margin="8" />
+
+                    <Border
+                        BackgroundColor="White"
+                        Stroke="#1AD5C4AB"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 28"
+                        Shadow="0,16,32,#0F1C1C18"
+                        Padding="0">
+                        <Grid>
+                            <Label
+                                Text="🏍"
+                                FontSize="56"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        WidthRequest="36"
+                        HeightRequest="36"
+                        BackgroundColor="#FFB800"
+                        Stroke="White"
+                        StrokeThickness="4"
+                        StrokeShape="RoundRectangle 18"
+                        HorizontalOptions="End"
+                        VerticalOptions="End"
+                        TranslationX="4"
+                        TranslationY="4">
+                        <Label
+                            Text="✓"
+                            FontSize="16"
+                            TextColor="#271900"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+                    </Border>
+                </Grid>
+
+                <Label
+                    Text="ThiXeMay"
+                    FontSize="52"
+                    FontAttributes="Bold"
+                    FontFamily="OpenSans-Semibold"
+                    TextColor="#7C5800"
+                    HorizontalTextAlignment="Center" />
+
+                <Label
+                    Text="Nền tảng luyện thi bằng lái xe máy chuẩn"
+                    Margin="0,20,0,0"
+                    FontSize="18"
+                    TextColor="#514532"
+                    HorizontalTextAlignment="Center" />
+
+                <Label
+                    Text="Editorial Authority."
+                    FontSize="18"
+                    FontFamily="OpenSans-Semibold"
+                    TextColor="#7C5800"
+                    HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout
+                Grid.Row="2"
+                HorizontalOptions="Center"
+                Spacing="16"
+                Margin="0,0,0,8"
+                MaximumWidthRequest="320">
+
+                <Grid HeightRequest="6">
+                    <Border
+                        BackgroundColor="#E5E2DB"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 999" />
+                    <Border
+                        HorizontalOptions="Start"
+                        WidthRequest="110"
+                        StrokeThickness="0"
+                        >
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="999" />
+                        </Border.StrokeShape>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#7C5800" Offset="0" />
+                                <GradientStop Color="#FFB800" Offset="1" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                </Grid>
+
+                <VerticalStackLayout Spacing="4">
+                    <Label
+                        Text="KHỞI TẠO HỆ THỐNG"
+                        FontFamily="OpenSans-Semibold"
+                        FontSize="11"
+                        CharacterSpacing="2.5"
+                        TextColor="#514532"
+                        Opacity="0.7"
+                        HorizontalTextAlignment="Center" />
+
+                    <Label
+                        Text="Bắt đầu hành trình của bạn..."
+                        FontSize="14"
+                        TextColor="#514532"
+                        Opacity="0.85"
+                        HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <Border
+                Grid.RowSpan="3"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,0,16"
+                Padding="14,10"
+                BackgroundColor="#CCFFFFFF"
+                Stroke="#1AD5C4AB"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 16"
+                IsVisible="True">
+                <HorizontalStackLayout Spacing="8">
+                    <Label
+                        Text="🛡"
+                        FontSize="16"
+                        TextColor="#7C5800"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        Text="Verified Curriculum 2024"
+                        FontFamily="OpenSans-Semibold"
+                        FontSize="10"
+                        TextColor="#514532"
+                        VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+            </Border>
+        </Grid>
+    </Grid>
+
+</ContentPage>

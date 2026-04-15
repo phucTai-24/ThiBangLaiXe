@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.SettingsPage"
+             BackgroundColor="#FCF9F2">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Border Grid.Row="0"
+                Style="{StaticResource AppHeaderContainer}"
+                Shadow="0,8,20,#12000000">
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  Style="{StaticResource AppHeaderGrid}">
+                <Border Style="{StaticResource AppIconButtonCard}"
+                        VerticalOptions="Center">
+                    <Label Text="←"
+                           FontSize="18"
+                           TextColor="{StaticResource AppPrimaryText}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+ 
+                <VerticalStackLayout Grid.Column="1"
+                                     Spacing="2"
+                                     VerticalOptions="Center">
+                    <Label Text="ONTHIBANGLAI"
+                           Style="{StaticResource AppHeaderBrandLabel}" />
+                    <Label Text="Cài đặt"
+                           Style="{StaticResource AppHeaderTitleLabel}"
+                           FontSize="22" />
+                </VerticalStackLayout>
+ 
+                <Label Grid.Column="2"
+                       Text="ONTHIBANGLAI"
+                       Style="{StaticResource AppHeaderTrailingLabel}" />
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,24,24,140" Spacing="24">
+                <Border Padding="20" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24" Shadow="0,16,32,#0A1C1C18">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                        <Border WidthRequest="64" HeightRequest="64" BackgroundColor="#E5E2DB" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                            <Label Text="👨" FontSize="32" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                            <Label Text="Nguyễn Minh Quân" FontFamily="OpenSans-Semibold" FontSize="20" TextColor="#271900" />
+                            <Label Text="@quanmotor_99" FontSize="13" TextColor="#6B6257" />
+                            <Label Text="Đồng bộ tài khoản và quản lý trải nghiệm ôn thi của bạn" FontSize="13" TextColor="#5F564B" LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Tài khoản" FontFamily="OpenSans-Semibold" FontSize="21" TextColor="#271900" Margin="4,0,0,0" />
+
+                    <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                                <Label Text="👤" FontSize="22" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Thông tin cá nhân" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#271900" />
+                                <Label Text="Cập nhật họ tên, email và số điện thoại" FontSize="13" TextColor="#5F564B" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="›" FontSize="24" TextColor="#837560" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                                <Label Text="🔒" FontSize="22" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Mật khẩu và bảo mật" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#271900" />
+                                <Label Text="Đổi mật khẩu, xác thực và quyền riêng tư" FontSize="13" TextColor="#5F564B" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="›" FontSize="24" TextColor="#837560" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Giao diện" FontFamily="OpenSans-Semibold" FontSize="21" TextColor="#271900" Margin="4,0,0,0" />
+
+                    <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                                <Label Text="🌗" FontSize="22" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Chế độ hiển thị" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#271900" />
+                                <Label Text="Sáng · Tự động" FontSize="13" TextColor="#5F564B" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="›" FontSize="24" TextColor="#837560" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Tùy chọn" FontFamily="OpenSans-Semibold" FontSize="21" TextColor="#271900" Margin="4,0,0,0" />
+
+                    <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                                <Label Text="🔔" FontSize="22" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Thông báo học tập" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#271900" />
+                                <Label Text="Bật nhắc nhở ôn bài và thông báo đề mới" FontSize="13" TextColor="#5F564B" />
+                            </VerticalStackLayout>
+                            <HorizontalStackLayout Grid.Column="2" Spacing="8" VerticalOptions="Center">
+                                <Label Text="Bật" FontSize="12" TextColor="#7C5800" VerticalOptions="Center" />
+                                <Border WidthRequest="42" HeightRequest="24" BackgroundColor="#FFB800" StrokeThickness="0" StrokeShape="RoundRectangle 12">
+                                    <Border WidthRequest="18" HeightRequest="18" Margin="20,3,4,3" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 9" HorizontalOptions="End" />
+                                </Border>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                                <Label Text="🌐" FontSize="22" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Ngôn ngữ" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#271900" />
+                                <Label Text="Tiếng Việt" FontSize="13" TextColor="#5F564B" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="›" FontSize="24" TextColor="#837560" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Thông tin" FontFamily="OpenSans-Semibold" FontSize="21" TextColor="#271900" Margin="4,0,0,0" />
+
+                    <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                                <Label Text="❓" FontSize="22" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Trợ giúp" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#271900" />
+                                <Label Text="Câu hỏi thường gặp và hỗ trợ người dùng" FontSize="13" TextColor="#5F564B" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="›" FontSize="24" TextColor="#837560" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                                <Label Text="ℹ" FontSize="22" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Phiên bản ứng dụng" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#271900" />
+                                <Label Text="ONTHIBANGLAI 1.0.0" FontSize="13" TextColor="#5F564B" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2" Text="›" FontSize="24" TextColor="#837560" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <Border Padding="18" BackgroundColor="#FFF1EF" StrokeThickness="0" StrokeShape="RoundRectangle 22" Margin="0,8,0,0">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                        <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFDAD6" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                            <Label Text="⇥" FontSize="22" TextColor="#BA1A1A" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Đăng xuất" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#BA1A1A" />
+                            <Label Text="Thoát tài khoản hiện tại trên thiết bị này" FontSize="13" TextColor="#93000A" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border
+            Grid.Row="2"
+            Margin="12,0,12,12"
+            Padding="10,10,10,18"
+            BackgroundColor="#CCFCF9F2"
+            Stroke="#14D5C4AB"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 34"
+            Shadow="0,-8,24,#0A000000">
+            <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="6">
+                <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                    <Label Text="⌂" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
+                    <Label Text="Trang chủ" FontSize="11" TextColor="#6B6257" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="Center">
+                    <Label Text="🧪" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
+                    <Label Text="Luyện thi" FontSize="11" TextColor="#6B6257" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="2" Spacing="4" HorizontalOptions="Center">
+                    <Label Text="🚦" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
+                    <Label Text="Biển báo" FontSize="11" TextColor="#6B6257" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="3" Spacing="4" HorizontalOptions="Center">
+                    <Label Text="🔔" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
+                    <Label Text="Thông báo" FontSize="11" TextColor="#6B6257" />
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="4" Spacing="4" HorizontalOptions="Center">
+                    <Border Padding="12,8" BackgroundColor="#FFDEA8" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <Label Text="👤" FontSize="18" TextColor="#271900" HorizontalOptions="Center" />
+                    </Border>
+                    <Label Text="Cá nhân" FontSize="11" TextColor="#7C5800" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </Grid>
+
+</ContentPage>

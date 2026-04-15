@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.OnboardingPage"
+             BackgroundColor="#FCF9F2">
+
+    <Grid RowDefinitions="*,Auto"
+          Padding="0">
+        <AbsoluteLayout InputTransparent="True">
+            <BoxView
+                AbsoluteLayout.LayoutBounds="230,-40,260,220"
+                AbsoluteLayout.LayoutFlags="None"
+                Color="#FFDEA8"
+                CornerRadius="110"
+                Opacity="0.45" />
+
+            <BoxView
+                AbsoluteLayout.LayoutBounds="-60,620,220,180"
+                AbsoluteLayout.LayoutFlags="None"
+                Color="#A0C7FF"
+                CornerRadius="90"
+                Opacity="0.22" />
+        </AbsoluteLayout>
+
+        <Grid RowDefinitions="Auto,*,Auto"
+              Padding="24,54,24,24">
+            <Grid Grid.Row="0"
+                  ColumnDefinitions="*,Auto">
+                <Label
+                    Text="ThiXeMay"
+                    FontFamily="OpenSans-Semibold"
+                    FontAttributes="Bold,Italic"
+                    FontSize="28"
+                    TextColor="#7C5800"
+                    VerticalOptions="Center" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Skip"
+                    BackgroundColor="Transparent"
+                    TextColor="#514532"
+                    FontSize="14"
+                    FontFamily="OpenSans-Semibold"
+                    Padding="12,6" />
+            </Grid>
+
+            <VerticalStackLayout
+                Grid.Row="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Spacing="0">
+                <Border
+                    WidthRequest="320"
+                    HeightRequest="400"
+                    BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 36"
+                    Shadow="0,16,32,#0F1C1C18"
+                    Padding="8">
+                    <Grid>
+                        <Border
+                            BackgroundColor="#F6F3EC"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 28">
+                            <Grid>
+                                <Image
+                                    Source="dotnet_bot.png"
+                                    Aspect="AspectFit"
+                                    Opacity="0.9"
+                                    Margin="28" />
+
+                                <Border
+                                    HorizontalOptions="End"
+                                    VerticalOptions="End"
+                                    Margin="0,0,18,18"
+                                    Padding="14"
+                                    WidthRequest="138"
+                                    BackgroundColor="#CCFFFFFF"
+                                    Stroke="#26D5C4AB"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 20">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Label
+                                            Text="📘"
+                                            FontSize="20"
+                                            TextColor="#7C5800" />
+                                        <Label
+                                            Text="600+ Questions Updated 2024"
+                                            FontSize="10"
+                                            FontFamily="OpenSans-Semibold"
+                                            TextColor="#514532"
+                                            LineBreakMode="WordWrap" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Label
+                    Text="Learning theory"
+                    Margin="0,36,0,0"
+                    FontSize="34"
+                    FontFamily="OpenSans-Semibold"
+                    FontAttributes="Bold"
+                    TextColor="#1C1C18"
+                    HorizontalTextAlignment="Center" />
+
+                <Label
+                    Text="made easy."
+                    FontSize="34"
+                    FontFamily="OpenSans-Semibold"
+                    FontAttributes="Bold,Italic"
+                    TextColor="#7C5800"
+                    HorizontalTextAlignment="Center" />
+
+                <Label
+                    Text="Master every traffic rule with our curated library and bite-sized explanations."
+                    Margin="22,20,22,0"
+                    FontSize="18"
+                    TextColor="#514532"
+                    HorizontalTextAlignment="Center"
+                    LineBreakMode="WordWrap" />
+            </VerticalStackLayout>
+
+            <Grid Grid.Row="2"
+                  ColumnDefinitions="Auto,*"
+                  Margin="0,18,0,0">
+                <HorizontalStackLayout
+                    VerticalOptions="Center"
+                    Spacing="8">
+                    <Border
+                        WidthRequest="34"
+                        HeightRequest="8"
+                        BackgroundColor="#7C5800"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 999" />
+                    <Border
+                        WidthRequest="8"
+                        HeightRequest="8"
+                        BackgroundColor="#66D5C4AB"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 999" />
+                    <Border
+                        WidthRequest="8"
+                        HeightRequest="8"
+                        BackgroundColor="#66D5C4AB"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 999" />
+                </HorizontalStackLayout>
+
+                <Button
+                    Grid.Column="1"
+                    Text="Next →"
+                    HorizontalOptions="End"
+                    BackgroundColor="#FFB800"
+                    TextColor="#271900"
+                    FontFamily="OpenSans-Semibold"
+                    FontSize="18"
+                    CornerRadius="28"
+                    Padding="26,18"
+                    Shadow="0,12,24,#33FFB800" />
+            </Grid>
+        </Grid>
+    </Grid>
+
+</ContentPage>

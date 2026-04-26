@@ -305,3 +305,9 @@ C:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\obj\Debug\net9.0-io
 C:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\obj\Debug\net9.0-ios\iossimulator-x64\ONTHIBANGLAI.pdb
 C:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\obj\Debug\net9.0-ios\iossimulator-x64\MauiApp1.genruntimeconfig.cache
 C:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\obj\Debug\net9.0-ios\iossimulator-x64\ref\ONTHIBANGLAI.dll
+c:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\obj\Debug\net9.0-ios\iossimulator-x64\MauiApp1.sourcelink.json
+c:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\bin\Debug\net9.0-ios\iossimulator-x64\Microsoft.Extensions.Configuration.Binder.dll
+c:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\bin\Debug\net9.0-ios\iossimulator-x64\Microsoft.Extensions.Diagnostics.dll
+c:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\bin\Debug\net9.0-ios\iossimulator-x64\Microsoft.Extensions.Diagnostics.Abstractions.dll
+c:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\bin\Debug\net9.0-ios\iossimulator-x64\Microsoft.Extensions.Http.dll
+c:\Users\Hoang Dinh Doanh\Desktop\MauiApp1\MauiApp1\MauiApp1\bin\Debug\net9.0-ios\iossimulator-x64\Microsoft.Extensions.Options.ConfigurationExtensions.dll

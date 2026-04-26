@@ -11,6 +11,8 @@ public class ExamResultViewModel : BaseViewModel
     private readonly IExamService _examService;
     private Exam? _exam;
     private string _examId = string.Empty;
+    private Question? _selectedWrongQuestion;
+    private bool _isWrongAnswerPopupOpen;
 
     public ExamResultViewModel(IExamService examService)
     {
@@ -19,6 +21,8 @@ public class ExamResultViewModel : BaseViewModel
         GoHomeCommand = new Command(async () => await OnGoHome());
         ReviewAnswersCommand = new Command(async () => await OnReviewAnswers());
         RetakeExamCommand = new Command(async () => await OnRetakeExam());
+        OpenWrongAnswerPopupCommand = new Command<Question>(OnOpenWrongAnswerPopup);
+        CloseWrongAnswerPopupCommand = new Command(OnCloseWrongAnswerPopup);
     }
 
     public string ExamId
@@ -91,9 +95,23 @@ public class ExamResultViewModel : BaseViewModel
             q.Answers.Any(a => a.Id == q.SelectedAnswerId && !a.IsCorrect)) ?? 
         Enumerable.Empty<Question>());
 
+    public Question? SelectedWrongQuestion
+    {
+        get => _selectedWrongQuestion;
+        set => SetProperty(ref _selectedWrongQuestion, value);
+    }
+
+    public bool IsWrongAnswerPopupOpen
+    {
+        get => _isWrongAnswerPopupOpen;
+        set => SetProperty(ref _isWrongAnswerPopupOpen, value);
+    }
+
     public ICommand GoHomeCommand { get; }
     public ICommand ReviewAnswersCommand { get; }
     public ICommand RetakeExamCommand { get; }
+    public ICommand OpenWrongAnswerPopupCommand { get; }
+    public ICommand CloseWrongAnswerPopupCommand { get; }
 
     private async Task LoadExamResultAsync()
     {
@@ -116,12 +134,26 @@ public class ExamResultViewModel : BaseViewModel
  
     private async Task OnReviewAnswers()
     {
-        await Shell.Current.GoToAsync(nameof(Views.WrongAnswersPage));
+        await Shell.Current.GoToAsync($"{nameof(Views.WrongAnswersPage)}?examId={ExamId}");
+    }
+
+    private void OnOpenWrongAnswerPopup(Question? question)
+    {
+        if (question is null)
+            return;
+
+        SelectedWrongQuestion = question;
+        IsWrongAnswerPopupOpen = true;
+    }
+
+    private void OnCloseWrongAnswerPopup()
+    {
+        IsWrongAnswerPopupOpen = false;
+        SelectedWrongQuestion = null;
     }
 
     private async Task OnRetakeExam()
     {
-        // Navigate to new exam
-        await Shell.Current.GoToAsync(nameof(Views.MockExamPage));
+        await Shell.Current.GoToAsync(nameof(Views.ExamListPage));
     }
 }

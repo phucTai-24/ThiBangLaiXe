@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Controls.AppBottomNavView"
+             x:Name="Root">
+
+    <Border Style="{StaticResource AppBottomBar}"
+            Shadow="0,-8,24,#0A000000">
+        <Grid ColumnDefinitions="*,*,*,*,*"
+              ColumnSpacing="6">
+
+            <VerticalStackLayout Spacing="4"
+                                 HorizontalOptions="Center">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnHomeTapped" />
+                </VerticalStackLayout.GestureRecognizers>
+
+                <Border x:Name="HomeBadge"
+                        Padding="12,8"
+                        BackgroundColor="Transparent"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                    <Label x:Name="HomeIcon"
+                           Text="⌂"
+                           FontSize="18"
+                           TextColor="#6B6257"
+                           HorizontalOptions="Center" />
+                </Border>
+                <Label x:Name="HomeText"
+                       Text="Trang chủ"
+                       FontSize="11"
+                       TextColor="#6B6257" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="1"
+                                 Spacing="4"
+                                 HorizontalOptions="Center">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnExamTapped" />
+                </VerticalStackLayout.GestureRecognizers>
+
+                <Border x:Name="ExamBadge"
+                        Padding="12,8"
+                        BackgroundColor="Transparent"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                    <Label x:Name="ExamIcon"
+                           Text="🧪"
+                           FontSize="18"
+                           TextColor="#6B6257"
+                           HorizontalOptions="Center" />
+                </Border>
+                <Label x:Name="ExamText"
+                       Text="Thi thử"
+                       FontSize="11"
+                       TextColor="#6B6257" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="2"
+                                 Spacing="4"
+                                 HorizontalOptions="Center">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPracticeTapped" />
+                </VerticalStackLayout.GestureRecognizers>
+
+                <Border x:Name="PracticeBadge"
+                        Padding="12,8"
+                        BackgroundColor="Transparent"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                    <Label x:Name="PracticeIcon"
+                           Text="📚"
+                           FontSize="18"
+                           TextColor="#6B6257"
+                           HorizontalOptions="Center" />
+                </Border>
+                <Label x:Name="PracticeText"
+                       Text="Ôn tập"
+                       FontSize="11"
+                       TextColor="#6B6257" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="3"
+                                 Spacing="4"
+                                 HorizontalOptions="Center">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnScheduleTapped" />
+                </VerticalStackLayout.GestureRecognizers>
+
+                <Border x:Name="ScheduleBadge"
+                        Padding="12,8"
+                        BackgroundColor="Transparent"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                    <Label x:Name="ScheduleIcon"
+                           Text="📅"
+                           FontSize="18"
+                           TextColor="#6B6257"
+                           HorizontalOptions="Center" />
+                </Border>
+                <Label x:Name="ScheduleText"
+                       Text="Lịch học"
+                       FontSize="11"
+                       TextColor="#6B6257" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="4"
+                                 Spacing="4"
+                                 HorizontalOptions="Center">
+                <VerticalStackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnProfileTapped" />
+                </VerticalStackLayout.GestureRecognizers>
+
+                <Border x:Name="ProfileBadge"
+                        Padding="12,8"
+                        BackgroundColor="Transparent"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                    <Label x:Name="ProfileIcon"
+                           Text="👤"
+                           FontSize="18"
+                           TextColor="#6B6257"
+                           HorizontalOptions="Center" />
+                </Border>
+                <Label x:Name="ProfileText"
+                       Text="Cá nhân"
+                       FontSize="11"
+                       TextColor="#6B6257" />
+            </VerticalStackLayout>
+        </Grid>
+    </Border>
+</ContentView>

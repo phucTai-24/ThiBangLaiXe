@@ -1,18 +1,29 @@
 using MauiApp1.Controllers;
-using MauiApp1.Services;
 
 namespace MauiApp1.Views;
 
 public partial class LoginPage : ContentPage
 {
     private readonly AuthController _authController;
-    private readonly IAuthService _authService;
+    private bool _isPasswordVisible;
 
-    public LoginPage(AuthController authController, IAuthService authService)
+    public LoginPage(AuthController authController)
     {
         InitializeComponent();
         _authController = authController;
-        _authService = authService;
+        UpdatePasswordVisibility();
+    }
+
+    private void OnTogglePasswordVisibility(object? sender, TappedEventArgs e)
+    {
+        _isPasswordVisible = !_isPasswordVisible;
+        UpdatePasswordVisibility();
+    }
+
+    private void UpdatePasswordVisibility()
+    {
+        PasswordEntry.IsPassword = !_isPasswordVisible;
+        PasswordToggleLabel.Text = _isPasswordVisible ? "🙈" : "👁";
     }
 
     private async void OnLoginClicked(object? sender, EventArgs e)
@@ -31,15 +42,13 @@ public partial class LoginPage : ContentPage
             LoginButton.IsEnabled = false;
             LoginButton.Text = "Đang đăng nhập...";
 
-            var isSuccess = await _authService.LoginAsync(usernameOrEmail, password);
+            var result = await _authController.LoginAsync(usernameOrEmail, password);
 
-            if (!isSuccess)
+            if (!result.IsSuccess)
             {
-                await DisplayAlert("Đăng nhập thất bại", "Thông tin đăng nhập chưa hợp lệ.", "OK");
+                await DisplayAlert("Đăng nhập thất bại", result.Message, "OK");
                 return;
             }
-
-            await _authController.OpenDashboardAsync();
         }
         finally
         {

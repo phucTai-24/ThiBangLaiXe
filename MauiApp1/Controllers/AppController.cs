@@ -14,12 +14,12 @@ public sealed class AppController : BaseController
         new() { Title = "Trang chủ", Route = nameof(Views.DashboardPage) },
         new() { Title = "Đề thi", Route = nameof(Views.ExamListPage) },
         new() { Title = "Biển báo", Route = nameof(Views.TrafficSignsPage) },
-        new() { Title = "Thi thử", Route = nameof(Views.MockExamPage) },
+        new() { Title = "Thi thử", Route = nameof(Views.ExamListPage) },
         new() { Title = "Câu sai", Route = nameof(Views.WrongAnswersPage) },
         new() { Title = "Kết quả", Route = nameof(Views.ExamResultPage) },
         new() { Title = "Lịch sử", Route = nameof(Views.HistoryPage) },
         new() { Title = "Cá nhân", Route = nameof(Views.ProfilePage) },
-        new() { Title = "Thông báo", Route = nameof(Views.NotificationPage) },
+        new() { Title = "Lịch học", Route = nameof(Views.StudySchedulePage) },
         new() { Title = "Cài đặt", Route = nameof(Views.SettingsPage) }
     ];
 }

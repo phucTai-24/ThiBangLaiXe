@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:MauiApp1.ViewModels"
              xmlns:models="clr-namespace:MauiApp1.Models"
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.Views.TrafficSignsPage"
              x:DataType="vm:PracticeViewModel"
              BackgroundColor="#FCF9F2">
@@ -37,9 +38,8 @@
                 </VerticalStackLayout>
 
                 <Label Grid.Column="2"
-                       Text="MOCK DATA"
+                       Text="LIVE API"
                        Style="{StaticResource AppHeaderTrailingLabel}"
-                       FontAttributes="Italic"
                        FontSize="12" />
             </Grid>
         </Border>
@@ -51,7 +51,7 @@
                         StrokeThickness="0"
                         StrokeShape="RoundRectangle 24">
                     <VerticalStackLayout Spacing="12">
-                        <Label Text="Phiên ôn tập mock"
+                        <Label Text="Phiên ôn tập"
                                FontFamily="OpenSans-Semibold"
                                FontSize="22"
                                TextColor="#271900" />
@@ -63,8 +63,30 @@
                                FontFamily="OpenSans-Semibold"
                                FontSize="13"
                                TextColor="{StaticResource AppBrand}" />
+
+                        <Grid ColumnDefinitions="Auto,*"
+                              ColumnSpacing="10"
+                              Margin="0,6,0,0">
+                            <Label Text="Số câu mỗi phiên"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="12"
+                                   TextColor="#5F564B"
+                                   VerticalOptions="Center" />
+                            <Picker Grid.Column="1"
+                                    Title="Chọn số câu"
+                                    ItemsSource="{Binding QuestionCountOptions}"
+                                    SelectedItem="{Binding SelectedQuestionCount}"
+                                    BackgroundColor="#FFFFFF"
+                                    TextColor="#271900"
+                                    HeightRequest="44" />
+                        </Grid>
                     </VerticalStackLayout>
                 </Border>
+
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}"
+                                   Color="#7C5800"
+                                   HorizontalOptions="Center" />
 
                 <Border BackgroundColor="{StaticResource AppBrand}"
                         Padding="22"
@@ -97,7 +119,7 @@
                                        FontFamily="OpenSans-Semibold"
                                        FontSize="16"
                                        TextColor="#FFF8E8" />
-                                <Label Text="{Binding RecommendedTopic.QuestionCount, StringFormat='Bộ chủ đề có {0} câu hỏi mock'}"
+                                <Label Text="{Binding RecommendedTopic.QuestionCount, StringFormat='Bộ chủ đề có {0} câu hỏi'}"
                                        FontSize="12"
                                        TextColor="#F5E4B7" />
                             </VerticalStackLayout>
@@ -108,12 +130,98 @@
                                 StrokeThickness="0"
                                 StrokeShape="RoundRectangle 999"
                                 HorizontalOptions="Start">
-                            <Label Text="Bắt đầu ôn tập mock"
+                            <Label Text="Bắt đầu ôn tập"
                                    FontFamily="OpenSans-Semibold"
                                    FontSize="13"
                                    TextColor="{StaticResource AppBrandStrong}" />
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding StartRecommendedPracticeCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="#FFFFFF"
+                        Padding="20"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24"
+                        Shadow="0,12,24,#081C1C18">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Ôn điểm liệt"
+                               FontFamily="OpenSans-Semibold"
+                               FontSize="20"
+                               TextColor="#271900" />
+
+                        <Label Text="Tập trung nhóm câu hỏi bắt buộc không được sai trong bài thi."
+                               FontSize="13"
+                               LineHeight="1.35"
+                               TextColor="#5F564B" />
+
+                        <Border BackgroundColor="#FFF1D6"
+                                Padding="12,8"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 999"
+                                HorizontalOptions="Start">
+                            <Label Text="{Binding CriticalQuestionCount, StringFormat='Hiện có {0} câu điểm liệt'}"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="12"
+                                   TextColor="#7C5800" />
+                        </Border>
+
+                        <Border BackgroundColor="{StaticResource AppBrandAccent}"
+                                Padding="14,10"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 999"
+                                HorizontalOptions="Start">
+                            <Label Text="Bắt đầu"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="13"
+                                   TextColor="{StaticResource AppBrandStrong}" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding StartCriticalPracticeCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border BackgroundColor="#FFFFFF"
+                        Padding="20"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24"
+                        Shadow="0,12,24,#081C1C18">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Ôn tập biển báo"
+                               FontFamily="OpenSans-Semibold"
+                               FontSize="20"
+                               TextColor="#271900" />
+
+                        <Label Text="Luyện nhanh nhóm câu biển báo giao thông từ dữ liệu chủ đề API hiện có."
+                               FontSize="13"
+                               LineHeight="1.35"
+                               TextColor="#5F564B" />
+
+                        <Border BackgroundColor="#FFF1D6"
+                                Padding="12,8"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 999"
+                                HorizontalOptions="Start">
+                            <Label Text="{Binding TrafficSignsQuestionCount, StringFormat='Hiện có {0} câu biển báo'}"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="12"
+                                   TextColor="#7C5800" />
+                        </Border>
+
+                        <Border BackgroundColor="{StaticResource AppBrandAccent}"
+                                Padding="14,10"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 999"
+                                HorizontalOptions="Start">
+                            <Label Text="Bắt đầu"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="13"
+                                   TextColor="{StaticResource AppBrandStrong}" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding StartTrafficSignsPracticeCommand}" />
                             </Border.GestureRecognizers>
                         </Border>
                     </VerticalStackLayout>
@@ -169,7 +277,7 @@
                                                FontSize="13"
                                                LineHeight="1.35"
                                                TextColor="#5F564B" />
-                                        <Label Text="{Binding QuestionCount, StringFormat='Sẵn sàng {0} câu hỏi mock theo Demo.docx'}"
+                                        <Label Text="{Binding QuestionCount, StringFormat='Sẵn sàng {0} câu hỏi theo API'}"
                                                FontFamily="OpenSans-Semibold"
                                                FontSize="12"
                                                TextColor="{StaticResource AppBrand}" />
@@ -186,7 +294,7 @@
 
                 <VerticalStackLayout Spacing="12"
                                      BindableLayout.ItemsSource="{Binding PracticeHistory}">
-                    <Label Text="Lịch sử ôn tập mock"
+                    <Label Text="Lịch sử ôn tập"
                            FontFamily="OpenSans-Semibold"
                            FontSize="20"
                            TextColor="#271900" />
@@ -239,52 +347,8 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <Border Grid.Row="2"
-                Margin="12,0,12,12"
-                Padding="10,10,10,18"
-                BackgroundColor="#CCFCF9F2"
-                Stroke="#14D5C4AB"
-                StrokeThickness="1"
-                StrokeShape="RoundRectangle 34"
-                Shadow="0,-8,24,#0A000000">
-            <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="6">
-                <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
-                    <Label Text="⌂" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
-                    <Label Text="Trang chủ" FontSize="11" TextColor="#6B6257" />
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
-                    </VerticalStackLayout.GestureRecognizers>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="Center">
-                    <Label Text="🧪" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
-                    <Label Text="Luyện thi" FontSize="11" TextColor="#6B6257" />
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GoMockExamCommand}" />
-                    </VerticalStackLayout.GestureRecognizers>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="2" Spacing="4" HorizontalOptions="Center">
-                    <Border Padding="12,8"
-                            BackgroundColor="#FFDEA8"
-                            StrokeThickness="0"
-                            StrokeShape="RoundRectangle 22">
-                        <Label Text="📚" FontSize="18" TextColor="#271900" HorizontalOptions="Center" />
-                    </Border>
-                    <Label Text="Ôn tập" FontSize="11" TextColor="#7C5800" />
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="3" Spacing="4" HorizontalOptions="Center">
-                    <Label Text="🔔" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
-                    <Label Text="Thông báo" FontSize="11" TextColor="#6B6257" />
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="4" Spacing="4" HorizontalOptions="Center">
-                    <Label Text="👤" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
-                    <Label Text="Cá nhân" FontSize="11" TextColor="#6B6257" />
-                </VerticalStackLayout>
-            </Grid>
-        </Border>
+        <controls:AppBottomNavView Grid.Row="2"
+                                   CurrentTab="practice" />
     </Grid>
 
 </ContentPage>

@@ -24,23 +24,52 @@ namespace MauiApp1
             builder.Services.AddSingleton<AuthController>();
             
             // Services
-            builder.Services.AddSingleton<IAuthService, MockAuthService>();
-            builder.Services.AddSingleton<IExamService, MockExamService>();
-            builder.Services.AddSingleton<IPracticeService, MockPracticeService>();
-            
-            // ViewModels
-            builder.Services.AddTransient<MockExamViewModel>();
-            builder.Services.AddTransient<ExamResultViewModel>();
-            builder.Services.AddTransient<PracticeViewModel>();
-            builder.Services.AddTransient<PracticeSessionViewModel>();
-            builder.Services.AddTransient<PracticeResultViewModel>();
-            
-            // Views
-            builder.Services.AddTransient<MockExamPage>();
-            builder.Services.AddTransient<ExamResultPage>();
-            builder.Services.AddTransient<TrafficSignsPage>();
-            builder.Services.AddTransient<PracticeSessionPage>();
-            builder.Services.AddTransient<PracticeResultPage>();
+             builder.Services.AddHttpClient<IAuthService, ApiAuthService>(client =>
+             {
+                 client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
+                 client.Timeout = TimeSpan.FromSeconds(30);
+             });
+             builder.Services.AddHttpClient<IExamService, ApiExamService>(client =>
+             {
+                 client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
+                 client.Timeout = TimeSpan.FromSeconds(30);
+             });
+             builder.Services.AddHttpClient<IPracticeService, ApiPracticeService>(client =>
+             {
+                 client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
+                 client.Timeout = TimeSpan.FromSeconds(30);
+             });
+              builder.Services.AddHttpClient<IStudyScheduleService, ApiStudyScheduleService>(client =>
+              {
+                  client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
+                  client.Timeout = TimeSpan.FromSeconds(30);
+              });
+              builder.Services.AddHttpClient<IEntitlementService, ApiEntitlementService>(client =>
+              {
+                  client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
+                  client.Timeout = TimeSpan.FromSeconds(30);
+              });
+              
+              // ViewModels
+              builder.Services.AddTransient<MockExamViewModel>();
+             builder.Services.AddTransient<ExamListViewModel>();
+             builder.Services.AddTransient<ExamResultViewModel>();
+             builder.Services.AddTransient<WrongAnswersViewModel>();
+             builder.Services.AddTransient<PracticeViewModel>();
+             builder.Services.AddTransient<PracticeSessionViewModel>();
+             builder.Services.AddTransient<PracticeResultViewModel>();
+             builder.Services.AddTransient<StudyScheduleViewModel>();
+             
+              // Views
+               builder.Services.AddTransient<DashboardPage>();
+               builder.Services.AddTransient<ExamListPage>();
+               builder.Services.AddTransient<MockExamPage>();
+               builder.Services.AddTransient<ExamResultPage>();
+              builder.Services.AddTransient<WrongAnswersPage>();
+             builder.Services.AddTransient<TrafficSignsPage>();
+             builder.Services.AddTransient<PracticeSessionPage>();
+             builder.Services.AddTransient<PracticeResultPage>();
+             builder.Services.AddTransient<StudySchedulePage>();
             
             builder.Services.AddSingleton<AppShell>();
 

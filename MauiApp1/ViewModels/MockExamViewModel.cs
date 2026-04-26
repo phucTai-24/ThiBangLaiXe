@@ -5,6 +5,7 @@ using MauiApp1.Services;
 
 namespace MauiApp1.ViewModels;
 
+[QueryProperty(nameof(SampleExamId), "sampleExamId")]
 public class MockExamViewModel : BaseViewModel
 {
     private readonly IExamService _examService;
@@ -13,6 +14,7 @@ public class MockExamViewModel : BaseViewModel
     private int _currentQuestionIndex = -1;
     private string _timeRemainingText = "20:00";
     private bool _isLoading;
+    private string _sampleExamId = string.Empty;
 
     public MockExamViewModel(IExamService examService)
     {
@@ -20,11 +22,21 @@ public class MockExamViewModel : BaseViewModel
         
         PreviousQuestionCommand = new Command(OnPreviousQuestion, () => CanGoPrevious());
         NextQuestionCommand = new Command(OnNextQuestion, () => CanGoNext());
-        SelectAnswerCommand = new Command<Answer>(OnSelectAnswer);
+        SelectAnswerCommand = new Command<Answer>(async answer => await OnSelectAnswerAsync(answer));
         SelectQuestionCommand = new Command<int>(OnSelectQuestion);
         SubmitExamCommand = new Command(async () => await OnSubmitExam(), () => CanSubmitExam());
-        
-        _ = LoadExamAsync();
+    }
+
+    public string SampleExamId
+    {
+        get => _sampleExamId;
+        set
+        {
+            if (SetProperty(ref _sampleExamId, value) && !string.IsNullOrWhiteSpace(value))
+            {
+                _ = LoadExamAsync();
+            }
+        }
     }
 
     public Exam? CurrentExam
@@ -84,12 +96,13 @@ public class MockExamViewModel : BaseViewModel
         IsLoading = true;
         try
         {
-            CurrentExam = await _examService.GetExamAsync("A1");
+            CurrentExam = await _examService.GetExamAsync(SampleExamId);
             if (CurrentExam != null && CurrentExam.Questions.Any())
             {
-                CurrentExam.StartTime = DateTime.Now;
+                CurrentExam.StartTime ??= DateTime.Now;
                 CurrentQuestionIndex = 0;
                 StartTimer();
+                OnPropertyChanged(nameof(AnsweredQuestionsText));
             }
         }
         catch (Exception ex)
@@ -169,12 +182,19 @@ public class MockExamViewModel : BaseViewModel
         }
     }
 
-    private void OnSelectAnswer(Answer answer)
+    private async Task OnSelectAnswerAsync(Answer answer)
     {
         if (CurrentQuestion == null || CurrentExam == null) return;
 
         CurrentQuestion.SelectedAnswerId = answer.Id;
         SyncAnswerSelectionState(CurrentQuestion);
+
+        if (long.TryParse(CurrentExam.SessionId, out var _)
+            && long.TryParse(CurrentQuestion.Id, out var questionId)
+            && long.TryParse(answer.Id, out var answerId))
+        {
+            await _examService.SaveAnswerAsync(CurrentExam.SessionId, questionId, answerId);
+        }
 
         OnPropertyChanged(nameof(CurrentQuestion));
         OnPropertyChanged(nameof(AnsweredQuestionsText));

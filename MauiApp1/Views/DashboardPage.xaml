@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
+             xmlns:models="clr-namespace:MauiApp1.Models.Entitlements"
              x:Class="MauiApp1.Views.DashboardPage"
              Style="{StaticResource AppPageStyle}">
 
@@ -38,10 +40,13 @@
 
                 <Border Grid.Column="1"
                         Style="{StaticResource AppIconButtonCard}">
-                    <Label Text="🔔"
+                    <Label Text="📅"
                            FontSize="18"
                            HorizontalOptions="Center"
                            VerticalOptions="Center" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnScheduleTapped" />
+                    </Border.GestureRecognizers>
                 </Border>
             </Grid>
         </Border>
@@ -54,6 +59,19 @@
                         Padding="24"
                         Shadow="0,12,28,#14FFB800">
                     <VerticalStackLayout Spacing="16">
+                        <Border x:Name="LoginSourceBadge"
+                                BackgroundColor="#E8F7EA"
+                                StrokeThickness="0"
+                                Padding="12,8"
+                                StrokeShape="RoundRectangle 14"
+                                HorizontalOptions="Start">
+                            <Label x:Name="LoginSourceLabel"
+                                   Text="Nguồn dữ liệu sau đăng nhập: chưa xác định"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="13"
+                                   TextColor="#1E7A35" />
+                        </Border>
+
                         <VerticalStackLayout Spacing="6">
                             <Label Text="Xin chào, học viên"
                                    Style="{StaticResource AppBodyLabel}"
@@ -228,6 +246,84 @@
                     </VerticalStackLayout>
                 </Border>
 
+                <Border Style="{StaticResource AppCard}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Đăng ký khóa học"
+                               Style="{StaticResource AppSectionTitle}" />
+                        <Label Text="Chọn gói học phù hợp và đăng ký trực tiếp từ ứng dụng."
+                               Style="{StaticResource AppCaptionLabel}" />
+
+                        <ActivityIndicator x:Name="CourseRegisterLoading"
+                                           IsVisible="False"
+                                           IsRunning="False"
+                                           Color="{StaticResource AppBrand}" />
+
+                        <Label x:Name="CourseRegistrationStatusLabel"
+                               Text="Đang tải danh sách khóa học..."
+                               Style="{StaticResource AppCaptionLabel}"
+                               TextColor="{StaticResource AppTertiaryText}" />
+
+                        <VerticalStackLayout Spacing="10"
+                                             BindableLayout.ItemsSource="{Binding CoursePackages}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:EntitlementPackageItem">
+                                    <Border BackgroundColor="#FFFFFF"
+                                            StrokeThickness="1"
+                                            Stroke="#E7DDC7"
+                                            Padding="14"
+                                            StrokeShape="RoundRectangle 16">
+                                        <Grid RowDefinitions="Auto,Auto,Auto"
+                                              ColumnDefinitions="*,Auto"
+                                              RowSpacing="6"
+                                              ColumnSpacing="10">
+                                            <Label Text="{Binding Name}"
+                                                   FontFamily="OpenSans-Semibold"
+                                                   FontSize="16"
+                                                   TextColor="{StaticResource AppPrimaryText}" />
+
+                                            <Border Grid.Column="1"
+                                                    BackgroundColor="#E8F6EA"
+                                                    Padding="10,5"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 999"
+                                                    IsVisible="{Binding IsRegistered}">
+                                                <Label Text="Đã đăng ký"
+                                                       FontFamily="OpenSans-Semibold"
+                                                       FontSize="11"
+                                                       TextColor="{StaticResource AppSuccess}" />
+                                            </Border>
+
+                                            <Label Grid.Row="1"
+                                                   Grid.ColumnSpan="2"
+                                                   Text="{Binding Description}"
+                                                   Style="{StaticResource AppCaptionLabel}" />
+
+                                            <Button Grid.Row="2"
+                                                    Grid.Column="1"
+                                                    Text="Đăng ký"
+                                                    BackgroundColor="{StaticResource AppBrandAccent}"
+                                                    TextColor="{StaticResource AppPrimaryText}"
+                                                    FontFamily="OpenSans-Semibold"
+                                                    CornerRadius="16"
+                                                    Padding="14,8"
+                                                    Clicked="OnRegisterCourseClicked"
+                                                    CommandParameter="{Binding Id}">
+                                                <Button.Triggers>
+                                                    <DataTrigger TargetType="Button"
+                                                                 Binding="{Binding IsRegistered}"
+                                                                 Value="True">
+                                                        <Setter Property="IsVisible" Value="False" />
+                                                    </DataTrigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
                 <VerticalStackLayout Spacing="14">
                     <Label Text="Lịch học và hồ sơ"
                            Style="{StaticResource AppSectionTitle}" />
@@ -343,82 +439,8 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <Border Grid.Row="2"
-                Style="{StaticResource AppBottomBar}"
-                Shadow="0,-8,24,#0A000000">
-            <Grid ColumnDefinitions="*,*,*,*,*"
-                  ColumnSpacing="4">
-                <VerticalStackLayout Spacing="4"
-                                     HorizontalOptions="Center">
-                    <Border Padding="12,8"
-                            BackgroundColor="#FFDEA8"
-                            StrokeThickness="0"
-                            StrokeShape="RoundRectangle 22">
-                        <Label Text="⌂"
-                               FontSize="18"
-                               TextColor="{StaticResource AppBrandStrong}"
-                               HorizontalOptions="Center" />
-                    </Border>
-                    <Label Text="Trang chủ"
-                           FontSize="11"
-                           TextColor="{StaticResource AppBrand}" />
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="1"
-                                     Spacing="4"
-                                     HorizontalOptions="Center">
-                    <Label Text="🧪"
-                           FontSize="18"
-                           TextColor="{StaticResource AppSecondaryText}"
-                           HorizontalOptions="Center" />
-                    <Label Text="Thi thử"
-                           FontSize="11"
-                           TextColor="{StaticResource AppSecondaryText}" />
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnMockExamTapped" />
-                    </VerticalStackLayout.GestureRecognizers>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="2"
-                                     Spacing="4"
-                                     HorizontalOptions="Center">
-                    <Label Text="📚"
-                           FontSize="18"
-                           TextColor="{StaticResource AppSecondaryText}"
-                           HorizontalOptions="Center" />
-                    <Label Text="Ôn tập"
-                           FontSize="11"
-                           TextColor="{StaticResource AppSecondaryText}" />
-                    <VerticalStackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnPracticeTapped" />
-                    </VerticalStackLayout.GestureRecognizers>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="3"
-                                     Spacing="4"
-                                     HorizontalOptions="Center">
-                    <Label Text="📅"
-                           FontSize="18"
-                           TextColor="{StaticResource AppSecondaryText}"
-                           HorizontalOptions="Center" />
-                    <Label Text="Lịch học"
-                           FontSize="11"
-                           TextColor="{StaticResource AppSecondaryText}" />
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="4"
-                                     Spacing="4"
-                                     HorizontalOptions="Center">
-                    <Label Text="👤"
-                           FontSize="18"
-                           TextColor="{StaticResource AppSecondaryText}"
-                           HorizontalOptions="Center" />
-                    <Label Text="Cá nhân"
-                           FontSize="11"
-                           TextColor="{StaticResource AppSecondaryText}" />
-                </VerticalStackLayout>
-            </Grid>
-        </Border>
+        <controls:AppBottomNavView Grid.Row="2"
+                                   CurrentTab="home" />
     </Grid>
 
 </ContentPage>

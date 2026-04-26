@@ -24,7 +24,7 @@
                                      VerticalOptions="Center">
                     <Label Text="ONTHIBANGLAI"
                            Style="{StaticResource AppHeaderBrandLabel}" />
-                    <Label Text="Thông báo"
+                    <Label Text="Lịch học"
                            Style="{StaticResource AppHeaderTitleLabel}" />
                 </VerticalStackLayout>
 
@@ -44,8 +44,8 @@
             <VerticalStackLayout Padding="24,28,24,140" Spacing="20">
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                     <VerticalStackLayout Spacing="6">
-                        <Label Text="Thanh thông báo" FontFamily="OpenSans-Semibold" FontSize="30" TextColor="#271900" />
-                        <Label Text="Cập nhật mới nhất về tiến độ học, kỳ thi và nhắc nhở của bạn." FontSize="14" TextColor="#6B6257" />
+                        <Label Text="Lịch học của bạn" FontFamily="OpenSans-Semibold" FontSize="30" TextColor="#271900" />
+                        <Label Text="Màn hình này đã được thay thế bằng lịch học để đồng bộ với điều hướng mới của ứng dụng." FontSize="14" TextColor="#6B6257" />
                     </VerticalStackLayout>
 
                     <Border
@@ -55,7 +55,7 @@
                         StrokeThickness="0"
                         StrokeShape="RoundRectangle 20"
                         VerticalOptions="Start">
-                        <Label Text="Đánh dấu đã đọc" FontFamily="OpenSans-Semibold" FontSize="12" TextColor="#271900" />
+                        <Label Text="Xem màn hình mới" FontFamily="OpenSans-Semibold" FontSize="12" TextColor="#271900" />
                     </Border>
                 </Grid>
 
@@ -153,9 +153,9 @@
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="3" Spacing="4" HorizontalOptions="Center">
                     <Border Padding="12,8" BackgroundColor="#FFDEA8" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <Label Text="🔔" FontSize="18" TextColor="#271900" HorizontalOptions="Center" />
+                        <Label Text="📅" FontSize="18" TextColor="#271900" HorizontalOptions="Center" />
                     </Border>
-                    <Label Text="Thông báo" FontSize="11" TextColor="#7C5800" />
+                    <Label Text="Lịch học" FontSize="11" TextColor="#7C5800" />
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="4" Spacing="4" HorizontalOptions="Center">
                     <Label Text="👤" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />

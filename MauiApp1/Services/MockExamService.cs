@@ -1,3 +1,4 @@
+using MauiApp1.Models.Exams;
 using MauiApp1.Models;
 
 namespace MauiApp1.Services;
@@ -6,13 +7,26 @@ public class MockExamService : IExamService
 {
     private readonly List<Exam> _examHistory = new();
 
-    public Task<Exam> GetExamAsync(string licenseType = "A1")
+    public Task<List<SampleExamItem>> GetSampleExamsAsync(CancellationToken cancellationToken = default)
+    {
+        List<SampleExamItem> exams =
+        [
+            new() { Id = 1, Code = "MOCK_01", Name = "Đề thi thử MOCK 01", TotalQuestions = 20, DurationMinutes = 20, Status = "published" },
+            new() { Id = 2, Code = "MOCK_02", Name = "Đề thi thử MOCK 02", TotalQuestions = 20, DurationMinutes = 20, Status = "published" }
+        ];
+
+        return Task.FromResult(exams);
+    }
+
+    public Task<Exam> GetExamAsync(string sampleExamId = "1")
     {
         var exam = new Exam
         {
             Id = Guid.NewGuid().ToString(),
-            Title = $"Đề thi thử {licenseType}",
-            LicenseType = licenseType,
+            SessionId = Guid.NewGuid().ToString(),
+            SampleExamId = sampleExamId,
+            Title = $"Đề thi thử A1 - Mẫu {sampleExamId}",
+            LicenseType = "A1",
             TimeLimit = 1200,
             TimeRemaining = 1200,
             Questions = GenerateMockQuestions()
@@ -25,6 +39,11 @@ public class MockExamService : IExamService
     {
         var exam = _examHistory.FirstOrDefault(e => e.Id == examId);
         return Task.FromResult(exam ?? new Exam());
+    }
+
+    public Task<bool> SaveAnswerAsync(string sessionId, long questionId, long answerId, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(true);
     }
 
     public Task<bool> SubmitExamAsync(Exam exam)

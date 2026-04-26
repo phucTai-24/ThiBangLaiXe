@@ -26,8 +26,17 @@ public class Answer : INotifyPropertyChanged
 
             _isSelected = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(IsSelectedCorrect));
+            OnPropertyChanged(nameof(IsSelectedWrong));
+            OnPropertyChanged(nameof(IsCorrectUnselected));
         }
     }
+
+    public bool IsSelectedCorrect => IsSelected && IsCorrect;
+
+    public bool IsSelectedWrong => IsSelected && !IsCorrect;
+
+    public bool IsCorrectUnselected => !IsSelected && IsCorrect;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {

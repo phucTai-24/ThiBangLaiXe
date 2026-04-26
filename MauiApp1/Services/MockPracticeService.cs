@@ -95,6 +95,19 @@ public class MockPracticeService : IPracticeService
         return Task.FromResult(session);
     }
 
+    public Task<int> GetCriticalSummaryAsync()
+    {
+        var criticalTopic = _topics.FirstOrDefault(x => string.Equals(x.Name, "Câu điểm liệt", StringComparison.OrdinalIgnoreCase));
+        return Task.FromResult(criticalTopic?.QuestionCount ?? 0);
+    }
+
+    public async Task<string> StartCriticalPracticeAsync(int size = 10)
+    {
+        var criticalTopic = _topics.FirstOrDefault(x => string.Equals(x.Name, "Câu điểm liệt", StringComparison.OrdinalIgnoreCase)) ?? _topics[0];
+        var session = await StartPracticeSessionAsync(criticalTopic.Id, size, "Ôn tập điểm liệt (mock)");
+        return session.Id;
+    }
+
     public Task<PracticeSession> GetPracticeSessionAsync(string sessionId)
     {
         if (_sessions.TryGetValue(sessionId, out var session))

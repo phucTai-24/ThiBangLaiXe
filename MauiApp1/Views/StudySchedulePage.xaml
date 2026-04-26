@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:MauiApp1.Models"
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
+             x:Class="MauiApp1.Views.StudySchedulePage"
+             Style="{StaticResource AppPageStyle}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Border Grid.Row="0"
+                Style="{StaticResource AppHeaderContainer}"
+                Shadow="0,8,20,#12000000">
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  Style="{StaticResource AppHeaderGrid}">
+                <Border Style="{StaticResource AppIconButtonCard}"
+                        VerticalOptions="Center">
+                    <Label Text="📅"
+                           FontSize="18"
+                           TextColor="{StaticResource AppPrimaryText}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+
+                <VerticalStackLayout Grid.Column="1"
+                                     Spacing="2"
+                                     VerticalOptions="Center">
+                    <Label Text="ONTHIBANGLAI"
+                           Style="{StaticResource AppHeaderBrandLabel}" />
+                    <Label Text="Lịch học"
+                           Style="{StaticResource AppHeaderTitleLabel}" />
+                </VerticalStackLayout>
+
+                <Border Grid.Column="2"
+                        Style="{StaticResource AppIconButtonCard}"
+                        VerticalOptions="Center">
+                    <Label Text="🕘"
+                           FontSize="18"
+                           TextColor="{StaticResource AppSecondaryText}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,24,24,140"
+                                 Spacing="20">
+                <Border Style="{StaticResource AppAccentCard}"
+                        Padding="24"
+                        Shadow="0,12,28,#14FFB800">
+                    <VerticalStackLayout Spacing="14">
+                        <Label Text="Theo dõi toàn bộ buổi học sắp tới"
+                               Style="{StaticResource AppSectionTitle}"
+                               FontSize="26" />
+                        <Label Text="{Binding CourseName}"
+                               Style="{StaticResource AppBodyLabel}"
+                               TextColor="{StaticResource AppBrandStrong}" />
+                        <Label Text="{Binding ProgressText}"
+                               Style="{StaticResource AppBodyLabel}" />
+                        <Label Text="{Binding NextSessionText}"
+                               Style="{StaticResource AppCaptionLabel}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <FlexLayout Wrap="Wrap"
+                            Direction="Row"
+                            JustifyContent="SpaceBetween"
+                            AlignItems="Stretch">
+                    <Border Style="{StaticResource AppCard}"
+                            FlexLayout.Basis="48%"
+                            FlexLayout.Grow="1">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="✅"
+                                   FontSize="24" />
+                            <Label Text="Điểm danh"
+                                   Style="{StaticResource AppCardTitle}" />
+                            <Label Text="{Binding AttendanceText}"
+                                   Style="{StaticResource AppCaptionLabel}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Style="{StaticResource AppCard}"
+                            FlexLayout.Basis="48%"
+                            FlexLayout.Grow="1">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="🎯"
+                                   FontSize="24" />
+                            <Label Text="Mốc quan trọng"
+                                   Style="{StaticResource AppCardTitle}" />
+                            <Label Text="{Binding ExamReminderText}"
+                                   Style="{StaticResource AppCaptionLabel}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </FlexLayout>
+
+                <VerticalStackLayout Spacing="14">
+                    <Grid ColumnDefinitions="*,Auto"
+                          ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Danh sách buổi học"
+                                   Style="{StaticResource AppSectionTitle}" />
+                            <Label Text="Buổi học hôm nay được tô nổi bật để dễ nhận biết, các buổi sau giữ tông trung tính hơn."
+                                   Style="{StaticResource AppCaptionLabel}" />
+                        </VerticalStackLayout>
+
+                        <Border Grid.Column="1"
+                                BackgroundColor="#FFF3DC"
+                                Padding="12,8"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 999"
+                                VerticalOptions="Center">
+                            <Label Text="Hôm nay nổi bật"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="12"
+                                   TextColor="#8A4B00" />
+                        </Border>
+                    </Grid>
+
+                    <Label Text="Danh sách buổi học sắp tới"
+                           Style="{StaticResource AppSectionTitle}" />
+
+                    <CollectionView ItemsSource="{Binding UpcomingItems}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:StudyScheduleItem">
+                                <Border BackgroundColor="{Binding CardBackground}"
+                                        Stroke="{Binding CardStroke}"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 24"
+                                        Shadow="0,8,24,#0A000000"
+                                        Margin="0,0,0,16"
+                                        Padding="20">
+                                    <VerticalStackLayout Spacing="14">
+                                        <Grid ColumnDefinitions="Auto,*,Auto"
+                                              ColumnSpacing="12">
+                                            <Border WidthRequest="54"
+                                                    HeightRequest="54"
+                                                    BackgroundColor="{StaticResource AppSurfaceAccent}"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 18">
+                                                <Label Text="{Binding AccentEmoji}"
+                                                       FontSize="24"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center" />
+                                            </Border>
+
+                                            <VerticalStackLayout Grid.Column="1"
+                                                                 Spacing="4">
+                                                <HorizontalStackLayout Spacing="8">
+                                                    <Border BackgroundColor="{Binding DayBadgeBackground}"
+                                                            Padding="10,5"
+                                                            StrokeThickness="0"
+                                                            StrokeShape="RoundRectangle 999"
+                                                            VerticalOptions="Center">
+                                                        <Label Text="{Binding DayBadgeText}"
+                                                               FontFamily="OpenSans-Semibold"
+                                                               FontSize="11"
+                                                               TextColor="{Binding DayBadgeColor}" />
+                                                    </Border>
+
+                                                    <Border BackgroundColor="#F2EEE6"
+                                                            Padding="10,5"
+                                                            StrokeThickness="0"
+                                                            StrokeShape="RoundRectangle 999"
+                                                            VerticalOptions="Center">
+                                                        <Label Text="{Binding WeekdayText}"
+                                                               FontFamily="OpenSans-Semibold"
+                                                               FontSize="11"
+                                                               TextColor="{StaticResource AppSecondaryText}" />
+                                                    </Border>
+                                                </HorizontalStackLayout>
+
+                                                <Label Text="{Binding SessionTitle}"
+                                                       Style="{StaticResource AppCardTitle}" />
+                                                <Label Text="{Binding CourseName}"
+                                                       Style="{StaticResource AppCaptionLabel}" />
+                                            </VerticalStackLayout>
+
+                                            <Border Grid.Column="2"
+                                                    BackgroundColor="{Binding StatusBackground}"
+                                                    Padding="12,8"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 999"
+                                                    VerticalOptions="Start">
+                                                <Label Text="{Binding Status}"
+                                                       FontFamily="OpenSans-Semibold"
+                                                       FontSize="12"
+                                                       TextColor="{Binding StatusColor}" />
+                                            </Border>
+                                        </Grid>
+
+                                        <Grid ColumnDefinitions="Auto,*"
+                                              ColumnSpacing="12">
+                                            <Border BackgroundColor="#FFF3DC"
+                                                    Padding="14,12"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 18"
+                                                    VerticalOptions="Fill">
+                                                <VerticalStackLayout Spacing="2"
+                                                                     HorizontalOptions="Center">
+                                                    <Label Text="{Binding DateText}"
+                                                           FontFamily="OpenSans-Semibold"
+                                                           FontSize="18"
+                                                           TextColor="{StaticResource AppBrandStrong}"
+                                                           HorizontalTextAlignment="Center" />
+                                                    <Label Text="{Binding TimeRange}"
+                                                           FontSize="12"
+                                                           TextColor="{StaticResource AppSecondaryText}"
+                                                           HorizontalTextAlignment="Center" />
+                                                </VerticalStackLayout>
+                                            </Border>
+
+                                            <VerticalStackLayout Grid.Column="1"
+                                                                 Spacing="10">
+                                            <Border BackgroundColor="#F6F3EC"
+                                                    Padding="14"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 18">
+                                                <VerticalStackLayout Spacing="4">
+                                                    <Label Text="Địa điểm"
+                                                           Style="{StaticResource AppCaptionLabel}" />
+                                                    <Label Text="{Binding Location}"
+                                                           FontFamily="OpenSans-Semibold"
+                                                           FontSize="14"
+                                                           TextColor="{StaticResource AppPrimaryText}" />
+                                                    <Label Text="{Binding InstructorName}"
+                                                           Style="{StaticResource AppBodyLabel}" />
+                                                    <Label Text="{Binding TimeRange}"
+                                                           Style="{StaticResource AppCaptionLabel}" />
+                                                </VerticalStackLayout>
+                                            </Border>
+
+                                            <Border
+                                                    BackgroundColor="#F6F3EC"
+                                                    Padding="14"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 18">
+                                                <VerticalStackLayout Spacing="4">
+                                                    <Label Text="Lớp học"
+                                                           Style="{StaticResource AppCaptionLabel}" />
+                                                    <Label Text="{Binding CourseName}"
+                                                           FontFamily="OpenSans-Semibold"
+                                                            FontSize="14"
+                                                           TextColor="{StaticResource AppPrimaryText}" />
+                                                    <Label Text="{Binding WeekdayText}"
+                                                           Style="{StaticResource AppBodyLabel}" />
+                                                    <Label Text="{Binding Status}"
+                                                           Style="{StaticResource AppCaptionLabel}" />
+                                                </VerticalStackLayout>
+                                            </Border>
+                                        </VerticalStackLayout>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <controls:AppBottomNavView Grid.Row="2"
+                                   CurrentTab="schedule" />
+    </Grid>
+</ContentPage>

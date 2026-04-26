@@ -1,192 +1,156 @@
-# ONTHIBANGLAI - README dự án
+# ONTHIBANGLAI (MAUI FE) + ASP.NET Core BE
 
-## 1. Tổng quan
-Đây là dự án ứng dụng **.NET MAUI** đa nền tảng phục vụ ôn thi bằng lái xe máy, tên hiển thị là **ONTHIBANGLAI**. Ứng dụng hiện đang ở mức **prototype giao diện + điều hướng cơ bản**, tập trung vào trải nghiệm học viên với các màn hình đăng nhập, bảng điều khiển, danh sách bộ đề và thi thử.
+## 1) Tổng quan
 
-Từ việc đọc cấu hình và mã nguồn hiện có, dự án hướng đến các nền tảng:
-- Android
-- iOS
-- MacCatalyst
-- Windows (khi build trên Windows)
+Repo hiện có 2 phần chính:
 
-## 2. Thông tin kỹ thuật chính
-- Framework: .NET MAUI / .NET 9
-- Kiểu dự án: Single Project MAUI
-- Tên assembly: `ONTHIBANGLAI`
-- Application ID: `com.companyname.onthibanglai`
-- Logging debug đã được bật ở môi trường Debug
-- Xác thực hiện tại dùng dịch vụ giả lập (`MockAuthService`)
+- **Frontend mobile/desktop**: dự án `.NET MAUI` tại [`MauiApp1/MauiApp1`](MauiApp1/MauiApp1)
+- **Backend API**: dự án `ASP.NET Core` tại [`ThiBangLaiXe-develop-be/HeThongThiBangLai.Api`](ThiBangLaiXe-develop-be/HeThongThiBangLai.Api)
 
-## 3. Hiện trạng chức năng
-### Đã có
-1. **Khởi tạo ứng dụng bằng DI container**
-   - Đăng ký `AppController`
-   - Đăng ký `AuthController`
-   - Đăng ký `IAuthService` với triển khai `MockAuthService`
-   - Đăng ký `AppShell`
+App FE đang chạy theo hướng **kết nối API thật** cho các luồng chính:
 
-2. **Shell navigation cơ bản**
-   - Điểm vào mặc định hiện tại là màn hình đăng nhập
-   - Có đăng ký route cho nhiều màn hình trong app
+- Auth qua [`ApiAuthService`](MauiApp1/MauiApp1/Services/ApiAuthService.cs:7)
+- Thi thử qua [`ApiExamService`](MauiApp1/MauiApp1/Services/ApiExamService.cs:9)
+- Ôn tập qua [`ApiPracticeService`](MauiApp1/MauiApp1/Services/ApiPracticeService.cs:10)
+- Lịch học qua [`ApiStudyScheduleService`](MauiApp1/MauiApp1/Services/ApiStudyScheduleService.cs:8)
 
-3. **Các màn hình giao diện đã dựng khá đầy đủ**
-   - Trang giới thiệu / main landing
-   - Đăng nhập
-   - Dashboard học viên
-   - Danh sách bộ đề
-   - Thi thử
-   - Ngoài ra còn có các màn hình như onboarding, register, forgot password, profile, settings, history, notification, exam result...
+---
 
-4. **Xác thực giả lập**
-   - Đăng nhập thành công nếu username/email và password không rỗng
-   - Chưa có kết nối API thật, database hoặc token auth
+## 2) Kiến trúc FE hiện tại
 
-### Chưa thấy hoàn thiện
-- Chưa có backend thật
-- Chưa có lưu trữ dữ liệu người dùng
-- Chưa thấy mô hình câu hỏi thi thật hoặc dữ liệu đề thi thật
-- Chưa thấy logic chấm điểm hoàn chỉnh
-- Chưa thấy persistence cho tiến độ học
-- Nhiều màn hình đang mang tính trình diễn UI nhiều hơn là nghiệp vụ hoàn chỉnh
+FE đang dùng pattern nhẹ kiểu `MVVM + Services + DI`:
 
-## 4. Cấu trúc thư mục chính
+- View: thư mục [`Views`](MauiApp1/MauiApp1/Views)
+- ViewModel: thư mục [`ViewModels`](MauiApp1/MauiApp1/ViewModels)
+- Service/API client: thư mục [`Services`](MauiApp1/MauiApp1/Services)
+- Đăng ký DI: [`MauiProgram.CreateMauiApp()`](MauiApp1/MauiApp1/MauiProgram.cs:11)
+- Điều hướng route: [`AppShell`](MauiApp1/MauiApp1/AppShell.xaml.cs:6)
+
+Shell entry hiện tại vào trang login tại [`AppShell.xaml`](MauiApp1/MauiApp1/AppShell.xaml:11).
+
+---
+
+## 3) Trạng thái tích hợp API theo module
+
+### 3.1 Auth
+
+- FE gọi `api/v1/auth/login` và `api/v1/auth/me` trong [`ApiAuthService`](MauiApp1/MauiApp1/Services/ApiAuthService.cs:16)
+- Token lưu qua `SecureStorage`
+
+### 3.2 Thi thử
+
+- FE dùng nhóm endpoint `api/v1/sample-exams`, `api/v1/exams/...` trong [`ApiExamService`](MauiApp1/MauiApp1/Services/ApiExamService.cs:19)
+
+### 3.3 Ôn tập
+
+- FE đã chuyển sang API service thật trong [`ApiPracticeService`](MauiApp1/MauiApp1/Services/ApiPracticeService.cs:10)
+- Tuy nhiên BE hiện chưa có controller `practice-sessions` tương ứng theo tài liệu
+
+### 3.4 Lịch học
+
+- FE đã chuyển sang API service thật trong [`ApiStudyScheduleService`](MauiApp1/MauiApp1/Services/ApiStudyScheduleService.cs:8)
+- Có fallback dữ liệu từ endpoint dashboard, nhưng BE chưa mở đủ bộ API classes/sessions/attendance cho lịch học chi tiết
+
+---
+
+## 4) Cấu hình Base URL FE
+
+Định nghĩa trong [`ApiEndpoints.GetBaseUrl()`](MauiApp1/MauiApp1/Services/ApiEndpoints.cs:5):
+
+- Android emulator: `http://10.0.2.2:5017/`
+- Nền tảng khác: `http://localhost:5017/`
+
+Nếu BE chạy cổng khác, sửa trực tiếp file [`ApiEndpoints.cs`](MauiApp1/MauiApp1/Services/ApiEndpoints.cs:1).
+
+---
+
+## 5) Chạy Backend
+
+Backend project chính: [`HeThongThiBangLai.Api.csproj`](ThiBangLaiXe-develop-be/HeThongThiBangLai.Api/HeThongThiBangLai.Api.csproj)
+
+Có thể chạy nhanh bằng script:
+
+- [`start-api.cmd`](ThiBangLaiXe-develop-be/start-api.cmd)
+- [`stop-api.cmd`](ThiBangLaiXe-develop-be/stop-api.cmd)
+
+Hoặc chạy trực tiếp bằng `dotnet run` trong thư mục backend.
+
+---
+
+## 6) Chạy Frontend (MAUI)
+
+Project FE: [`MauiApp1.csproj`](MauiApp1/MauiApp1/MauiApp1.csproj)
+
+Ví dụ build Android:
+
+```bash
+dotnet build -t:Run -f net9.0-android
+```
+
+Lưu ý:
+
+- Cần cài đủ workload MAUI tương ứng target platform.
+- Build có thể có warnings nullable/XAML compile nhưng vẫn chạy nếu không có error.
+
+---
+
+## 7) API BE còn thiếu để FE chạy đầy đủ
+
+Theo flow hiện tại và tài liệu [`Demo.docx`](MauiApp1/Demo.docx):
+
+### 7.1 Practice (thiếu nhiều)
+
+Cần có bộ:
+
+- `POST /api/practice-sessions/start`
+- `GET /api/practice-sessions/{id}/questions`
+- `POST /api/practice-sessions/{id}/answers`
+- `POST /api/practice-sessions/{id}/submit`
+- `GET /api/practice-sessions/my-history`
+
+### 7.2 Study schedule (thiếu endpoint chi tiết)
+
+Cần có:
+
+- `GET /api/dashboard/student` (nếu bám theo tài liệu demo)
+- `GET /api/classes/{id}/sessions`
+- `GET /api/sessions/{id}/attendance`
+- `GET /api/students/{id}/attendance`
+
+Hiện danh sách controller BE thực tế nằm tại [`Controllers`](ThiBangLaiXe-develop-be/HeThongThiBangLai.Api/Controllers), chưa thấy nhóm route classes/sessions/attendance như tài liệu mô tả.
+
+---
+
+## 8) Cấu trúc thư mục chính
+
 ```text
 MauiApp1/
-├─ Controllers/        # Điều hướng và logic controller mức ứng dụng
-├─ Models/             # Model dữ liệu
-├─ Platforms/          # Mã riêng cho từng nền tảng
-├─ Resources/          # Splash, styles, fonts, images...
-├─ Services/           # Interface và service nghiệp vụ
-├─ Views/              # Các trang XAML giao diện
-├─ App.xaml            # Tài nguyên ứng dụng
-├─ App.xaml.cs         # Khởi tạo window chính
-├─ AppShell.xaml       # Shell root của app
-├─ AppShell.xaml.cs    # Đăng ký route điều hướng
-├─ MauiProgram.cs      # Cấu hình DI và bootstrapping
-└─ MauiApp1.csproj     # Cấu hình project MAUI
+├─ MauiApp1/                       # FE MAUI app
+│  ├─ Controls/
+│  ├─ Converters/
+│  ├─ Models/
+│  ├─ Services/
+│  ├─ ViewModels/
+│  ├─ Views/
+│  ├─ AppShell.xaml(.cs)
+│  ├─ MauiProgram.cs
+│  └─ MauiApp1.csproj
+├─ ThiBangLaiXe-develop-be/        # BE ASP.NET Core
+│  └─ HeThongThiBangLai.Api/
+│     ├─ Controllers/
+│     ├─ DTOs/
+│     ├─ Services/
+│     ├─ Repositories/
+│     └─ Program.cs
+└─ Demo.docx                       # Tài liệu API/flow nghiệp vụ
 ```
 
-## 5. Các thành phần nổi bật đã đọc
-### 5.1 Khởi tạo ứng dụng
-Dự án khởi tạo app trong `MauiProgram.cs`, sử dụng dependency injection để quản lý controller, service và shell.
+---
 
-### 5.2 Điều hướng
-`AppShell.xaml.cs` đăng ký route cho nhiều trang như:
-- `MainPage`
-- `OnboardingPage`
-- `LoginPage`
-- `RegisterPage`
-- `ForgotPasswordPage`
-- `DashboardPage`
-- `ExamListPage`
-- `TrafficSignsPage`
-- `MockExamPage`
-- `WrongAnswersPage`
-- `ExamResultPage`
-- `HistoryPage`
-- `ProfilePage`
-- `NotificationPage`
-- `SettingsPage`
+## 9) Ghi chú cập nhật
 
-### 5.3 Xác thực
-`MockAuthService` đang là service đăng nhập giả lập. Logic hiện tại chỉ kiểm tra dữ liệu đầu vào không rỗng và delay ngắn để mô phỏng thao tác bất đồng bộ.
+README này phản ánh trạng thái code hiện tại sau các cập nhật:
 
-### 5.4 Giao diện
-Các file XAML cho thấy nhóm phát triển đang đầu tư mạnh vào phần nhìn:
-- Tông màu vàng nâu / kem đồng bộ
-- Dùng nhiều `Border`, `Grid`, `VerticalStackLayout`
-- Dashboard thể hiện tiến độ học, lịch học, hồ sơ, gợi ý ôn tập
-- Trang danh sách bộ đề thể hiện trạng thái đã xong / đang làm / khóa
-- Trang thi thử đã mô phỏng bộ câu hỏi, tiến trình làm bài và thời gian
+-   FE đã chuyển từ mock sang API cho `auth/exam/practice/study schedule`
+- Một số flow còn phụ thuộc BE hoàn thiện endpoint đúng theo tài liệu
 
-## 6. Luồng sử dụng hiện tại có thể suy ra
-1. Mở ứng dụng
-2. Vào màn hình đăng nhập
-3. Nhập thông tin bất kỳ không rỗng
-4. Qua dashboard
-5. Từ dashboard hoặc navigation có thể đi đến danh sách bộ đề, thi thử, hồ sơ, lịch sử, cài đặt...
-
-## 7. Hướng dẫn mở và chạy dự án
-### Yêu cầu
-- Visual Studio 2022 hoặc mới hơn có cài workload **.NET MAUI**
-- .NET SDK phù hợp với `global.json`
-- Android SDK / Windows SDK tùy nền tảng muốn chạy
-
-### Mở solution
-Mở file:
-- `MauiApp1.sln`
-
-### Chạy trên Visual Studio
-1. Mở solution
-2. Chọn target platform mong muốn: Android / Windows / iOS (nếu môi trường hỗ trợ)
-3. Restore packages
-4. Build và Run
-
-### Chạy bằng CLI tham khảo
-Có thể dùng các lệnh kiểu:
-```bash
-dotnet restore
-dotnet build MauiApp1.sln
-```
-
-Nếu chạy trên Windows target MAUI, cần môi trường đã cài đủ workload và SDK liên quan.
-
-## 8. Đánh giá nhanh trạng thái dự án
-### Điểm mạnh
-- Cấu trúc thư mục rõ ràng
-- Có phân tách `Views`, `Controllers`, `Services`, `Models`
-- UI hiện đại, khá chỉn chu
-- Đã có DI và điều hướng cơ bản
-- Có định hướng rõ cho một app ôn thi bằng lái
-
-### Điểm cần bổ sung
-- Thêm dữ liệu thật cho câu hỏi, bộ đề, biển báo
-- Hoàn thiện nghiệp vụ đăng nhập/đăng ký/quên mật khẩu
-- Kết nối API hoặc local storage
-- Bổ sung viewmodel/state management nếu app tiếp tục mở rộng
-- Viết tài liệu dữ liệu và luồng nghiệp vụ chi tiết hơn
-- Bổ sung test
-
-## 9. Tiến độ dự án
-Dưới đây là đánh giá tiến độ dựa trên mã nguồn hiện có, mang tính ước lượng:
-
-| Hạng mục | Tiến độ ước lượng | Ghi chú |
-|---|---:|---|
-| Khởi tạo cấu trúc dự án MAUI | 100% | Đã hoàn chỉnh |
-| Thiết kế giao diện tổng thể | 80% | Nhiều màn hình đã dựng khá đầy đủ |
-| Điều hướng giữa các màn hình | 70% | Route đã đăng ký, cần kiểm tra luồng thực tế đầy đủ |
-| Xác thực người dùng | 30% | Mới là mock service |
-| Nghiệp vụ ôn thi / dữ liệu đề thi | 35% | Có UI nhưng chưa thấy logic dữ liệu hoàn thiện |
-| Quản lý tiến độ học tập | 40% | Có hiển thị UI, chưa thấy persistence rõ ràng |
-| Tích hợp backend / API | 10% | Chưa thấy triển khai thực tế |
-| Hoàn thiện sản phẩm để phát hành | 45% | Đang ở mức prototype chức năng + UI |
-
-### Tổng tiến độ chung
-**Khoảng 45% - 55%**
-
-Nhận định: dự án đã đi khá xa ở phần **UI/UX và khung ứng dụng**, nhưng phần **nghiệp vụ thật, dữ liệu thật và hoàn thiện sản phẩm** vẫn còn nhiều việc.
-
-## 10. Đề xuất bước tiếp theo
-1. Chuẩn hóa luồng đăng nhập và điều hướng sau đăng nhập
-2. Tạo dữ liệu mẫu cho câu hỏi, đề thi, biển báo dưới dạng JSON hoặc SQLite
-3. Xây dựng service quản lý đề thi và kết quả thi
-4. Lưu tiến độ học viên cục bộ
-5. Hoàn thiện trang kết quả, lịch sử, câu sai
-6. Tách logic khỏi code-behind nếu muốn mở rộng theo MVVM
-7. Thêm tài liệu kiến trúc và checklist release
-
-## 11. Các file quan trọng nên xem đầu tiên
-- `MauiApp1/MauiProgram.cs`
-- `MauiApp1/MauiApp1.csproj`
-- `MauiApp1/App.xaml.cs`
-- `MauiApp1/AppShell.xaml`
-- `MauiApp1/AppShell.xaml.cs`
-- `MauiApp1/Controllers/AuthController.cs`
-- `MauiApp1/Services/MockAuthService.cs`
-- `MauiApp1/Views/LoginPage.xaml`
-- `MauiApp1/Views/DashboardPage.xaml`
-- `MauiApp1/Views/ExamListPage.xaml`
-- `MauiApp1/Views/MockExamPage.xaml`
-
-## 12. Ghi chú
-README này được tạo dựa trên việc đọc cấu trúc thư mục và một số file mã nguồn cốt lõi hiện có trong repository. Vì chưa kiểm thử toàn bộ flow runtime trong tài liệu này, một số đánh giá về tiến độ và mức độ hoàn thiện là **ước lượng kỹ thuật dựa trên mã nguồn hiện tại**.

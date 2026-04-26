@@ -196,8 +196,8 @@
                     <Label Text="Biển báo" FontSize="11" TextColor="#6B6257" />
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="3" Spacing="4" HorizontalOptions="Center">
-                    <Label Text="🔔" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
-                    <Label Text="Thông báo" FontSize="11" TextColor="#6B6257" />
+                    <Label Text="📅" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
+                    <Label Text="Lịch học" FontSize="11" TextColor="#6B6257" />
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="4" Spacing="4" HorizontalOptions="Center">
                     <Border Padding="12,8" BackgroundColor="#FFDEA8" StrokeThickness="0" StrokeShape="RoundRectangle 22">

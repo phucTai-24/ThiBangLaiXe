@@ -3,6 +3,8 @@ namespace MauiApp1.Models;
 public class Exam
 {
     public string Id { get; set; } = string.Empty;
+    public string SessionId { get; set; } = string.Empty;
+    public string SampleExamId { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public string LicenseType { get; set; } = "A1"; // A1, A2, B1, B2, etc.
     public List<Question> Questions { get; set; } = new();

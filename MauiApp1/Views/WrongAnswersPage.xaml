@@ -1,375 +1,259 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels"
+             xmlns:models="clr-namespace:MauiApp1.Models"
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.Views.WrongAnswersPage"
-             BackgroundColor="#FCF9F2">
+             x:DataType="viewmodels:WrongAnswersViewModel"
+             Style="{StaticResource AppPageStyle}">
 
     <Grid RowDefinitions="Auto,*,Auto">
-        <Border
-            Grid.Row="0"
-            BackgroundColor="#F6F3EC"
-            StrokeThickness="0"
-            Padding="24,18"
-            Shadow="0,12,24,#0C1C1C18">
-            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
-                <Border
-                    WidthRequest="42"
-                    HeightRequest="42"
-                    BackgroundColor="#FFFFFF"
-                    Stroke="#14D5C4AB"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 16"
-                    VerticalOptions="Center">
-                    <Label
-                        Text="←"
-                        FontSize="18"
-                        TextColor="#271900"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center" />
+        <Border Grid.Row="0"
+                Style="{StaticResource AppHeaderContainer}"
+                Shadow="0,8,20,#12000000">
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  Style="{StaticResource AppHeaderGrid}">
+                <Border Style="{StaticResource AppIconButtonCard}">
+                    <Label Text="←"
+                           FontSize="18"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                    </Border.GestureRecognizers>
                 </Border>
 
-                <Label
-                    Grid.Column="1"
-                    Text="ONTHIBANGLAI"
-                    FontFamily="OpenSans-Semibold"
-                    FontSize="20"
-                    TextColor="#7C5800"
-                    VerticalTextAlignment="Center" />
+                <VerticalStackLayout Grid.Column="1"
+                                     Spacing="2">
+                    <Label Text="ONTHIBANGLAI"
+                           Style="{StaticResource AppHeaderBrandLabel}" />
+                    <Label Text="Xem bài làm"
+                           Style="{StaticResource AppHeaderTitleLabel}" />
+                </VerticalStackLayout>
 
-                <Label
-                    Grid.Column="2"
-                    Text="Review (4)"
-                    FontFamily="OpenSans-Semibold"
-                    FontSize="13"
-                    TextColor="#514532"
-                    VerticalTextAlignment="Center"
-                    HorizontalTextAlignment="End" />
+                        <Label Grid.Column="2"
+                               Text="{Binding Questions.Count, StringFormat='{}{0} câu sai'}"
+                               Style="{StaticResource AppHeaderTrailingLabel}" />
             </Grid>
         </Border>
 
         <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="24,28,24,140" Spacing="24">
-                <VerticalStackLayout Spacing="8">
-                    <Label
-                        Text="Học từ"
-                        FontFamily="OpenSans-Semibold"
-                        FontSize="40"
-                        TextColor="#271900" />
-                    <Label
-                        Text="sai lầm."
-                        FontFamily="OpenSans-Semibold"
-                        FontSize="44"
-                        FontAttributes="Italic"
-                        TextColor="#7C5800" />
-                    <Label
-                        Text="Xem lại các câu chưa chính xác để củng cố kiến thức luật giao thông và sẵn sàng hơn cho kỳ thi thực tế."
-                        FontSize="15"
-                        LineHeight="1.4"
-                        TextColor="#5F564B" />
-                </VerticalStackLayout>
-                <VerticalStackLayout Spacing="22">
-                    <Border
-                        Padding="8"
-                        BackgroundColor="#F6F3EC"
-                        StrokeThickness="0"
-                        StrokeShape="RoundRectangle 26">
-                        <Border
-                            Padding="22"
-                            BackgroundColor="#FFFFFF"
-                            StrokeThickness="0"
-                            StrokeShape="RoundRectangle 22"
-                            Shadow="0,16,32,#081C1C18">
-                            <VerticalStackLayout Spacing="18">
-                                <Grid ColumnDefinitions="Auto,*">
-                                    <Border
-                                        Padding="12,6"
-                                        BackgroundColor="#FFDAD6"
-                                        StrokeThickness="0"
-                                        StrokeShape="RoundRectangle 8"
-                                        HorizontalOptions="Start">
-                                        <Label
-                                            Text="CÂU HỎI 12"
-                                            FontFamily="OpenSans-Semibold"
-                                            FontSize="11"
-                                            CharacterSpacing="1.5"
-                                            TextColor="#93000A" />
-                                    </Border>
-                                </Grid>
+            <VerticalStackLayout Padding="24,24,24,120"
+                                 Spacing="18">
+                <Border Style="{StaticResource AppAccentCard}"
+                        Padding="20">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{Binding PageTitle}"
+                               Style="{StaticResource AppSectionTitle}" />
+                        <Label Text="{Binding SummaryText}"
+                               Style="{StaticResource AppBodyLabel}" />
+                    </VerticalStackLayout>
+                </Border>
 
-                                <Label
-                                    Text="Người điều khiển xe mô tô hai bánh, xe gắn máy được phép chở tối đa bao nhiêu người?"
-                                    FontFamily="OpenSans-Semibold"
-                                    FontSize="22"
-                                    LineHeight="1.35"
-                                    TextColor="#271900" />
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}"
+                                   HorizontalOptions="Center" />
 
-                                <Border
-                                    Padding="16"
-                                    BackgroundColor="#FFF1EF"
+                <Border Style="{StaticResource AppMutedCard}"
+                        Padding="20">
+                    <VerticalStackLayout Spacing="16">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="Danh sách câu"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="18"
+                                   TextColor="{StaticResource AppPrimaryText}" />
+                            <Border Grid.Column="1"
+                                    Padding="10,6"
+                                    BackgroundColor="#DAE1E3"
                                     StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 18">
-                                    <HorizontalStackLayout Spacing="12">
-                                        <Label Text="✕" FontSize="18" TextColor="#BA1A1A" VerticalTextAlignment="Center" />
-                                        <Label
-                                            Text="Chở tối đa 3 người trong mọi trường hợp"
-                                            FontFamily="OpenSans-Semibold"
-                                            FontSize="15"
-                                            TextColor="#93000A"
-                                            VerticalTextAlignment="Center" />
-                                    </HorizontalStackLayout>
-                                </Border>
+                                    StrokeShape="RoundRectangle 999">
+                                <Label Text="{Binding Questions.Count, StringFormat='{}{0} câu sai'}"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="10"
+                                       TextColor="#5D6466" />
+                            </Border>
+                        </Grid>
 
-                                <Border
-                                    Padding="16"
-                                    BackgroundColor="#E8F2FF"
-                                    StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 18">
-                                    <HorizontalStackLayout Spacing="12">
-                                        <Label Text="✓" FontSize="18" TextColor="#0060AC" VerticalTextAlignment="Center" />
-                                        <Label
-                                            Text="Chở 01 người, trừ trường hợp đặc biệt chở 02 người"
-                                            FontFamily="OpenSans-Semibold"
-                                            FontSize="15"
-                                            TextColor="#005295"
-                                            VerticalTextAlignment="Center" />
-                                    </HorizontalStackLayout>
-                                </Border>
-
-                                <VerticalStackLayout Spacing="8" Margin="0,6,0,0">
-                                    <HorizontalStackLayout Spacing="8">
-                                        <Label Text="📘" FontSize="16" TextColor="#7C5800" />
-                                        <Label
-                                            Text="GIẢI THÍCH LÝ THUYẾT"
-                                            FontFamily="OpenSans-Semibold"
-                                            FontSize="11"
-                                            CharacterSpacing="1.8"
-                                            TextColor="#7C5800" />
-                                    </HorizontalStackLayout>
-                                    <Label
-                                        Text="Theo Luật Giao thông đường bộ, người điều khiển xe mô tô hai bánh chỉ được chở 01 người. Các trường hợp được chở tối đa 02 người bao gồm: chở trẻ em dưới 14 tuổi, chở người bệnh đi cấp cứu hoặc áp giải người vi phạm pháp luật."
-                                        FontSize="15"
-                                        LineHeight="1.5"
-                                        TextColor="#5F564B" />
-                                </VerticalStackLayout>
-                            </VerticalStackLayout>
-                        </Border>
-                    </Border>
-
-                    <Border
-                        Padding="8"
-                        BackgroundColor="#F6F3EC"
-                        StrokeThickness="0"
-                        StrokeShape="RoundRectangle 26">
-                        <Border
-                            Padding="22"
-                            BackgroundColor="#FFFFFF"
-                            StrokeThickness="0"
-                            StrokeShape="RoundRectangle 22"
-                            Shadow="0,16,32,#081C1C18">
-                            <VerticalStackLayout Spacing="18">
-                                <Grid ColumnDefinitions="Auto,Auto,*">
-                                    <Border
-                                        Padding="12,6"
-                                        BackgroundColor="#FFDAD6"
-                                        StrokeThickness="0"
-                                        StrokeShape="RoundRectangle 8"
-                                        HorizontalOptions="Start">
-                                        <Label
-                                            Text="CÂU HỎI 45"
-                                            FontFamily="OpenSans-Semibold"
-                                            FontSize="11"
-                                            CharacterSpacing="1.5"
-                                            TextColor="#93000A" />
+                        <FlexLayout BindableLayout.ItemsSource="{Binding Questions}"
+                                     Wrap="Wrap"
+                                     Direction="Row"
+                                     JustifyContent="SpaceBetween">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:Question">
+                                    <Border Padding="0"
+                                            Margin="0,0,10,10"
+                                            StrokeShape="RoundRectangle 14"
+                                            HeightRequest="44"
+                                            WidthRequest="60">
+                                        <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="BackgroundColor" Value="#FFF1EF" />
+                                                    <Setter Property="Stroke" Value="#33BA1A1A" />
+                                                    <Setter Property="StrokeThickness" Value="1.5" />
+                                                </Style>
+                                            </Border.Style>
+                                        <Label Text="{Binding Number}"
+                                               FontFamily="OpenSans-Semibold"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"
+                                               TextColor="#BA1A1A" />
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenQuestionPopupCommand}"
+                                                                  CommandParameter="{Binding .}" />
+                                        </Border.GestureRecognizers>
                                     </Border>
-                                    <Border
-                                        Grid.Column="1"
-                                        Margin="10,0,0,0"
-                                        Padding="10,6"
-                                        BackgroundColor="#FFF0C7"
-                                        StrokeThickness="0"
-                                        StrokeShape="RoundRectangle 8"
-                                        HorizontalOptions="Start">
-                                        <Label
-                                            Text="ĐIỂM LIỆT"
-                                            FontFamily="OpenSans-Semibold"
-                                            FontSize="10"
-                                            CharacterSpacing="1.2"
-                                            TextColor="#6B4C00" />
-                                    </Border>
-                                </Grid>
-
-                                <Label
-                                    Text="Biển báo nào báo hiệu Giao nhau với đường ưu tiên"
-                                    FontFamily="OpenSans-Semibold"
-                                    FontSize="22"
-                                    LineHeight="1.35"
-                                    TextColor="#271900" />
-
-                                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
-                                    <Border
-                                        Padding="10"
-                                        BackgroundColor="#F6F3EC"
-                                        StrokeThickness="0"
-                                        StrokeShape="RoundRectangle 18"
-                                        HeightRequest="120">
-                                        <VerticalStackLayout Spacing="8" VerticalOptions="Center" HorizontalOptions="Center">
-                                            <Label Text="◆" FontSize="38" TextColor="#D1A200" HorizontalTextAlignment="Center" />
-                                            <Label Text="Biển 1" FontSize="12" TextColor="#586062" HorizontalTextAlignment="Center" />
-                                        </VerticalStackLayout>
-                                    </Border>
-                                    <Border
-                                        Grid.Column="1"
-                                        Padding="10"
-                                        BackgroundColor="#F6F3EC"
-                                        Stroke="#330060AC"
-                                        StrokeThickness="3"
-                                        StrokeShape="RoundRectangle 18"
-                                        HeightRequest="120">
-                                        <VerticalStackLayout Spacing="8" VerticalOptions="Center" HorizontalOptions="Center">
-                                            <Label Text="▽" FontSize="38" TextColor="#C62828" HorizontalTextAlignment="Center" />
-                                            <Label Text="Biển 2" FontSize="12" TextColor="#586062" HorizontalTextAlignment="Center" />
-                                        </VerticalStackLayout>
-                                    </Border>
-                                    <Border
-                                        Grid.Column="2"
-                                        Padding="10"
-                                        BackgroundColor="#F6F3EC"
-                                        Stroke="#33BA1A1A"
-                                        StrokeThickness="3"
-                                        StrokeShape="RoundRectangle 18"
-                                        HeightRequest="120">
-                                        <VerticalStackLayout Spacing="8" VerticalOptions="Center" HorizontalOptions="Center">
-                                            <Label Text="⛔" FontSize="34" HorizontalTextAlignment="Center" />
-                                            <Label Text="Biển 3" FontSize="12" TextColor="#586062" HorizontalTextAlignment="Center" />
-                                        </VerticalStackLayout>
-                                    </Border>
-                                </Grid>
-
-                                <Border
-                                    Padding="16"
-                                    BackgroundColor="#FFF1EF"
-                                    StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 18">
-                                    <HorizontalStackLayout Spacing="12">
-                                        <Label Text="✕" FontSize="18" TextColor="#BA1A1A" VerticalTextAlignment="Center" />
-                                        <Label
-                                            Text="Biển 3 (Cấm đi ngược chiều)"
-                                            FontFamily="OpenSans-Semibold"
-                                            FontSize="15"
-                                            TextColor="#93000A"
-                                            VerticalTextAlignment="Center" />
-                                    </HorizontalStackLayout>
-                                </Border>
-
-                                <Border
-                                    Padding="16"
-                                    BackgroundColor="#E8F2FF"
-                                    StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 18">
-                                    <HorizontalStackLayout Spacing="12">
-                                        <Label Text="✓" FontSize="18" TextColor="#0060AC" VerticalTextAlignment="Center" />
-                                        <Label
-                                            Text="Biển 2 (Hình tam giác ngược)"
-                                            FontFamily="OpenSans-Semibold"
-                                            FontSize="15"
-                                            TextColor="#005295"
-                                            VerticalTextAlignment="Center" />
-                                    </HorizontalStackLayout>
-                                </Border>
-
-                                <VerticalStackLayout Spacing="8" Margin="0,6,0,0">
-                                    <HorizontalStackLayout Spacing="8">
-                                        <Label Text="🚦" FontSize="16" TextColor="#7C5800" />
-                                        <Label
-                                            Text="QUY TẮC BIỂN BÁO"
-                                            FontFamily="OpenSans-Semibold"
-                                            FontSize="11"
-                                            CharacterSpacing="1.8"
-                                            TextColor="#7C5800" />
-                                    </HorizontalStackLayout>
-                                    <Label
-                                        Text="Biển số W.208 Giao nhau với đường ưu tiên có hình tam giác đều, đỉnh hướng xuống dưới, nền vàng viền đỏ. Khi gặp biển này, người lái xe phải nhường đường cho các xe đang đi trên đường ưu tiên."
-                                        FontSize="15"
-                                        LineHeight="1.5"
-                                        TextColor="#5F564B" />
-                                </VerticalStackLayout>
-                            </VerticalStackLayout>
-                        </Border>
-                    </Border>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Spacing="10" HorizontalOptions="Center" Margin="0,8,0,0">
-                    <Border
-                        WidthRequest="64"
-                        HeightRequest="64"
-                        BackgroundColor="#FFDEA8"
-                        StrokeThickness="0"
-                        StrokeShape="RoundRectangle 32">
-                        <Label
-                            Text="✨"
-                            FontSize="28"
-                            TextColor="#271900"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center" />
-                    </Border>
-                    <Label
-                        Text="Bạn đã hoàn thành xem lại!"
-                        FontFamily="OpenSans-Semibold"
-                        FontSize="26"
-                        TextColor="#271900"
-                        HorizontalTextAlignment="Center" />
-                    <Label
-                        Text="Kiến thức đã được củng cố. Hãy thử làm lại bài thi ngay."
-                        FontSize="14"
-                        TextColor="#5F564B"
-                        HorizontalTextAlignment="Center" />
-                    <Button
-                        Text="Làm bài thi mới"
-                        Margin="0,8,0,0"
-                        BackgroundColor="#FFB800"
-                        TextColor="#271900"
-                        FontFamily="OpenSans-Semibold"
-                        CornerRadius="30"
-                        HeightRequest="56"
-                        Padding="28,0" />
-                </VerticalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </FlexLayout>
+                    </VerticalStackLayout>
+                </Border>
             </VerticalStackLayout>
         </ScrollView>
 
-        <Border
-            Grid.Row="2"
-            Margin="12,0,12,12"
-            Padding="10,10,10,18"
-            BackgroundColor="#CCFCF9F2"
-            Stroke="#14D5C4AB"
-            StrokeThickness="1"
-            StrokeShape="RoundRectangle 34"
-            Shadow="0,-8,24,#0A000000">
-            <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="6">
-                <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
-                    <Label Text="⌂" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
-                    <Label Text="Trang chủ" FontSize="11" TextColor="#6B6257" />
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="1" Spacing="4" HorizontalOptions="Center">
-                    <Border Padding="12,8" BackgroundColor="#FFDEA8" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <Label Text="🧪" FontSize="18" TextColor="#271900" HorizontalOptions="Center" />
-                    </Border>
-                    <Label Text="Luyện thi" FontSize="11" TextColor="#7C5800" />
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="2" Spacing="4" HorizontalOptions="Center">
-                    <Label Text="🚦" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
-                    <Label Text="Biển báo" FontSize="11" TextColor="#6B6257" />
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="3" Spacing="4" HorizontalOptions="Center">
-                    <Label Text="🔔" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
-                    <Label Text="Thông báo" FontSize="11" TextColor="#6B6257" />
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="4" Spacing="4" HorizontalOptions="Center">
-                    <Label Text="👤" FontSize="18" TextColor="#6B6257" HorizontalOptions="Center" />
-                    <Label Text="Cá nhân" FontSize="11" TextColor="#6B6257" />
-                </VerticalStackLayout>
+        <Grid Grid.RowSpan="3"
+              BackgroundColor="#66000000"
+              IsVisible="{Binding IsPopupOpen}">
+            <Border Margin="20,80,20,80"
+                    Padding="20"
+                    BackgroundColor="White"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 24"
+                    VerticalOptions="Center">
+                <ScrollView>
+                    <VerticalStackLayout Spacing="16">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Text="{Binding SelectedQuestion.Number, StringFormat='Chi tiết câu {0}'}"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="20"
+                                   TextColor="#271900" />
+                            <Border Grid.Column="1"
+                                    Padding="8,4"
+                                    BackgroundColor="#F0EEE7"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 12">
+                                <Label Text="✕"
+                                       FontSize="16"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ClosePopupCommand}" />
+                                </Border.GestureRecognizers>
+                            </Border>
+                        </Grid>
+
+                        <Label Text="{Binding SelectedQuestion.Text}"
+                               FontFamily="OpenSans-Semibold"
+                               FontSize="22"
+                               TextColor="#271900"
+                               LineBreakMode="WordWrap" />
+
+                        <VerticalStackLayout Spacing="12"
+                                             BindableLayout.ItemsSource="{Binding SelectedQuestion.Answers}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:Answer">
+                                    <Border Padding="16"
+                                            StrokeShape="RoundRectangle 18">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="BackgroundColor" Value="#F6F3EC" />
+                                                <Setter Property="StrokeThickness" Value="0" />
+                                                <Style.Triggers>
+                                                    <DataTrigger TargetType="Border"
+                                                                 Binding="{Binding IsSelectedWrong}"
+                                                                 Value="True">
+                                                        <Setter Property="BackgroundColor" Value="#FFF1EF" />
+                                                        <Setter Property="Stroke" Value="#33BA1A1A" />
+                                                        <Setter Property="StrokeThickness" Value="2" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Border"
+                                                                 Binding="{Binding IsCorrectUnselected}"
+                                                                 Value="True">
+                                                        <Setter Property="BackgroundColor" Value="#E8F6EA" />
+                                                        <Setter Property="Stroke" Value="#332E7D32" />
+                                                        <Setter Property="StrokeThickness" Value="2" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid ColumnDefinitions="Auto,*"
+                                              ColumnSpacing="12">
+                                            <Border WidthRequest="34"
+                                                    HeightRequest="34"
+                                                    BackgroundColor="#FFFFFF"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 17">
+                                                <Label Text="{Binding Label}"
+                                                       FontFamily="OpenSans-Semibold"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center" />
+                                            </Border>
+
+                                            <VerticalStackLayout Grid.Column="1"
+                                                                 Spacing="4">
+                                                <Label Text="{Binding Text}"
+                                                       FontSize="15"
+                                                       TextColor="#271900"
+                                                       LineBreakMode="WordWrap" />
+                                                <Label FontSize="12"
+                                                       FontFamily="OpenSans-Semibold">
+                                                    <Label.Style>
+                                                        <Style TargetType="Label">
+                                                            <Setter Property="IsVisible" Value="False" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsSelectedWrong}"
+                                                                             Value="True">
+                                                                    <Setter Property="IsVisible" Value="True" />
+                                                                    <Setter Property="Text" Value="Đáp án bạn đã chọn" />
+                                                                    <Setter Property="TextColor" Value="#BA1A1A" />
+                                                                </DataTrigger>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsCorrectUnselected}"
+                                                                             Value="True">
+                                                                    <Setter Property="IsVisible" Value="True" />
+                                                                    <Setter Property="Text" Value="Đáp án đúng" />
+                                                                    <Setter Property="TextColor" Value="#2E7D32" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Label.Style>
+                                                </Label>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2"
+                BackgroundColor="#CCFCF9F2"
+                StrokeThickness="0"
+                Padding="20,12">
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="12">
+                <Button Grid.Column="0"
+                        Text="Trang chủ"
+                        Command="{Binding GoHomeCommand}"
+                        BackgroundColor="#F0EEE7"
+                        TextColor="#271900"
+                        FontFamily="OpenSans-Semibold"
+                        CornerRadius="28"
+                        HeightRequest="52" />
+                <Button Grid.Column="1"
+                        Text="Thi lại"
+                        Command="{Binding RetakeExamCommand}"
+                        BackgroundColor="#FFB800"
+                        TextColor="#271900"
+                        FontFamily="OpenSans-Semibold"
+                        CornerRadius="28"
+                        HeightRequest="52" />
             </Grid>
         </Border>
     </Grid>
-
 </ContentPage>

@@ -34,6 +34,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.AppShell.xaml
 build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
 build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
 
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Controls/AppBottomNavView.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Controls.AppBottomNavView.xaml
+build_metadata.AdditionalFiles.TargetPath = Controls\AppBottomNavView.xaml
+build_metadata.AdditionalFiles.RelativePath = Controls\AppBottomNavView.xaml
+
 [c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Resources/Styles/Colors.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Resources.Styles.Colors.xaml
@@ -135,6 +141,12 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.SettingsPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\SettingsPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\SettingsPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/StudySchedulePage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.StudySchedulePage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\StudySchedulePage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\StudySchedulePage.xaml
 
 [c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/TrafficSignsPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml

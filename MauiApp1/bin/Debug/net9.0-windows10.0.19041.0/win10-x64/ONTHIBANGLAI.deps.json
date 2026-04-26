@@ -9,6 +9,7 @@
     ".NETCoreApp,Version=v9.0/win10-x64": {
       "ONTHIBANGLAI/1.0": {
         "dependencies": {
+          "Microsoft.Extensions.Http": "9.0.8",
           "Microsoft.Extensions.Logging.Debug": "9.0.8",
           "Microsoft.Maui.Controls": "9.0.120",
           "Microsoft.Web.WebView2.Core.Projection": "1.0.3179.45",
@@ -53,6 +54,17 @@
           }
         }
       },
+      "Microsoft.Extensions.Configuration.Binder/9.0.8": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.9"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.Binder.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.825.36511"
+          }
+        }
+      },
       "Microsoft.Extensions.DependencyInjection/9.0.9": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9"
@@ -69,6 +81,47 @@
           "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "assemblyVersion": "9.0.0.0",
             "fileVersion": "9.0.925.41916"
+          }
+        }
+      },
+      "Microsoft.Extensions.Diagnostics/9.0.8": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "9.0.9",
+          "Microsoft.Extensions.Diagnostics.Abstractions": "9.0.8",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.8"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Diagnostics.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.825.36511"
+          }
+        }
+      },
+      "Microsoft.Extensions.Diagnostics.Abstractions/9.0.8": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9",
+          "Microsoft.Extensions.Options": "9.0.9"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Diagnostics.Abstractions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.825.36511"
+          }
+        }
+      },
+      "Microsoft.Extensions.Http/9.0.8": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.9",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9",
+          "Microsoft.Extensions.Diagnostics": "9.0.8",
+          "Microsoft.Extensions.Logging": "9.0.9",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.9",
+          "Microsoft.Extensions.Options": "9.0.9"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Http.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.825.36511"
           }
         }
       },
@@ -118,6 +171,21 @@
           "lib/net9.0/Microsoft.Extensions.Options.dll": {
             "assemblyVersion": "9.0.0.0",
             "fileVersion": "9.0.925.41916"
+          }
+        }
+      },
+      "Microsoft.Extensions.Options.ConfigurationExtensions/9.0.8": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.9",
+          "Microsoft.Extensions.Configuration.Binder": "9.0.8",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9",
+          "Microsoft.Extensions.Options": "9.0.9",
+          "Microsoft.Extensions.Primitives": "9.0.9"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.825.36511"
           }
         }
       },
@@ -517,6 +585,13 @@
       "path": "microsoft.extensions.configuration.abstractions/9.0.9",
       "hashPath": "microsoft.extensions.configuration.abstractions.9.0.9.nupkg.sha512"
     },
+    "Microsoft.Extensions.Configuration.Binder/9.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0vK9DnYrYChdiH3yRZWkkp4x4LbrfkWEdBc5HOsQ8t/0CLOWKXKkkhOE8A1shlex0hGydbGrhObeypxz/QTm+w==",
+      "path": "microsoft.extensions.configuration.binder/9.0.8",
+      "hashPath": "microsoft.extensions.configuration.binder.9.0.8.nupkg.sha512"
+    },
     "Microsoft.Extensions.DependencyInjection/9.0.9": {
       "type": "package",
       "serviceable": true,
@@ -530,6 +605,27 @@
       "sha512": "sha512-/hymojfWbE9AlDOa0mczR44m00Jj+T3+HZO0ZnVTI032fVycI0ZbNOVFP6kqZMcXiLSYXzR2ilcwaRi6dzeGyA==",
       "path": "microsoft.extensions.dependencyinjection.abstractions/9.0.9",
       "hashPath": "microsoft.extensions.dependencyinjection.abstractions.9.0.9.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Diagnostics/9.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BKkLCFXzJvNmdngeYBf72VXoZqTJSb1orvjdzDLaGobicoGFBPW8ug2ru1nnEewMEwJzMgnsjHQY8EaKWmVhKg==",
+      "path": "microsoft.extensions.diagnostics/9.0.8",
+      "hashPath": "microsoft.extensions.diagnostics.9.0.8.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Diagnostics.Abstractions/9.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UDY7blv4DCyIJ/8CkNrQKLaAZFypXQavRZ2DWf/2zi1mxYYKKw2t8AOCBWxNntyPZHPGhtEmL3snFM98ADZqTw==",
+      "path": "microsoft.extensions.diagnostics.abstractions/9.0.8",
+      "hashPath": "microsoft.extensions.diagnostics.abstractions.9.0.8.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Http/9.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jDj+4aDByk47oESlDDTtk6LWzlXlmoCsjCn6ihd+i9OntN885aPLszUII5+w0B/7wYSZcS3KdjqLAIhKLSiBXQ==",
+      "path": "microsoft.extensions.http/9.0.8",
+      "hashPath": "microsoft.extensions.http.9.0.8.nupkg.sha512"
     },
     "Microsoft.Extensions.Logging/9.0.9": {
       "type": "package",
@@ -558,6 +654,13 @@
       "sha512": "sha512-loxGGHE1FC2AefwPHzrjPq7X92LQm64qnU/whKfo6oWaceewPUVYQJBJs3S3E2qlWwnCpeZ+dGCPTX+5dgVAuQ==",
       "path": "microsoft.extensions.options/9.0.9",
       "hashPath": "microsoft.extensions.options.9.0.9.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Options.ConfigurationExtensions/9.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-eW2s6n06x0w6w4nsX+SvpgsFYkl+Y0CttYAt6DKUXeqprX+hzNqjSfOh637fwNJBg7wRBrOIRHe49gKiTgJxzQ==",
+      "path": "microsoft.extensions.options.configurationextensions/9.0.8",
+      "hashPath": "microsoft.extensions.options.configurationextensions.9.0.8.nupkg.sha512"
     },
     "Microsoft.Extensions.Primitives/9.0.9": {
       "type": "package",

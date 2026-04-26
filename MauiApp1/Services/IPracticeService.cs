@@ -6,6 +6,8 @@ public interface IPracticeService
 {
     Task<List<PracticeTopic>> GetTopicsAsync();
     Task<PracticeSession> StartPracticeSessionAsync(int topicId, int questionCount, string note = "");
+    Task<int> GetCriticalSummaryAsync();
+    Task<string> StartCriticalPracticeAsync(int size = 10);
     Task<PracticeSession> GetPracticeSessionAsync(string sessionId);
     Task<PracticeAnswerSubmissionResult> SubmitAnswerAsync(string sessionId, string questionId, string answerId);
     Task<PracticeSessionResult> SubmitPracticeSessionAsync(string sessionId);

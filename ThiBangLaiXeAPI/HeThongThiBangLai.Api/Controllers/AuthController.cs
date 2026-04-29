@@ -101,13 +101,25 @@ public class AuthController : ControllerBase
 
     [HttpGet("me")]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResponse<MeResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<MeUserResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetCurrentUserProfile()
+    public async Task<IActionResult> GetCurrentUser()
     {
         var userId = GetCurrentUserId();
-        var result = await _authService.GetCurrentUserProfileAsync(userId);
-        return Ok(ApiResponseFactory.Success(result, "User profile retrieved successfully"));
+        var result = await _authService.GetCurrentUserAsync(userId);
+        return Ok(ApiResponseFactory.Success(result, "User info retrieved successfully"));
+    }
+
+    [HttpGet("me/student-profile")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResponse<MeStudentProfileResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCurrentStudentProfile()
+    {
+        var userId = GetCurrentUserId();
+        var result = await _authService.GetCurrentStudentProfileAsync(userId);
+        return Ok(ApiResponseFactory.Success(result, "Student profile retrieved successfully"));
     }
 
     [HttpPut("me")]

@@ -430,7 +430,16 @@ public class AuthService : IAuthService
         await _authRepository.SaveChangesAsync();
     }
 
-    public async Task<MeResponseDto> GetCurrentUserProfileAsync(long userId)
+    public async Task<MeUserResponseDto> GetCurrentUserAsync(long userId)
+    {
+        var user = await _authRepository.FindUserByIdAsync(userId)
+            ?? throw new KeyNotFoundException("Không tìm thấy người dùng.");
+
+        var roles = await _authRepository.GetRolesByUserIdAsync(user.id);
+        return MapUser(user, roles.Select(x => x.ma_vai_tro).ToList());
+    }
+
+    public async Task<MeStudentProfileResponseDto> GetCurrentStudentProfileAsync(long userId)
     {
         var user = await _authRepository.FindUserByIdAsync(userId)
             ?? throw new KeyNotFoundException("Không tìm thấy người dùng.");
@@ -438,8 +447,7 @@ public class AuthService : IAuthService
         var hocVien = await _authRepository.FindHocVienByUserIdAsync(userId)
             ?? throw new KeyNotFoundException("Không tìm thấy hồ sơ học viên.");
 
-        var roles = await _authRepository.GetRolesByUserIdAsync(user.id);
-        return MapProfile(user, hocVien, roles.Select(x => x.ma_vai_tro).ToList());
+        return MapStudentProfile(user.id, hocVien);
     }
 
     public async Task<MeResponseDto> UpdateCurrentUserProfileAsync(long userId, UpdateMeRequestDto request, string? ipAddress = null)
@@ -491,6 +499,34 @@ public class AuthService : IAuthService
 
         var roles = await _authRepository.GetRolesByUserIdAsync(user.id);
         return MapProfile(user, hocVien, roles.Select(x => x.ma_vai_tro).ToList());
+    }
+
+    private static MeUserResponseDto MapUser(nguoi_dung user, List<string> roles)
+    {
+        return new MeUserResponseDto
+        {
+            user_id = user.id,
+            ten_dang_nhap = user.ten_dang_nhap,
+            email = user.email,
+            so_dien_thoai = user.so_dien_thoai,
+            trang_thai = user.trang_thai,
+            roles = roles
+        };
+    }
+
+    private static MeStudentProfileResponseDto MapStudentProfile(long userId, hoc_vien hocVien)
+    {
+        return new MeStudentProfileResponseDto
+        {
+            hoc_vien_id = hocVien.id,
+            user_id = userId,
+            ho_ten = hocVien.ho_ten,
+            ngay_sinh = hocVien.ngay_sinh,
+            gioi_tinh = hocVien.gioi_tinh,
+            cccd = hocVien.cccd,
+            dia_chi = hocVien.dia_chi,
+            anh_chan_dung = hocVien.anh_chan_dung
+        };
     }
 
     private MeResponseDto MapProfile(nguoi_dung user, hoc_vien hocVien, List<string> roles)

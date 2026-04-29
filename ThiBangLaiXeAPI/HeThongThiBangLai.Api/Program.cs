@@ -230,6 +230,7 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseCors("LocalAdminTools");
 

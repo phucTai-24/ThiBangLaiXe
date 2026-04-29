@@ -11,6 +11,7 @@ public interface IAuthService
     Task<ForgotPasswordResponseDto> ForgotPasswordAsync(ForgotPasswordRequestDto request, string? ipAddress = null);
     Task ResetPasswordAsync(ResetPasswordRequestDto request, string? ipAddress = null);
     Task ChangePasswordAsync(long userId, ChangePasswordRequestDto request, string? ipAddress = null);
-    Task<MeResponseDto> GetCurrentUserProfileAsync(long userId);
+    Task<MeUserResponseDto> GetCurrentUserAsync(long userId);
+    Task<MeStudentProfileResponseDto> GetCurrentStudentProfileAsync(long userId);
     Task<MeResponseDto> UpdateCurrentUserProfileAsync(long userId, UpdateMeRequestDto request, string? ipAddress = null);
 }

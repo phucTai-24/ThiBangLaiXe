@@ -13,13 +13,17 @@ public class QuestionService : IQuestionService
 {
     private readonly IQuestionRepository _repository;
     private readonly IMapper _mapper;
-    private readonly string? _assetsBaseUrl;
+    private readonly string _assetsBaseUrl;
 
     public QuestionService(IQuestionRepository repository, IMapper mapper, IConfiguration configuration)
     {
         _repository = repository;
         _mapper = mapper;
-        _assetsBaseUrl = configuration["Assets:BaseUrl"]?.TrimEnd('/');
+
+        var configuredAssetsBaseUrl = configuration["Assets:BaseUrl"]?.Trim();
+        _assetsBaseUrl = string.IsNullOrWhiteSpace(configuredAssetsBaseUrl)
+            ? "/assets"
+            : configuredAssetsBaseUrl.TrimEnd('/');
     }
 
     public async Task<ApiResponse<QuestionDto>> GetByIdAsync(long id)
@@ -156,13 +160,10 @@ public class QuestionService : IQuestionService
         };
     }
 
-    private static string BuildQuestionImageUrl(long questionId, string? assetsBaseUrl)
+    private static string BuildQuestionImageUrl(long questionId, string assetsBaseUrl)
     {
         var extension = questionId is >= 212 and <= 215 ? "png" : "jpg";
         var fileName = $"{questionId}.{extension}";
-
-        if (string.IsNullOrWhiteSpace(assetsBaseUrl))
-            return $"/assets/{fileName}";
 
         return $"{assetsBaseUrl}/{fileName}";
     }

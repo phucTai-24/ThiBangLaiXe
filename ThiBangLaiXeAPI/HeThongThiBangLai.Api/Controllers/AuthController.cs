@@ -124,7 +124,7 @@ public class AuthController : ControllerBase
 
     [HttpPut("me")]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResponse<MeResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<MeUserResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> UpdateCurrentUserProfile([FromBody] UpdateMeRequestDto request)

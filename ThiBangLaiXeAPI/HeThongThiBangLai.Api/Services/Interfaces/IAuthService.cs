@@ -13,5 +13,5 @@ public interface IAuthService
     Task ChangePasswordAsync(long userId, ChangePasswordRequestDto request, string? ipAddress = null);
     Task<MeUserResponseDto> GetCurrentUserAsync(long userId);
     Task<MeStudentProfileResponseDto> GetCurrentStudentProfileAsync(long userId);
-    Task<MeResponseDto> UpdateCurrentUserProfileAsync(long userId, UpdateMeRequestDto request, string? ipAddress = null);
+    Task<MeUserResponseDto> UpdateCurrentUserProfileAsync(long userId, UpdateMeRequestDto request, string? ipAddress = null);
 }

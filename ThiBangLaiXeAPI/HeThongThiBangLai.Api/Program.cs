@@ -31,6 +31,7 @@ using HeThongThiBangLai.Api.Services.Cms;
 using HeThongThiBangLai.Api.Services.Exams;
 using HeThongThiBangLai.Api.Services.Entitlements;
 using HeThongThiBangLai.Api.Services.Certificates;
+using HeThongThiBangLai.Api.Services.Courses;
 using HeThongThiBangLai.Api.Services.Interfaces;
 using HeThongThiBangLai.Api.Services.Questions;
 using HeThongThiBangLai.Api.Services.Topics;
@@ -108,6 +109,17 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("LocalAdminTools", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 // GlobalExceptionMiddleware is used via UseMiddleware (no DI registration needed)
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -141,6 +153,9 @@ builder.Services.AddScoped<IEntitlementService, EntitlementService>();
 // Certificates
 builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
 builder.Services.AddScoped<ICertificateService, CertificateService>();
+
+// Courses
+builder.Services.AddScoped<ICourseService, CourseService>();
 
 // Sample exams
 builder.Services.AddScoped<ISampleExamRepository, SampleExamRepository>();
@@ -218,6 +233,10 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseCors("LocalAdminTools");
 
 // Global exception middleware must be before other middleware
 app.UseMiddleware<GlobalExceptionMiddleware>();

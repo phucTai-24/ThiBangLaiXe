@@ -1,6 +1,8 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using HeThongThiBangLai.Api.Common.Exceptions;
+using HeThongThiBangLai.Api.Common.Responses;
 using HeThongThiBangLai.Api.DTOs.Auth;
 using HeThongThiBangLai.Api.Models;
 using HeThongThiBangLai.Api.Repositories.Interfaces;
@@ -37,6 +39,8 @@ public class AuthService : IAuthService
     {
         var username = request.ten_dang_nhap.Trim();
         var email = request.email.Trim().ToLowerInvariant();
+        var phoneNumber = string.IsNullOrWhiteSpace(request.so_dien_thoai) ? null : request.so_dien_thoai.Trim();
+        var cccd = string.IsNullOrWhiteSpace(request.cccd) ? null : request.cccd.Trim();
 
         if (string.IsNullOrWhiteSpace(username))
             throw new InvalidOperationException("Tên đăng nhập không hợp lệ.");
@@ -47,20 +51,67 @@ public class AuthService : IAuthService
         if (string.IsNullOrWhiteSpace(request.mat_khau) || request.mat_khau.Length < 8)
             throw new InvalidOperationException("Mật khẩu phải có ít nhất 8 ký tự.");
 
+        var conflictErrors = new List<ApiError>();
+
         var existedByUsername = await _authRepository.FindUserByUsernameAsync(username);
         if (existedByUsername is not null)
-            throw new InvalidOperationException("Tên đăng nhập đã tồn tại.");
+        {
+            conflictErrors.Add(new ApiError
+            {
+                Code = "TRUNG_TEN_DANG_NHAP",
+                Field = "ten_dang_nhap",
+                Detail = "Tên đăng nhập đã tồn tại trong hệ thống."
+            });
+        }
 
         var existedByEmail = await _authRepository.FindUserByEmailAsync(email);
         if (existedByEmail is not null)
-            throw new InvalidOperationException("Email đã tồn tại.");
+        {
+            conflictErrors.Add(new ApiError
+            {
+                Code = "TRUNG_EMAIL",
+                Field = "email",
+                Detail = "Email đã tồn tại trong hệ thống."
+            });
+        }
+
+        if (!string.IsNullOrWhiteSpace(phoneNumber))
+        {
+            var existedByPhoneNumber = await _authRepository.FindUserByPhoneNumberAsync(phoneNumber);
+            if (existedByPhoneNumber is not null)
+            {
+                conflictErrors.Add(new ApiError
+                {
+                    Code = "TRUNG_SO_DIEN_THOAI",
+                    Field = "so_dien_thoai",
+                    Detail = "Số điện thoại đã tồn tại trong hệ thống."
+                });
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(cccd))
+        {
+            var existedByCccd = await _authRepository.FindHocVienByCccdAsync(cccd);
+            if (existedByCccd is not null)
+            {
+                conflictErrors.Add(new ApiError
+                {
+                    Code = "TRUNG_CCCD",
+                    Field = "cccd",
+                    Detail = "CCCD đã tồn tại trong hệ thống."
+                });
+            }
+        }
+
+        if (conflictErrors.Count > 0)
+            throw new ConflictAppException("Thông tin đăng ký đã tồn tại trong hệ thống.", "THONG_TIN_DANG_KY_BI_TRUNG", conflictErrors);
 
         var now = DateTime.UtcNow;
         var user = new nguoi_dung
         {
             ten_dang_nhap = username,
             email = email,
-            so_dien_thoai = string.IsNullOrWhiteSpace(request.so_dien_thoai) ? null : request.so_dien_thoai.Trim(),
+            so_dien_thoai = phoneNumber,
             trang_thai = "hoat_dong",
             created_at = now,
             updated_at = now
@@ -86,7 +137,7 @@ public class AuthService : IAuthService
             ho_ten = string.IsNullOrWhiteSpace(request.ho_ten) ? username : request.ho_ten.Trim(),
             ngay_sinh = request.ngay_sinh,
             gioi_tinh = request.gioi_tinh,
-            cccd = request.cccd,
+            cccd = cccd,
             dia_chi = request.dia_chi,
             anh_chan_dung = request.anh_chan_dung,
             created_at = now

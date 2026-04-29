@@ -39,6 +39,18 @@ public class QuestionService : IQuestionService
         return ApiResponseFactory.SuccessPaged(pagedDtos, "Questions retrieved successfully");
     }
 
+    public async Task<ApiResponse<PagedList<QuestionWithAnswersDto>>> GetListWithAnswersAsync(int page = 1, int pageSize = 20, string? search = null, long? topicId = null, string? topicCode = null, string? status = null, bool? isCritical = null, bool includeCorrectAnswer = false)
+    {
+        page = Math.Max(page, 1);
+        pageSize = Math.Clamp(pageSize, 1, 200);
+
+        var pagedQuestions = await _repository.GetPagedWithAnswersAsync(page, pageSize, search, topicId, topicCode, status, isCritical, includeCorrectAnswer);
+        var dtos = pagedQuestions.Items.Select(question => MapWithAnswers(question, includeCorrectAnswer)).ToList();
+        var pagedDtos = new PagedList<QuestionWithAnswersDto>(dtos, pagedQuestions.TotalCount, page, pageSize);
+
+        return ApiResponseFactory.SuccessPaged(pagedDtos, "Questions with answers retrieved successfully");
+    }
+
     public async Task<ApiResponse<QuestionDto>> CreateAsync(CreateQuestionRequestDto request)
     {
         var question = _mapper.Map<cau_hoi>(request);
@@ -109,5 +121,37 @@ public class QuestionService : IQuestionService
 
         _repository.Remove(question);
         await _repository.SaveChangesAsync();
+    }
+    private static QuestionWithAnswersDto MapWithAnswers(cau_hoi question, bool includeCorrectAnswer)
+    {
+        var imageUrl = question.id >= 29
+            ? question.id is >= 212 and <= 215
+                ? $"/assets/{question.id}.png"
+                : $"/assets/{question.id}.jpg"
+            : null;
+
+        return new QuestionWithAnswersDto
+        {
+            Id = question.id,
+            TopicId = question.chu_de_id,
+            TopicCode = question.chu_de.ma_chu_de,
+            TopicName = question.chu_de.ten_chu_de,
+            Content = question.noi_dung,
+            QuestionType = question.loai_cau_hoi,
+            Level = question.muc_do,
+            IsCritical = question.la_cau_diem_liet,
+            Status = question.trang_thai,
+            ImageUrl = imageUrl,
+            Answers = question.dap_ans
+                .OrderBy(answer => answer.thu_tu)
+                .Select(answer => new QuestionAnswerOptionDto
+                {
+                    AnswerId = answer.id,
+                    Content = answer.noi_dung,
+                    Order = answer.thu_tu,
+                    IsCorrect = includeCorrectAnswer ? answer.la_dap_an_dung : null
+                })
+                .ToList()
+        };
     }
 }

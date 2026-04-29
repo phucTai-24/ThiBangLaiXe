@@ -462,7 +462,6 @@ D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\refint
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.pdb
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.genruntimeconfig.cache
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\ref\HeThongThiBangLai.Api.dll
-D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.exe
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\appsettings.Development.json
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\appsettings.json
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\global.json
@@ -597,3 +596,4 @@ d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\runtim
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\HeThongThiBangLai.Api.staticwebassets.runtime.json
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.staticwebassets.runtime.json
+D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.exe

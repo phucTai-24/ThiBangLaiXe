@@ -40,7 +40,6 @@ public class AuthService : IAuthService
         var username = request.ten_dang_nhap.Trim();
         var email = request.email.Trim().ToLowerInvariant();
         var phoneNumber = string.IsNullOrWhiteSpace(request.so_dien_thoai) ? null : request.so_dien_thoai.Trim();
-        var cccd = string.IsNullOrWhiteSpace(request.cccd) ? null : request.cccd.Trim();
 
         if (string.IsNullOrWhiteSpace(username))
             throw new InvalidOperationException("Tên đăng nhập không hợp lệ.");
@@ -89,22 +88,8 @@ public class AuthService : IAuthService
             }
         }
 
-        if (!string.IsNullOrWhiteSpace(cccd))
-        {
-            var existedByCccd = await _authRepository.FindHocVienByCccdAsync(cccd);
-            if (existedByCccd is not null)
-            {
-                conflictErrors.Add(new ApiError
-                {
-                    Code = "TRUNG_CCCD",
-                    Field = "cccd",
-                    Detail = "CCCD đã tồn tại trong hệ thống."
-                });
-            }
-        }
-
         if (conflictErrors.Count > 0)
-            throw new ConflictAppException("Thông tin đăng ký đã tồn tại trong hệ thống.", "THONG_TIN_DANG_KY_BI_TRUNG", conflictErrors);
+            throw new ConflictAppException("Thông tin tài khoản đã tồn tại trong hệ thống.", "THONG_TIN_TAI_KHOAN_BI_TRUNG", conflictErrors);
 
         var now = DateTime.UtcNow;
         var user = new nguoi_dung
@@ -131,26 +116,13 @@ public class AuthService : IAuthService
             vai_tro_id = defaultRole.id
         });
 
-        var hocVien = new hoc_vien
-        {
-            nguoi_dung_id = user.id,
-            ho_ten = string.IsNullOrWhiteSpace(request.ho_ten) ? username : request.ho_ten.Trim(),
-            ngay_sinh = request.ngay_sinh,
-            gioi_tinh = request.gioi_tinh,
-            cccd = cccd,
-            dia_chi = request.dia_chi,
-            anh_chan_dung = request.anh_chan_dung,
-            created_at = now
-        };
-        await _authRepository.AddHocVienProfileAsync(hocVien);
-
         await _authRepository.AddSystemLogAsync(new nhat_ky_he_thong
         {
             nguoi_dung_id = user.id,
             hanh_dong = "REGISTER",
             bang_tac_dong = "nguoi_dung",
             khoa_chinh_du_lieu = user.id,
-            noi_dung = $"Đăng ký tài khoản {username} và gán role {DefaultHocVienRoleCode}",
+            noi_dung = $"Đăng ký người dùng {username} và gán role {DefaultHocVienRoleCode}",
             ip_address = ipAddress,
             created_at = now
         });
@@ -165,6 +137,80 @@ public class AuthService : IAuthService
             role_mac_dinh = DefaultHocVienRoleCode,
             created_at = user.created_at
         };
+    }
+
+    public async Task<MeResponseDto> RegisterStudentProfileAsync(long userId, RegisterStudentProfileRequestDto request, string? ipAddress = null)
+    {
+        var user = await _authRepository.FindUserByIdAsync(userId)
+            ?? throw new KeyNotFoundException("Không tìm thấy người dùng.");
+
+        var existedHocVien = await _authRepository.FindHocVienByUserIdAsync(userId);
+        if (existedHocVien is not null)
+        {
+            throw new ConflictAppException(
+                "Người dùng đã có hồ sơ học viên.",
+                "HOC_VIEN_DA_TON_TAI",
+                new List<ApiError>
+                {
+                    new()
+                    {
+                        Code = "HOC_VIEN_DA_TON_TAI",
+                        Field = "hoc_vien",
+                        Detail = "Người dùng đã có hồ sơ học viên."
+                    }
+                });
+        }
+
+        var cccd = string.IsNullOrWhiteSpace(request.cccd) ? null : request.cccd.Trim();
+        if (!string.IsNullOrWhiteSpace(cccd))
+        {
+            var existedByCccd = await _authRepository.FindHocVienByCccdAsync(cccd);
+            if (existedByCccd is not null)
+            {
+                throw new ConflictAppException(
+                    "CCCD đã tồn tại trong hệ thống.",
+                    "TRUNG_CCCD",
+                    new List<ApiError>
+                    {
+                        new()
+                        {
+                            Code = "TRUNG_CCCD",
+                            Field = "cccd",
+                            Detail = "CCCD đã tồn tại trong hệ thống."
+                        }
+                    });
+            }
+        }
+
+        var now = DateTime.UtcNow;
+        var hocVien = new hoc_vien
+        {
+            nguoi_dung_id = user.id,
+            ho_ten = request.ho_ten.Trim(),
+            ngay_sinh = request.ngay_sinh,
+            gioi_tinh = request.gioi_tinh,
+            cccd = cccd,
+            dia_chi = request.dia_chi,
+            anh_chan_dung = request.anh_chan_dung,
+            created_at = now
+        };
+
+        await _authRepository.AddHocVienProfileAsync(hocVien);
+        await _authRepository.AddSystemLogAsync(new nhat_ky_he_thong
+        {
+            nguoi_dung_id = user.id,
+            hanh_dong = "REGISTER_STUDENT_PROFILE",
+            bang_tac_dong = "hoc_vien",
+            khoa_chinh_du_lieu = hocVien.id,
+            noi_dung = $"Đăng ký hồ sơ học viên cho người dùng {user.ten_dang_nhap}",
+            ip_address = ipAddress,
+            created_at = now
+        });
+
+        await _authRepository.SaveChangesAsync();
+
+        var roles = await _authRepository.GetRolesByUserIdAsync(user.id);
+        return MapProfile(user, hocVien, roles.Select(x => x.ma_vai_tro).ToList());
     }
 
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request, string? ipAddress = null)

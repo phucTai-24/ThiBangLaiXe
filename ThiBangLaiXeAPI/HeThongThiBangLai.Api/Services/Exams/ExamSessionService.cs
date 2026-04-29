@@ -18,8 +18,7 @@ public class ExamSessionService : IExamSessionService
 
     public async Task<ApiResponse<StartExamSessionResponseDto>> StartSampleExamAsync(long userId, long sampleExamId)
     {
-        var student = await _repository.GetStudentByUserIdAsync(userId)
-            ?? throw new NotFoundAppException("Candidate profile not found");
+        var student = await _repository.GetOrCreateStudentByUserIdAsync(userId);
 
         var sampleExam = await _repository.GetPublishedSampleExamByIdAsync(sampleExamId)
             ?? throw new NotFoundAppException("Published sample exam not found");
@@ -233,8 +232,7 @@ public class ExamSessionService : IExamSessionService
 
     private async Task<bai_thi> GetSessionOrThrowAsync(long userId, long sessionId)
     {
-        var student = await _repository.GetStudentByUserIdAsync(userId)
-            ?? throw new NotFoundAppException("Candidate profile not found");
+        var student = await _repository.GetOrCreateStudentByUserIdAsync(userId);
 
         var session = await _repository.GetSessionByIdForStudentAsync(sessionId, student.id)
             ?? throw new NotFoundAppException("Exam session not found");

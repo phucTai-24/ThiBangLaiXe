@@ -32,6 +32,19 @@ public class AuthController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, ApiResponseFactory.Created(result, "Registration successful"));
     }
 
+    [HttpPost("register-student-profile")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResponse<MeResponseDto>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> RegisterStudentProfile([FromBody] RegisterStudentProfileRequestDto request)
+    {
+        var userId = GetCurrentUserId();
+        var result = await _authService.RegisterStudentProfileAsync(userId, request, GetClientIpAddress());
+        return StatusCode(StatusCodes.Status201Created, ApiResponseFactory.Created(result, "Student profile registration successful"));
+    }
+
     [HttpPost("login")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(ApiResponse<LoginResponseDto>), StatusCodes.Status200OK)]

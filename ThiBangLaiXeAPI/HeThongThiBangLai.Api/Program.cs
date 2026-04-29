@@ -217,9 +217,6 @@ builder.Services.AddAuthorization(options =>
 
     options.AddPolicy("CanIssueCertificate", policy =>
         policy.RequireRole("ADMIN", "GIAO_VIEN"));
-
-    options.AddPolicy("CanTakeExam", policy =>
-        policy.RequireRole("ADMIN", "HOC_VIEN"));
 });
 
 var app = builder.Build();
@@ -233,8 +230,6 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseHttpsRedirection();
-
-app.UseStaticFiles();
 
 app.UseCors("LocalAdminTools");
 

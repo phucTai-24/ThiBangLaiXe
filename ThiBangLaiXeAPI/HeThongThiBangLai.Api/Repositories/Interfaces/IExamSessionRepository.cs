@@ -4,7 +4,7 @@ namespace HeThongThiBangLai.Api.Repositories.Interfaces;
 
 public interface IExamSessionRepository
 {
-    Task<hoc_vien?> GetStudentByUserIdAsync(long userId);
+    Task<hoc_vien> GetOrCreateStudentByUserIdAsync(long userId);
     Task<de_thi?> GetPublishedSampleExamByIdAsync(long sampleExamId);
 
     Task AddExamSessionAsync(bai_thi session);

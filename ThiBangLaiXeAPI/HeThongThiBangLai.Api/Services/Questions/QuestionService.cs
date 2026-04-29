@@ -5,6 +5,7 @@ using HeThongThiBangLai.Api.DTOs.Questions;
 using HeThongThiBangLai.Api.Models;
 using HeThongThiBangLai.Api.Repositories.Interfaces;
 using HeThongThiBangLai.Api.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace HeThongThiBangLai.Api.Services.Questions;
 
@@ -12,11 +13,13 @@ public class QuestionService : IQuestionService
 {
     private readonly IQuestionRepository _repository;
     private readonly IMapper _mapper;
+    private readonly string? _assetsBaseUrl;
 
-    public QuestionService(IQuestionRepository repository, IMapper mapper)
+    public QuestionService(IQuestionRepository repository, IMapper mapper, IConfiguration configuration)
     {
         _repository = repository;
         _mapper = mapper;
+        _assetsBaseUrl = configuration["Assets:BaseUrl"]?.TrimEnd('/');
     }
 
     public async Task<ApiResponse<QuestionDto>> GetByIdAsync(long id)
@@ -45,7 +48,7 @@ public class QuestionService : IQuestionService
         pageSize = Math.Clamp(pageSize, 1, 200);
 
         var pagedQuestions = await _repository.GetPagedWithAnswersAsync(page, pageSize, search, topicId, topicCode, status, isCritical, includeCorrectAnswer);
-        var dtos = pagedQuestions.Items.Select(question => MapWithAnswers(question, includeCorrectAnswer)).ToList();
+        var dtos = pagedQuestions.Items.Select(question => MapWithAnswers(question, includeCorrectAnswer, _assetsBaseUrl)).ToList();
         var pagedDtos = new PagedList<QuestionWithAnswersDto>(dtos, pagedQuestions.TotalCount, page, pageSize);
 
         return ApiResponseFactory.SuccessPaged(pagedDtos, "Questions with answers retrieved successfully");
@@ -122,12 +125,10 @@ public class QuestionService : IQuestionService
         _repository.Remove(question);
         await _repository.SaveChangesAsync();
     }
-    private static QuestionWithAnswersDto MapWithAnswers(cau_hoi question, bool includeCorrectAnswer)
+    private static QuestionWithAnswersDto MapWithAnswers(cau_hoi question, bool includeCorrectAnswer, string? assetsBaseUrl)
     {
         var imageUrl = question.id >= 29
-            ? question.id is >= 212 and <= 215
-                ? $"/assets/{question.id}.png"
-                : $"/assets/{question.id}.jpg"
+            ? BuildQuestionImageUrl(question.id, assetsBaseUrl)
             : null;
 
         return new QuestionWithAnswersDto
@@ -153,5 +154,16 @@ public class QuestionService : IQuestionService
                 })
                 .ToList()
         };
+    }
+
+    private static string BuildQuestionImageUrl(long questionId, string? assetsBaseUrl)
+    {
+        var extension = questionId is >= 212 and <= 215 ? "png" : "jpg";
+        var fileName = $"{questionId}.{extension}";
+
+        if (string.IsNullOrWhiteSpace(assetsBaseUrl))
+            return $"/assets/{fileName}";
+
+        return $"{assetsBaseUrl}/{fileName}";
     }
 }

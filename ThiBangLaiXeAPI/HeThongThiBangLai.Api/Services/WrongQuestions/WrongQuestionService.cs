@@ -18,11 +18,7 @@ public class WrongQuestionService : IWrongQuestionService
 
     public async Task<ApiResponse<WrongPracticeSessionDto>> CreatePracticeSessionAsync(long userId, CreateWrongPracticeSessionRequestDto request)
     {
-        var student = await _repository.GetStudentByUserIdAsync(userId);
-        if (student == null)
-        {
-            throw new NotFoundAppException("Candidate profile not found");
-        }
+        var student = await _repository.GetOrCreateStudentByUserIdAsync(userId);
 
         var questionIds = request.QuestionIds
             .Distinct()
@@ -55,16 +51,12 @@ public class WrongQuestionService : IWrongQuestionService
             .Join(questions, id => id, question => question.id, (_, question) => question)
             .ToList();
 
-        return await CreatePracticeSessionInternalAsync(student.id, orderedQuestions);
+        return await CreatePracticeSessionInternalAsync(userId, student.id, orderedQuestions);
     }
 
     public async Task<ApiResponse<List<WrongQuestionDto>>> GetListAsync(long userId)
     {
-        var student = await _repository.GetStudentByUserIdAsync(userId);
-        if (student == null)
-        {
-            throw new NotFoundAppException("Candidate profile not found");
-        }
+        var student = await _repository.GetOrCreateStudentByUserIdAsync(userId);
 
         var stats = await _repository.GetWrongQuestionStatsAsync(student.id);
         var handledQuestionIds = await _repository.GetHandledQuestionIdsAsync(userId);
@@ -94,11 +86,7 @@ public class WrongQuestionService : IWrongQuestionService
 
     public async Task<ApiResponse<WrongQuestionSummaryDto>> GetSummaryAsync(long userId)
     {
-        var student = await _repository.GetStudentByUserIdAsync(userId);
-        if (student == null)
-        {
-            throw new NotFoundAppException("Candidate profile not found");
-        }
+        var student = await _repository.GetOrCreateStudentByUserIdAsync(userId);
 
         var stats = await _repository.GetWrongQuestionStatsAsync(student.id);
         var totalWrongQuestions = stats.Count;
@@ -124,11 +112,7 @@ public class WrongQuestionService : IWrongQuestionService
 
     public async Task<ApiResponse<WrongPracticeSessionDto>> StartPracticeAsync(long userId, StartWrongPracticeRequestDto request)
     {
-        var student = await _repository.GetStudentByUserIdAsync(userId);
-        if (student == null)
-        {
-            throw new NotFoundAppException("Candidate profile not found");
-        }
+        var student = await _repository.GetOrCreateStudentByUserIdAsync(userId);
 
         var stats = await _repository.GetWrongQuestionStatsAsync(student.id);
         var handledQuestionIds = await _repository.GetHandledQuestionIdsAsync(userId);
@@ -149,10 +133,10 @@ public class WrongQuestionService : IWrongQuestionService
             .Take(request.Size)
             .ToList();
 
-        return await CreatePracticeSessionInternalAsync(student.id, selectedQuestions);
+        return await CreatePracticeSessionInternalAsync(userId, student.id, selectedQuestions);
     }
 
-    private async Task<ApiResponse<WrongPracticeSessionDto>> CreatePracticeSessionInternalAsync(long studentId, List<cau_hoi> selectedQuestions)
+    private async Task<ApiResponse<WrongPracticeSessionDto>> CreatePracticeSessionInternalAsync(long userId, long studentId, List<cau_hoi> selectedQuestions)
     {
         var now = DateTime.UtcNow;
 
@@ -183,7 +167,7 @@ public class WrongQuestionService : IWrongQuestionService
 
         await _repository.AddSystemLogAsync(new nhat_ky_he_thong
         {
-            nguoi_dung_id = null,
+            nguoi_dung_id = userId,
             hanh_dong = "wrong_practice_started",
             bang_tac_dong = "phien_on_tap",
             khoa_chinh_du_lieu = session.id,
@@ -247,11 +231,7 @@ public class WrongQuestionService : IWrongQuestionService
 
     private async Task EnsureQuestionIsInWrongPoolAsync(long userId, long questionId)
     {
-        var student = await _repository.GetStudentByUserIdAsync(userId);
-        if (student == null)
-        {
-            throw new NotFoundAppException("Candidate profile not found");
-        }
+        var student = await _repository.GetOrCreateStudentByUserIdAsync(userId);
 
         var stats = await _repository.GetWrongQuestionStatsAsync(student.id);
         var existsInWrongPool = stats.Any(x => x.QuestionId == questionId);

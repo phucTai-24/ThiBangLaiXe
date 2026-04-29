@@ -346,6 +346,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.ma_de_thi)
                 .HasMaxLength(30)
                 .IsUnicode(false);
+            entity.Property(e => e.loai_de_thi).HasMaxLength(50);
             entity.Property(e => e.ngay_tao).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.ten_de_thi).HasMaxLength(150);
             entity.Property(e => e.trang_thai)

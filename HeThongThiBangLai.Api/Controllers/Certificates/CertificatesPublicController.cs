@@ -4,7 +4,7 @@ using HeThongThiBangLai.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HeThongThiBangLai.Api.Controllers;
+namespace HeThongThiBangLai.Api.Controllers.Certificates;
 
 [ApiController]
 [Route("api/v1/public/certificates")]

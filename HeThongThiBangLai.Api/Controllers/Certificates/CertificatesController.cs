@@ -6,7 +6,7 @@ using HeThongThiBangLai.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HeThongThiBangLai.Api.Controllers;
+namespace HeThongThiBangLai.Api.Controllers.Certificates;
 
 [ApiController]
 [Route("api/v1/certificates")]
@@ -71,7 +71,7 @@ public class CertificatesController : ControllerBase
             ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (!long.TryParse(userIdClaim, out var userId))
-            throw new UnauthorizedAccessException("Token không hợp lệ hoặc thiếu thông tin người dùng.");
+            throw new UnauthorizedAccessException("Token khong hop le hoac thieu thong tin nguoi dung.");
 
         return userId;
     }

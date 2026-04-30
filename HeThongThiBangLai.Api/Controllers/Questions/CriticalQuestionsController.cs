@@ -1,12 +1,12 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using HeThongThiBangLai.Api.Common.Responses;
 using HeThongThiBangLai.Api.DTOs.CriticalQuestions;
 using HeThongThiBangLai.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
-namespace HeThongThiBangLai.Api.Controllers;
+namespace HeThongThiBangLai.Api.Controllers.Questions;
 
 [ApiController]
 [Route("api/v1/critical-questions")]
@@ -60,7 +60,7 @@ public class CriticalQuestionsController : ControllerBase
             ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (!long.TryParse(userIdClaim, out var userId))
-            throw new UnauthorizedAccessException("Token không hợp lệ hoặc thiếu thông tin người dùng.");
+            throw new UnauthorizedAccessException("Token khong hop le hoac thieu thong tin nguoi dung.");
 
         return userId;
     }

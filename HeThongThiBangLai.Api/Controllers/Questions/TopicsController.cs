@@ -4,7 +4,7 @@ using HeThongThiBangLai.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HeThongThiBangLai.Api.Controllers;
+namespace HeThongThiBangLai.Api.Controllers.Questions;
 
 [ApiController]
 [Route("api/v1/question-topics")]

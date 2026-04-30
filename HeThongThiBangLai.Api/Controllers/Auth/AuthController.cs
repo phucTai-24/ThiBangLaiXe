@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 
-namespace HeThongThiBangLai.Api.Controllers;
+namespace HeThongThiBangLai.Api.Controllers.Auth;
 
 [ApiController]
 [Route("api/v1/auth")]
@@ -115,7 +115,7 @@ public class AuthController : ControllerBase
             ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (!long.TryParse(userIdClaim, out var userId))
-            throw new UnauthorizedAccessException("Token không hợp lệ hoặc thiếu thông tin người dùng.");
+            throw new UnauthorizedAccessException("Token khong hop le hoac thieu thong tin nguoi dung.");
 
         return userId;
     }

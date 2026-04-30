@@ -6,6 +6,7 @@ using FluentValidation.AspNetCore;
 using HeThongThiBangLai.Api.Common.Exceptions;
 using HeThongThiBangLai.Api.Common.Middleware;
 using HeThongThiBangLai.Api.Common.Responses;
+using HeThongThiBangLai.Api.Configurations;
 using HeThongThiBangLai.Api.Data;
 using HeThongThiBangLai.Api.Mapping;
 using HeThongThiBangLai.Api.Repositories;
@@ -130,13 +131,19 @@ builder.Services.AddScoped<ITopicService, TopicService>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
 
-// CMS
-builder.Services.AddScoped<ICmsRepository, CmsRepository>();
-builder.Services.AddScoped<ICmsService, CmsService>();
+// CMS - Category
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+// CMS - Post
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 // Entitlements
-builder.Services.AddScoped<IEntitlementRepository, EntitlementRepository>();
-builder.Services.AddScoped<IEntitlementService, EntitlementService>();
+builder.Services.AddScoped<IEntitlementPackageRepository, EntitlementPackageRepository>();
+builder.Services.AddScoped<IEntitlementPackageService, EntitlementPackageService>();
+builder.Services.AddScoped<IUserEntitlementRepository, UserEntitlementRepository>();
+builder.Services.AddScoped<IUserEntitlementService, UserEntitlementService>();
 
 // Certificates
 builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
@@ -169,12 +176,16 @@ builder.Services.AddScoped<IExamSessionService, ExamSessionService>();
 // Exam structure rules
 builder.Services.AddScoped<IExamRuleRepository, ExamRuleRepository>();
 builder.Services.AddScoped<IExamRuleService, ExamRuleService>();
+builder.Services.AddScoped<IActiveExamRuleProvider, ActiveExamRuleProvider>();
 
-var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "HeThongThiBangLai.Api";
-var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "HeThongThiBangLai.Client";
-var jwtSecret = builder.Configuration["Jwt:SecretKey"];
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
+builder.Services.Configure<SwaggerOptions>(builder.Configuration.GetSection(SwaggerOptions.SectionName));
+builder.Services.Configure<ExamOptions>(builder.Configuration.GetSection(ExamOptions.SectionName));
 
-if (string.IsNullOrWhiteSpace(jwtSecret))
+var jwtOptions = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()
+    ?? throw new InvalidOperationException($"Missing required configuration: {JwtOptions.SectionName}");
+
+if (string.IsNullOrWhiteSpace(jwtOptions.SecretKey))
 {
     throw new InvalidOperationException("Missing required configuration: Jwt:SecretKey");
 }
@@ -189,9 +200,9 @@ builder.Services
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtIssuer,
-            ValidAudience = jwtAudience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
         };
     });
 

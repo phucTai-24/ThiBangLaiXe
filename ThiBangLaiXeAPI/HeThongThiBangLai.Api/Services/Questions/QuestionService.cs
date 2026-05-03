@@ -49,7 +49,7 @@ public class QuestionService : IQuestionService
     public async Task<ApiResponse<PagedList<QuestionWithAnswersDto>>> GetListWithAnswersAsync(int page = 1, int pageSize = 20, string? search = null, long? topicId = null, string? topicCode = null, string? status = null, bool? isCritical = null, bool includeCorrectAnswer = false)
     {
         page = Math.Max(page, 1);
-        pageSize = Math.Clamp(pageSize, 1, 200);
+        pageSize = Math.Max(pageSize, 1);
 
         var pagedQuestions = await _repository.GetPagedWithAnswersAsync(page, pageSize, search, topicId, topicCode, status, isCritical, includeCorrectAnswer);
         var dtos = pagedQuestions.Items.Select(question => MapWithAnswers(question, includeCorrectAnswer, _assetsBaseUrl)).ToList();

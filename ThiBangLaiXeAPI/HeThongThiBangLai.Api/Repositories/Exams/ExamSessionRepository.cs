@@ -38,6 +38,11 @@ public class ExamSessionRepository : IExamSessionRepository
         return student;
     }
 
+    public async Task<bool> UserExistsAsync(long userId)
+    {
+        return await _context.nguoi_dungs.AnyAsync(x => x.id == userId);
+    }
+
     public async Task<de_thi?> GetPublishedSampleExamByIdAsync(long sampleExamId)
     {
         return await _context.de_this
@@ -45,6 +50,34 @@ public class ExamSessionRepository : IExamSessionRepository
                 .ThenInclude(x => x.cau_hoi)
                     .ThenInclude(x => x.dap_ans)
             .FirstOrDefaultAsync(x => x.id == sampleExamId && x.trang_thai == "published");
+    }
+
+    public async Task<long> GetOrCreateSampleExamSlotIdAsync(long examPeriodId)
+    {
+        var existingSlot = await _context.ca_this
+            .OrderBy(x => x.id)
+            .FirstOrDefaultAsync(x => x.ky_thi_id == examPeriodId);
+
+        if (existingSlot is not null)
+        {
+            return existingSlot.id;
+        }
+
+        var slot = new ca_thi
+        {
+            ky_thi_id = examPeriodId,
+            ma_ca_thi = $"MOCK_{examPeriodId}",
+            ten_ca_thi = "Ca thi thử mô phỏng",
+            gio_bat_dau = new TimeOnly(0, 0),
+            gio_ket_thuc = new TimeOnly(23, 59),
+            phong_thi = "Online",
+            so_luong_toi_da = 999999
+        };
+
+        await _context.ca_this.AddAsync(slot);
+        await _context.SaveChangesAsync();
+
+        return slot.id;
     }
 
     public async Task AddExamSessionAsync(bai_thi session)
@@ -67,7 +100,7 @@ public class ExamSessionRepository : IExamSessionRepository
         _context.chi_tiet_bai_this.Update(detail);
     }
 
-    public async Task<bai_thi?> GetSessionByIdForStudentAsync(long sessionId, long hocVienId)
+    public async Task<bai_thi?> GetSessionByIdForUserAsync(long sessionId, long userId)
     {
         return await _context.bai_this
             .Include(x => x.de_thi)
@@ -76,7 +109,7 @@ public class ExamSessionRepository : IExamSessionRepository
                     .ThenInclude(x => x.dap_ans)
             .Include(x => x.chi_tiet_bai_this)
                 .ThenInclude(x => x.dap_an_chon)
-            .FirstOrDefaultAsync(x => x.id == sessionId && x.hoc_vien_id == hocVienId);
+            .FirstOrDefaultAsync(x => x.id == sessionId && x.nguoi_dung_id == userId);
     }
 
     public async Task<List<chi_tiet_bai_thi>> GetSessionDetailsAsync(long sessionId)

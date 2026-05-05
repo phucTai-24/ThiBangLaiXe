@@ -21,6 +21,30 @@ BEGIN
     EXEC(N'ALTER TABLE cau_hoi ADD giai_thich_dap_an NVARCHAR(2000) NULL;');
 END;
 
+-- Cho phép user thi thử trực tiếp mà không cần tạo hồ sơ học viên.
+-- bai_thi vẫn có thể gắn hoc_vien_id cho kỳ thi thật, nhưng thi_thu sẽ gắn nguoi_dung_id.
+IF COL_LENGTH('bai_thi', 'nguoi_dung_id') IS NULL
+BEGIN
+    EXEC(N'ALTER TABLE bai_thi ADD nguoi_dung_id BIGINT NULL;');
+END;
+
+IF COL_LENGTH('bai_thi', 'hoc_vien_id') IS NOT NULL
+BEGIN
+    EXEC(N'ALTER TABLE bai_thi ALTER COLUMN hoc_vien_id BIGINT NULL;');
+END;
+
+IF COL_LENGTH('bai_thi', 'nguoi_dung_id') IS NOT NULL
+   AND NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_bai_thi_nguoi_dung_id' AND object_id = OBJECT_ID('bai_thi'))
+BEGIN
+    EXEC(N'CREATE INDEX ix_bai_thi_nguoi_dung_id ON bai_thi(nguoi_dung_id);');
+END;
+
+IF COL_LENGTH('bai_thi', 'nguoi_dung_id') IS NOT NULL
+   AND NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'fk_bai_thi_nguoi_dung')
+BEGIN
+    EXEC(N'ALTER TABLE bai_thi WITH CHECK ADD CONSTRAINT fk_bai_thi_nguoi_dung FOREIGN KEY (nguoi_dung_id) REFERENCES nguoi_dung(id);');
+END;
+
 BEGIN TRANSACTION;
 
 DELETE FROM chi_tiet_bai_thi;

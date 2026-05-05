@@ -18,7 +18,10 @@ public class ExamSessionService : IExamSessionService
 
     public async Task<ApiResponse<StartExamSessionResponseDto>> StartSampleExamAsync(long userId, long sampleExamId)
     {
-        var student = await _repository.GetOrCreateStudentByUserIdAsync(userId);
+        if (!await _repository.UserExistsAsync(userId))
+        {
+            throw new NotFoundAppException("User not found");
+        }
 
         var sampleExam = await _repository.GetPublishedSampleExamByIdAsync(sampleExamId)
             ?? throw new NotFoundAppException("Published sample exam not found");
@@ -29,11 +32,13 @@ public class ExamSessionService : IExamSessionService
         }
 
         var startedAt = DateTime.UtcNow;
+        var examSlotId = await _repository.GetOrCreateSampleExamSlotIdAsync(sampleExam.ky_thi_id);
         var session = new bai_thi
         {
-            hoc_vien_id = student.id,
+            hoc_vien_id = null,
+            nguoi_dung_id = userId,
             de_thi_id = sampleExam.id,
-            ca_thi_id = sampleExam.ky_thi_id,
+            ca_thi_id = examSlotId,
             thoi_gian_bat_dau = startedAt,
             tong_so_cau = sampleExam.tong_so_cau,
             so_cau_dung = 0,
@@ -232,9 +237,7 @@ public class ExamSessionService : IExamSessionService
 
     private async Task<bai_thi> GetSessionOrThrowAsync(long userId, long sessionId)
     {
-        var student = await _repository.GetOrCreateStudentByUserIdAsync(userId);
-
-        var session = await _repository.GetSessionByIdForStudentAsync(sessionId, student.id)
+        var session = await _repository.GetSessionByIdForUserAsync(sessionId, userId)
             ?? throw new NotFoundAppException("Exam session not found");
 
         return session;

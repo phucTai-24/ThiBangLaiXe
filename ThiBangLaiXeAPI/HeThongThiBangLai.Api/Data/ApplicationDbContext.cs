@@ -110,6 +110,8 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasIndex(e => e.hoc_vien_id, "ix_bai_thi_hoc_vien_id");
 
+            entity.HasIndex(e => e.nguoi_dung_id, "ix_bai_thi_nguoi_dung_id");
+
             entity.Property(e => e.diem).HasColumnType("decimal(5, 2)");
             entity.Property(e => e.ket_qua)
                 .HasMaxLength(20)
@@ -131,8 +133,11 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasOne(d => d.hoc_vien).WithMany(p => p.bai_this)
                 .HasForeignKey(d => d.hoc_vien_id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_bai_thi_hoc_vien");
+
+            entity.HasOne(d => d.nguoi_dung).WithMany(p => p.bai_this)
+                .HasForeignKey(d => d.nguoi_dung_id)
+                .HasConstraintName("fk_bai_thi_nguoi_dung");
         });
 
         modelBuilder.Entity<buoi_hoc>(entity =>

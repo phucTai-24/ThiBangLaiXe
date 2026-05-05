@@ -597,3 +597,4 @@ d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\runtim
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\HeThongThiBangLai.Api.staticwebassets.runtime.json
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.staticwebassets.runtime.json
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.exe
+d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\swae.build.ex.cache

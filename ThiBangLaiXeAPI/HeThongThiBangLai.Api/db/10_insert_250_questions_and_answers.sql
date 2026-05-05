@@ -16,6 +16,11 @@ BEGIN
     EXEC(N'UPDATE de_thi SET loai_de_thi = ISNULL(loai_de_thi, N''thi_thu'');');
 END;
 
+IF COL_LENGTH('cau_hoi', 'giai_thich_dap_an') IS NULL
+BEGIN
+    EXEC(N'ALTER TABLE cau_hoi ADD giai_thich_dap_an NVARCHAR(2000) NULL;');
+END;
+
 BEGIN TRANSACTION;
 
 DELETE FROM chi_tiet_bai_thi;
@@ -47,6 +52,7 @@ IF OBJECT_ID('files', 'U') IS NOT NULL DBCC CHECKIDENT ('files', RESEED, 0);
 
 -- Insert 250 câu hỏi A1/A từ file Word.
 -- Yêu cầu: bảng chu_de_cau_hoi đã có id từ 1 đến 6 tương ứng các chủ đề.
+-- Cột giai_thich_dap_an đang để NULL để có thể bổ sung nội dung giải thích sau.
 SET IDENTITY_INSERT cau_hoi ON;
 
 INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (1, 1, N'Phần của đường bộ được sử dụng cho phương tiện giao thông đường bộ đi lại là gì?', 'trac_nghiem', 'co_ban', 0, 'approved');

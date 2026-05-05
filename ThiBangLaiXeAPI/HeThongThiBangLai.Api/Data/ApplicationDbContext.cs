@@ -183,6 +183,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasIndex(e => e.chu_de_id, "ix_cau_hoi_chu_de_id");
 
+            entity.Property(e => e.giai_thich_dap_an).HasMaxLength(2000);
             entity.Property(e => e.loai_cau_hoi)
                 .HasMaxLength(30)
                 .IsUnicode(false)

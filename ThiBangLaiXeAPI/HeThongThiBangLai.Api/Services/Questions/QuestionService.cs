@@ -5,6 +5,7 @@ using HeThongThiBangLai.Api.DTOs.Questions;
 using HeThongThiBangLai.Api.Models;
 using HeThongThiBangLai.Api.Repositories.Interfaces;
 using HeThongThiBangLai.Api.Services.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
 namespace HeThongThiBangLai.Api.Services.Questions;
@@ -14,8 +15,9 @@ public class QuestionService : IQuestionService
     private readonly IQuestionRepository _repository;
     private readonly IMapper _mapper;
     private readonly string _assetsBaseUrl;
+    private readonly HashSet<string> _availableAssetFiles;
 
-    public QuestionService(IQuestionRepository repository, IMapper mapper, IConfiguration configuration)
+    public QuestionService(IQuestionRepository repository, IMapper mapper, IConfiguration configuration, IWebHostEnvironment environment)
     {
         _repository = repository;
         _mapper = mapper;
@@ -24,6 +26,14 @@ public class QuestionService : IQuestionService
         _assetsBaseUrl = string.IsNullOrWhiteSpace(configuredAssetsBaseUrl)
             ? "/assets"
             : configuredAssetsBaseUrl.TrimEnd('/');
+
+        var assetsDirectory = Path.Combine(environment.WebRootPath ?? string.Empty, "assets");
+        _availableAssetFiles = Directory.Exists(assetsDirectory)
+            ? Directory.EnumerateFiles(assetsDirectory)
+                .Select(Path.GetFileName)
+                .Where(static fileName => !string.IsNullOrWhiteSpace(fileName))
+                .ToHashSet(StringComparer.OrdinalIgnoreCase)
+            : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     }
 
     public async Task<ApiResponse<QuestionDto>> GetByIdAsync(long id)
@@ -52,7 +62,7 @@ public class QuestionService : IQuestionService
         pageSize = Math.Max(pageSize, 1);
 
         var pagedQuestions = await _repository.GetPagedWithAnswersAsync(page, pageSize, search, topicId, topicCode, status, isCritical, includeCorrectAnswer);
-        var dtos = pagedQuestions.Items.Select(question => MapWithAnswers(question, includeCorrectAnswer, _assetsBaseUrl)).ToList();
+        var dtos = pagedQuestions.Items.Select(question => MapWithAnswers(question, includeCorrectAnswer, _assetsBaseUrl, _availableAssetFiles)).ToList();
         var pagedDtos = new PagedList<QuestionWithAnswersDto>(dtos, pagedQuestions.TotalCount, page, pageSize);
 
         return ApiResponseFactory.SuccessPaged(pagedDtos, "Questions with answers retrieved successfully");
@@ -129,11 +139,9 @@ public class QuestionService : IQuestionService
         _repository.Remove(question);
         await _repository.SaveChangesAsync();
     }
-    private static QuestionWithAnswersDto MapWithAnswers(cau_hoi question, bool includeCorrectAnswer, string? assetsBaseUrl)
+    private static QuestionWithAnswersDto MapWithAnswers(cau_hoi question, bool includeCorrectAnswer, string? assetsBaseUrl, HashSet<string> availableAssetFiles)
     {
-        var imageUrl = question.id >= 29
-            ? BuildQuestionImageUrl(question.id, assetsBaseUrl)
-            : null;
+        var imageUrl = BuildQuestionImageUrl(question.id, assetsBaseUrl, availableAssetFiles);
 
         return new QuestionWithAnswersDto
         {
@@ -160,11 +168,13 @@ public class QuestionService : IQuestionService
         };
     }
 
-    private static string BuildQuestionImageUrl(long questionId, string assetsBaseUrl)
+    private static string? BuildQuestionImageUrl(long questionId, string assetsBaseUrl, HashSet<string> availableAssetFiles)
     {
         var extension = questionId is >= 212 and <= 215 ? "png" : "jpg";
         var fileName = $"{questionId}.{extension}";
 
-        return $"{assetsBaseUrl}/{fileName}";
+        return availableAssetFiles.Contains(fileName)
+            ? $"{assetsBaseUrl}/{fileName}"
+            : null;
     }
 }

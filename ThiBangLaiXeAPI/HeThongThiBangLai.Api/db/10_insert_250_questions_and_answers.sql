@@ -337,10 +337,10 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (29
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (30, 10, N'Cả hai ý trên.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (31, 11, N'Người điều khiển, người được chở trên phương tiện tham gia giao thông đường bộ.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (32, 11, N'Người điều khiển, dẫn dắt vật nuôi trên đường bộ; người đi bộ trên đường bộ.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (33, 11, N'Cả hai ý trên.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (33, 11, N'Cả hai ý trên.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (34, 12, N'Người điều khiển xe cơ giới, người điều khiển xe thô sơ.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (35, 12, N'Người điều khiển xe máy chuyên dùng.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (36, 12, N'Cả hai ý trên.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (36, 12, N'Cả hai ý trên.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (37, 13, N'Là người điều khiển phương tiện tham gia giao thông đường bộ.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (38, 13, N'Là Cảnh sát giao thông và người được giao nhiệm vụ hướng dẫn giao thông trên đường bộ.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (39, 13, N'Là người tham gia giao thông đường bộ.', 0, 3);
@@ -349,10 +349,10 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (41
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (42, 14, N'Cả hai ý trên.', 0, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (43, 15, N'Không có chứng nhận kiểm định an toàn kỹ thuật và bảo vệ môi trường.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (44, 15, N'Hết niên hạn sử dụng.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (45, 15, N'Cả hai ý trên.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (45, 15, N'Cả hai ý trên.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (46, 16, N'Trên đường phố không có người qua lại.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (47, 16, N'Được người dân ủng hộ.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (48, 16, N'Được cơ quan có thẩm quyền cấp phép.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (48, 16, N'Được cơ quan có thẩm quyền cấp phép.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (49, 17, N'Chỉ bị nhắc nhở.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (50, 17, N'Tùy theo mức độ của hành vi vi phạm có thể bị xử lý hành chính hoặc xử lý hình sự.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (51, 18, N'Bị nghiêm cấm.', 1, 1);
@@ -364,7 +364,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (56
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (57, 20, N'Người chưa đủ tuổi theo quy định.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (58, 20, N'Người không có giấy phép lái xe.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (59, 20, N'Người có giấy phép lái xe nhưng đã bị trừ hết 12 điểm.', 0, 3);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (60, 20, N'Cả ba ý trên.', 0, 4);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (60, 20, N'Cả ba ý trên.', 1, 4);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (61, 21, N'Điều khiển xe cơ giới lạng lách, đánh võng, rú ga liên tục khi tham gia giao thông trên đường.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (62, 21, N'Xúc phạm, đe dọa, cản trở, chống đối hoặc không chấp hành hiệu lệnh, hướng dẫn, yêu cầu kiểm tra, kiểm soát của người thi hành công vụ về bảo đảm trật tự, an toàn giao thông đường bộ.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (63, 21, N'Cả hai ý trên.', 1, 3);
@@ -426,13 +426,13 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (11
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (119, 39, N'Được phép vượt khi có việc gấp.', 0, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (120, 40, N'Bấm còi liên tục để xe phía trước biết xe mình xin vượt.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (121, 40, N'Rú ga liên tục để xe phía trước biết xe mình xin vượt.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (122, 40, N'Báo hiệu nhấp nháy bằng đèn chiếu sáng phía trước hoặc còi.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (122, 40, N'Báo hiệu nhấp nháy bằng đèn chiếu sáng phía trước hoặc còi.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (123, 41, N'Từ 22 giờ ngày hôm trước đến 05 giờ ngày hôm sau.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (124, 41, N'Từ 05 giờ đến 22 giờ.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (125, 41, N'Từ 23 giờ ngày hôm trước đến 05 giờ sáng hôm sau.', 0, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (126, 42, N'Chỉ bật đèn chiếu xa (đèn pha).', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (127, 42, N'Bật đèn chiếu xa (đèn pha) khi đường vắng, bật đèn chiếu gần (đèn cốt) khi có xe đi ngược chiều.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (128, 42, N'Chỉ bật đèn chiếu gần (đèn cốt).', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (128, 42, N'Chỉ bật đèn chiếu gần (đèn cốt).', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (129, 43, N'Dùng tay cầm và sử dụng điện thoại hoặc thiết bị điện tử khác.', 1, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (130, 43, N'Chỉ được chở người trên thùng xe ô tô chở hàng trong trường hợp chở người đi làm nhiệm vụ cứu nạn, cứu hộ, phòng, chống thiên tai, dịch bệnh hoặc thực hiện nhiệm vụ khẩn cấp.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (131, 44, N'Trên cầu hẹp có một làn đường; nơi đường giao nhau, đường bộ giao nhau cùng mức với đường sắt; khi gặp xe ưu tiên.', 1, 1);
@@ -444,7 +444,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (13
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (137, 46, N'Phải quan sát, bảo đảm khoảng cách an toàn với xe phía sau.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (138, 46, N'Giảm tốc độ và có tín hiệu báo hướng rẽ.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (139, 46, N'Chuyển dần sang làn gần nhất với hướng rẽ. Khi bảo đảm an toàn, không gây trở ngại cho người và phương tiện khác mới được chuyển hướng.', 0, 3);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (140, 46, N'Cả ba ý trên.', 0, 4);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (140, 46, N'Cả ba ý trên.', 1, 4);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (141, 47, N'Khi bắt đầu chuyển làn đường.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (142, 47, N'Trước khi thay đổi làn đường.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (143, 47, N'Sau khi thay đổi làn đường.', 0, 3);
@@ -468,7 +468,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (16
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (161, 53, N'Được phép.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (162, 53, N'Được bám trong trường hợp phương tiện của mình bị hỏng.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (163, 53, N'Được kéo, đẩy trong trường hợp phương tiện khác bị hỏng.', 0, 3);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (164, 53, N'Không được phép.', 0, 4);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (164, 53, N'Không được phép.', 1, 4);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (165, 54, N'Đội mũ bảo hiểm theo đúng quy chuẩn kỹ thuật quốc gia và cài quai đúng quy cách.', 1, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (166, 54, N'Người lái xe phải đội mũ bảo hiểm, người được chở trên xe không nhất thiết phải đội mũ bảo hiểm.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (167, 54, N'Phải đội mũ bảo hiểm nhưng không nhất thiết phải cài quai.', 0, 3);
@@ -478,10 +478,10 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (17
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (171, 56, N'Đi xe dàn hàng ngang; buông cả hai tay.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (172, 56, N'Sử dụng xe để kéo, đẩy xe khác, vật khác, dẫn dắt vật nuôi, mang, vác và chở vật cồng kềnh; chở người đứng trên xe, giá đèo hàng hoặc ngồi trên tay lái; xếp hàng hóa trên xe quá giới hạn quy định.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (173, 56, N'Ngồi về một bên điều khiển xe; đứng, nằm trên xe điều khiển xe; thay người lái xe khi xe đang chạy; quay người về phía sau để điều khiển xe hoặc bịt mắt điều khiển xe; sử dụng chân chống hoặc vật khác quệt xuống đường khi xe đang chạy.', 0, 3);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (174, 56, N'Cả ba ý trên.', 0, 4);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (174, 56, N'Cả ba ý trên.', 1, 4);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (175, 57, N'Đi xe dàn hàng ngang; đi xe vào phần đường dành cho người đi bộ và phương tiện khác.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (176, 57, N'Sử dụng ô, thiết bị âm thanh, trừ thiết bị trợ thính.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (177, 57, N'Cả hai ý trên.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (177, 57, N'Cả hai ý trên.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (178, 58, N'Đi trên phần đường, làn đường quy định, chấp hành hiệu lệnh của người điều khiển giao thông, đèn tín hiệu giao thông.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (179, 58, N'Đi xe dàn hàng ngang, đi xe vào phần đường dành cho người đi bộ.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (180, 58, N'Cả hai ý trên.', 0, 3);
@@ -535,7 +535,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (22
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (228, 73, N'Giảm tốc độ, đi sát lề đường bên trái để nhường đường.', 0, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (229, 74, N'Không được vượt.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (230, 74, N'Được phép vượt ở phần đường dành cho người đi bộ qua đường.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (231, 74, N'Được vượt khi bảo đảm an toàn.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (231, 74, N'Được vượt khi bảo đảm an toàn.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (232, 75, N'Không được vượt.', 1, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (233, 75, N'Được vượt khi đang đi trên cầu.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (234, 75, N'Được phép vượt khi đi qua nơi giao nhau có ít phương tiện cùng tham gia giao thông.', 0, 3);
@@ -556,7 +556,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (24
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (249, 80, N'Có báo hiệu cảnh báo nguy hiểm hoặc có chướng ngại vật trên đường; chuyển hướng xe chạy hoặc tầm nhìn bị hạn chế.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (250, 80, N'Nơi cầu, cống hẹp, đập tràn, đường ngầm, hầm chui, hầm đường bộ; có vật nuôi đi trên đường hoặc chăn thả ở ven đường.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (251, 80, N'Điểm dừng xe, đỗ xe trên đường bộ có khách đang lên, xuống xe.', 0, 3);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (252, 80, N'Cả ba ý trên.', 0, 4);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (252, 80, N'Cả ba ý trên.', 1, 4);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (253, 81, N'Xe phía trước có tín hiệu rẽ trái hoặc đang rẽ trái hoặc khi xe chuyên dùng đang làm việc trên đường mà không thể vượt bên trái.', 1, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (254, 81, N'Xe phía trước đang đi sát lề đường bên trái.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (255, 81, N'Cả hai ý trên.', 0, 3);
@@ -568,7 +568,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (26
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (261, 83, N'Xe ô tô và xe máy chuyên dùng có tốc độ thiết kế lớn hơn 80 km/h.', 0, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (262, 84, N'1. 16 tuổi.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (263, 84, N'2. 17 tuổi', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (264, 84, N'3. 18 tuổi.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (264, 84, N'3. 18 tuổi.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (265, 85, N'Xe mô tô hai bánh có dung tích xi-lanh đến 125 cm3', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (266, 85, N'Xe gắn máy.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (267, 85, N'Xe ô tô chở người đến 08 chỗ (không kể chỗ của người lái xe); xe ô tô tải và ô tô chuyên dùng có khối lượng toàn bộ theo thiết kế đến', 0, 3);
@@ -582,7 +582,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (27
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (275, 87, N'Cả hai ý trên.', 0, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (276, 88, N'Xe mô tô hai bánh có dung tích xi-lanh đến 125 cm3 hoặc có công suất động cơ điện đến 11 kW.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (277, 88, N'Xe mô tô hai bánh có dung tích xi-lanh trên 125 cm3 hoặc có công suất động cơ điện trên 11 kW.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (278, 88, N'Cả hai ý trên.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (278, 88, N'Cả hai ý trên.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (279, 89, N'Phải đủ tuổi, sức khỏe theo quy định của pháp luật; có giấy phép lái xe đang còn điểm, còn hiệu lực phù hợp với loại xe đang điều khiển do cơ quan có thẩm quyền cấp (trừ người lái xe gắn máy).', 1, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (280, 89, N'Phải là người đứng tên trong đăng ký xe.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (281, 89, N'Cả hai ý trên.', 0, 3);
@@ -598,10 +598,10 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (29
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (291, 93, N'Tiếp tục chịu trách nhiệm của chủ xe.', 1, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (292, 93, N'Không chịu trách nhiệm sau khi đã chuyển nhượng, trao đổi, tặng, cho.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (293, 94, N'1. 60 km/h.', 0, 1);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (294, 94, N'2. 50 km/h.', 0, 2);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (294, 94, N'2. 50 km/h.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (295, 94, N'3. 40 km/h.', 0, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (296, 95, N'1. 60 km/h.', 0, 1);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (297, 95, N'2. 50 km/h.', 0, 2);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (297, 95, N'2. 50 km/h.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (298, 95, N'40 km/h.', 0, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (299, 96, N'Xe ô tô chở người đến 28 chỗ không kể chỗ của người lái xe (trừ xe buýt); ô tô tải có trọng tải không lớn hơn 3,5 tấn.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (300, 96, N'Xe ô tô chở người trên 28 chỗ không kể chỗ người lái xe (trừ xe buýt); ô tô tải có trọng tải trên 3,5 tấn (trừ ô tô xi téc).', 0, 2);
@@ -622,7 +622,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (31
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (315, 100, N'Kiểm tra điều kiện bảo đảm an toàn của xe trước khi tham gia giao thông đường bộ; mang đủ giấy tờ theo quy định của pháp luật.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (316, 100, N'Kiểm tra việc sắp xếp hàng hóa bảo đảm an toàn; không chở quá số người, chở hành lý, hàng hoá vượt quá khối lượng cho phép hoặc vượt quá khổ giới hạn của xe.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (317, 100, N'Cả hai ý trên.', 1, 3);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (318, 100, N'CHƯƠNG II. VĂN HÓA GIAO THÔNG, ĐẠO ĐỨC NGƯỜI LÁI XE, KỸ NĂNG PHÒNG CHÁY, CHỮA CHÁY VÀ CỨU HỘ, CỨU NẠN', 1, 4);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (318, 100, N'CHƯƠNG II. VĂN HÓA GIAO THÔNG, ĐẠO ĐỨC NGƯỜI LÁI XE, KỸ NĂNG PHÒNG CHÁY, CHỮA CHÁY VÀ CỨU HỘ, CỨU NẠN', 0, 4);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (319, 101, N'Luôn tuân thủ pháp luật về trật tự, an toàn giao thông đường bộ, nhường nhịn và giúp đỡ người khác.', 1, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (320, 101, N'Đi nhanh, vượt đèn đỏ nếu không có lực lượng Công an.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (321, 101, N'Bấm còi và nháy đèn liên tục để cảnh báo xe khác.', 0, 3);
@@ -653,7 +653,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (34
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (346, 110, N'Cho xe lấn sang làn ngược chiều để nhanh chóng thoát khỏi nơi ùn tắc.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (347, 110, N'Điều khiển xe trên vỉa hè để nhanh chóng thoát khỏi nơi ùn tắc.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (348, 110, N'Kiên nhẫn tuân thủ hướng dẫn của người điều khiển giao thông hoặc tín hiệu đèn giao thông, di chuyển trên đúng phần đường bên phải theo chiều đi, nhường đường cho các phương tiện đi ngược chiều.', 1, 3);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (349, 110, N'CHƯƠNG III. KỸ THUẬT LÁI XE', 1, 4);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (349, 110, N'CHƯƠNG III. KỸ THUẬT LÁI XE', 0, 4);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (350, 111, N'Giữ tay ga ở mức độ phù hợp, sử dụng phanh trước và phanh sau để giảm tốc độ.', 1, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (351, 111, N'Nhả hết tay ga, tắt động cơ, sử dụng phanh trước và phanh sau để giảm tốc độ.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (352, 111, N'Sử dụng phanh trước để giảm tốc độ kết hợp với tắt chìa khóa điện của xe.', 0, 3);
@@ -661,7 +661,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (35
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (354, 112, N'Quan sát cẩn thận các chướng ngại vật và báo hiệu bằng còi, đèn; tăng tốc để nhanh chóng qua đường vòng và giảm tốc độ sau khi qua đường vòng.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (355, 113, N'Khi có chuông báo hoặc thanh chắn đã hạ xuống, người lái xe phải dừng xe tạm thời đúng khoảng cách an toàn, kéo phanh tay nếu đường dốc hoặc phải chờ lâu.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (356, 113, N'Khi không có chuông báo hoặc thanh chắn không hạ xuống, người lái xe cần phải quan sát nếu thấy đủ điều kiện an toàn thì về số thấp, tăng ga nhẹ và không thay đổi số trong quá trình vượt qua đường sắt để tránh động cơ chết máy cho xe cho vượt qua.', 0, 2);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (357, 113, N'Cả hai ý trên.', 0, 3);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (357, 113, N'Cả hai ý trên.', 1, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (358, 114, N'Xăng và dầu diesel.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (359, 114, N'Xăng sinh học và khí sinh học.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (360, 114, N'Ý 1 và ý 2.', 0, 3);
@@ -987,7 +987,7 @@ INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (67
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (680, 215, N'Vạch 2.', 1, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (681, 215, N'Vạch 3.', 0, 3);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (682, 215, N'Cả ba vạch.', 0, 4);
-INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (683, 215, N'CHƯƠNG VI. GIẢI THẾ SA HÌNH VÀ KỸ NĂNG XỬ LÝ TÌNH HUỐNG GIAO THÔNG', 1, 5);
+INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (683, 215, N'CHƯƠNG VI. GIẢI THẾ SA HÌNH VÀ KỸ NĂNG XỬ LÝ TÌNH HUỐNG GIAO THÔNG', 0, 5);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (684, 216, N'Xe khách, xe tải, xe mô tô.', 0, 1);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (685, 216, N'Xe tải, xe mô tô.', 0, 2);
 INSERT INTO dap_an (id, cau_hoi_id, noi_dung, la_dap_an_dung, thu_tu) VALUES (686, 216, N'Chỉ xe con.', 1, 3);

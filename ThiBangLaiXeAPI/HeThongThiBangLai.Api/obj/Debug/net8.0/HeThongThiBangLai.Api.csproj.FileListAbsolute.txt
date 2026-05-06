@@ -596,4 +596,4 @@ d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThon
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.AssemblyInfoInputs.cache
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.AssemblyInfo.cs
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\ref\HeThongThiBangLai.Api.dll
-d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\swae.build.ex.cache
+D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.exe

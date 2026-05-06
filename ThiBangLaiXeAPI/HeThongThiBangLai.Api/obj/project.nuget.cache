@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4YGbh8SsIKA=",
+  "dgSpecHash": "rFYGtPE5qiM=",
   "success": true,
-  "projectFilePath": "d:\\full sờ tắc\\ThiBangLaiXeAPI\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
+  "projectFilePath": "D:\\full sờ tắc\\ThiBangLaiXeAPI\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

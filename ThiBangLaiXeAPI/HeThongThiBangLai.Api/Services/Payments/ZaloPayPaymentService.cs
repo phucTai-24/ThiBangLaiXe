@@ -25,6 +25,7 @@ public sealed class ZaloPayOptions
 public sealed class ZaloPayPaymentService : IZaloPayPaymentService
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
+    private const string ZaloPaySandboxGatewayUrl = "https://sandbox.zalopay.com.vn/pay?order=";
 
     private readonly ApplicationDbContext _dbContext;
     private readonly HttpClient _httpClient;
@@ -124,12 +125,20 @@ public sealed class ZaloPayPaymentService : IZaloPayPaymentService
         var zaloPayResponse = JsonSerializer.Deserialize<ZaloPayCreateOrderResponse>(responseBody, JsonOptions)
             ?? throw new BusinessRuleAppException("Không đọc được phản hồi ZaloPay", "ZALOPAY_INVALID_RESPONSE");
 
+        var orderUrl = ResolveZaloPayOrderUrl(zaloPayResponse);
+        if (string.IsNullOrWhiteSpace(orderUrl))
+        {
+            throw new BusinessRuleAppException(
+                $"ZaloPay không trả về liên kết thanh toán hợp lệ. ReturnCode={zaloPayResponse.ReturnCode}, SubReturnCode={zaloPayResponse.SubReturnCode}, Message={zaloPayResponse.ReturnMessage}, SubMessage={zaloPayResponse.SubReturnMessage}",
+                "ZALOPAY_INVALID_ORDER_URL");
+        }
+
         return ApiResponseFactory.Success(new CreateZaloPayOrderResponseDto
         {
             ReceiptId = receipt.id,
             AppTransId = appTransId,
             Amount = amount,
-            OrderUrl = zaloPayResponse.OrderUrl,
+            OrderUrl = orderUrl,
             PaymentStatus = ToApiPaymentStatus(receipt.trang_thai),
             ZaloPayReturnCode = zaloPayResponse.ReturnCode,
             ZaloPayReturnMessage = zaloPayResponse.ReturnMessage
@@ -296,12 +305,29 @@ public sealed class ZaloPayPaymentService : IZaloPayPaymentService
         };
     }
 
+    private static string ResolveZaloPayOrderUrl(ZaloPayCreateOrderResponse response)
+    {
+        if (!string.IsNullOrWhiteSpace(response.OrderUrl))
+        {
+            return response.OrderUrl;
+        }
+
+        if (!string.IsNullOrWhiteSpace(response.OrderToken))
+        {
+            return $"{ZaloPaySandboxGatewayUrl}{Uri.EscapeDataString(response.OrderToken)}";
+        }
+
+        return string.Empty;
+    }
+
     private sealed class ZaloPayCreateOrderResponse
     {
         public int ReturnCode { get; set; }
         public string ReturnMessage { get; set; } = string.Empty;
+        public int SubReturnCode { get; set; }
         public string SubReturnMessage { get; set; } = string.Empty;
         public string OrderUrl { get; set; } = string.Empty;
+        public string OrderToken { get; set; } = string.Empty;
     }
 
     private sealed class ZaloPayCallbackRequest

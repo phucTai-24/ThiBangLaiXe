@@ -1,0 +1,829 @@
+-- Insert 250 câu hỏi A1/A từ file Word.
+-- Yêu cầu: bảng chu_de_cau_hoi đã có id từ 1 đến 6 tương ứng các chủ đề.
+-- Cột giai_thich_dap_an đang để NULL để có thể bổ sung nội dung giải thích sau.
+SET IDENTITY_INSERT cau_hoi ON;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (1, 1, N'Phần của đường bộ được sử dụng cho phương tiện giao thông đường bộ đi lại là gì?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ Điều 2 Luật Trật tự, an toàn giao thông đường bộ 2024: Phần đường xe chạy là phần của đường bộ được sử dụng cho phương tiện giao thông đường bộ đi lại.' WHERE id = 1;
+
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (2, 1, N'Làn đường là gì?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ Điều 2 Luật Trật tự, an toàn giao thông đường bộ 2024: Làn đường là một phần của phần đường xe chạy được chia theo chiều dọc của đường, có đủ chiều rộng cho xe chạy an toàn.' WHERE id = 2;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (3, 1, N'Khổ giới hạn của đường bộ được hiểu như thế nào là đúng?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Tại Điều 5 Thông tư 46/2015/TT-BGTVT (được sửa đổi, bổ sung bởi khoản 3 Điều 1 Thông tư 35/2023/TT-BGTVT), khổ giới hạn của đường bộ là Khổ giới hạn về chiều rộng của đường bộ là giới hạn chiều rộng làn xe để các xe, kể cả hàng hóa xếp trên xe đi qua được an toàn, phụ thuộc vào cấp kỹ thuật của đường bộ và địa hình xây dựng tuyến đường.' WHERE id = 3;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (4, 1, N'Dải phân cách được lắp đặt để làm gì?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ theo quy định tại Điều 85 Quy chuẩn kỹ thuật quốc gia QCVN 41:2019/BGTVT về Báo hiệu đường bộ ban hành kèm theo Thông tư 54/2019/TT-BGTVT thì dải phân cách được hiểu là bộ phận của đường mà xe không chạy trên đó được dùng để phân chia hai chiều xe chạy riêng biệt hoặc để phân chia phần đường của xe cơ giới và xe thô sơ hoặc của nhiều loại xe khác nhau trên cùng một chiều xe chạy.' WHERE id = 4;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (5, 1, N'Vạch kẻ đường là gì?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 6 Điều 11 Luật Trật tự, an toàn giao thông đường bộ 2024: Vạch kẻ đường là vạch chỉ sự phân chia làn đường, vị trí hoặc hướng đi, vị trí dừng lại.' WHERE id = 5;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (6, 1, N'Người điều khiển phương tiện tham gia giao thông đường bộ được hiểu như thế nào là đúng?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 9 Điều 2 Luật Trật tự, an toàn giao thông đường bộ 2024: Người điều khiển phương tiện tham gia giao thông đường bộ bao gồm: người điều khiển xe cơ giới (sau đây gọi là người lái xe), người điều khiển xe thô sơ, người điều khiển xe máy chuyên dùng.' WHERE id = 6;
+
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (7, 1, N'Người lái xe được hiểu như thế nào là đúng?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 9 Điều 2 Luật Trật tự, an toàn giao thông đường bộ 2024: Người điều khiển phương tiện tham gia giao thông đường bộ bao gồm: người điều khiển xe cơ giới (sau đây gọi là người lái xe), người điều khiển xe thô sơ, người điều khiển xe máy chuyên dùng.' WHERE id = 7;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (8, 1, N'Trong nhóm các phương tiện giao thông đường bộ dưới đây, nhóm phương tiện nào là xe cơ giới?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 1 Điều 34 Luật Trật tự, an toàn giao thông đường bộ 2024: nhóm phương tiện xe cơ giới bao gồm: Xe ô tô; rơ moóc được kéo bởi xe ô tô; sơ mi rơ moóc được kéo bởi ô tô đầu kéo; xe chở người bốn bánh có gắn động cơ; xe chở hàng bốn bánh có gắn động cơ; xe mô tô, xe gắn máy và các loại xe tương tự.' WHERE id = 8;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (9, 1, N'Trong nhóm các phương tiện giao thông đường bộ dưới đây, nhóm phương tiện nào là xe thô sơ?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 2 Điều 34 Luật Trật tự, an toàn giao thông đường bộ 2024: nhóm phương tiện xe thô sơ bao gồm: Xe đạp, xe đạp máy, xe đạp điện; xe xích lô; xe lăn dùng cho người khuyết tật; xe vật nuôi kéo và các loại xe tương tự.' WHERE id = 9;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (10, 1, N'Phương tiện giao thông đường bộ gồm những loại nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 2 Điều 2 Luật Trật tự, an toàn giao thông đường bộ 2024: Phương tiện giao thông đường bộ là các loại xe, bao gồm: phương tiện giao thông cơ giới đường bộ (sau đây gọi là xe cơ giới), phương tiện giao thông thô sơ đường bộ (sau đây gọi là xe thô sơ), xe máy chuyên dùng và các loại xe tương tự.' WHERE id = 10;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (11, 1, N'Người tham gia giao thông đường bộ gồm những đối tượng nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 2 Điều 2 Luật Trật tự, an toàn giao thông đường bộ 2024: Người tham gia giao thông đường bộ bao gồm: người điều khiển, người được chở trên phương tiện tham gia giao thông đường bộ; người điều khiển, dẫn dắt vật nuôi trên đường bộ; người đi bộ trên đường bộ.' WHERE id = 11;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (12, 1, N'Người điều khiển phương tiện tham gia giao thông đường bộ gồm những đối tượng nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 9 Điều 2 Luật Trật tự, an toàn giao thông đường bộ 2024: Người điều khiển phương tiện tham gia giao thông đường bộ bao gồm: người điều khiển xe cơ giới (sau đây gọi là người lái xe), người điều khiển xe thô sơ, người điều khiển xe máy chuyên dùng.' WHERE id = 12;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (13, 1, N'Người điều khiển giao thông đường bộ được hiểu như thế nào là đúng?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 10 Điều 2 Luật Trật tự, an toàn giao thông đường bộ 2024: Người điều khiển giao thông đường bộ (sau đây gọi là người điều khiển giao thông) bao gồm: Cảnh sát giao thông và người được giao nhiệm vụ hướng dẫn giao thông trên đường bộ.' WHERE id = 13;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (14, 2, N'Hành vi nào dưới đây bị nghiêm cấm?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 20 Điều 9 Luật Trật tự, an toàn giao thông đường bộ 2024: Các hành vi bị nghiêm cấm bao gồm: Đặt, để chướng ngại vật, vật cản khác trái phép trên đường bộ; rải vật sắc nhọn, đổ chất gây trơn trượt trên đường bộ; làm rơi vãi đất đá, hàng hóa, vật liệu xây dựng, phế thải trên đường bộ; đổ, xả thải, làm rơi vãi hóa chất, chất thải gây mất an toàn giao thông đường bộ.' WHERE id = 14;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (15, 2, N'Hành vi đưa xe cơ giới, xe máy chuyên dùng tham gia giao thông đường bộ nào dưới đây bị cấm?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ khoản 8 Điều 9 Luật Trật tự, an toàn giao thông đường bộ 2024, Các hành vi bị nghiêm cấm bao gồm: Đưa xe cơ giới, xe máy chuyên dùng không bảo đảm quy định của pháp luật về an toàn kỹ thuật và bảo vệ môi trường, phương tiện khác không đủ điều kiện theo quy định của pháp luật để tham gia giao thông đường bộ.' WHERE id = 15;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (16, 2, N'Tổ chức đua xe được phép thực hiện khi nào?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điều 9 Luật Trật tự, an toàn giao thông đường bộ 2024, quy định hành vi đua xe, cổ vũ đua xe, tổ chức đua xe trái phép là hành vi bị nghiêm cấm.' WHERE id = 16;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (17, 2, N'Hành vi đua xe trái phép bị xử lý như thế nào?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Đua xe trái phép là hành vi bị nghiêm cấm. Tùy mức độ vi phạm, người thực hiện có thể bị phạt hành chính hoặc truy cứu trách nhiệm hình sự. Chi tiết mức phạt được quy định tại Điều 35, Nghị định 168/2024/NĐ-CP.' WHERE id = 17;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (18, 2, N'Người điều khiển phương tiện tham gia giao thông đường bộ mà trong máu hoặc hơi thở có nồng độ cồn có bị nghiêm cấm không?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ Khoản 2 Điều 9 Luật Trật tự, an toàn giao thông đường bộ 2024: Điều khiển phương tiện tham gia giao thông đường bộ mà trong máu hoặc hơi thở có nồng độ cồn là hành vi bị nghiêm cấm.' WHERE id = 18;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (19, 2, N'Theo Luật Phòng chống tác hại của rượu, bia, đối tượng nào dưới đây bị cấm sử dụng rượu, bia khi tham gia giao thông?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Người điều khiển phương tiện giao thông không uống rượu, bia trước và trong khi tham gia giao thông.' WHERE id = 19;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (20, 2, N'Hành vi giao xe ô tô, mô tô cho người nào sau đây tham gia giao thông đường bộ bị nghiêm cấm?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Căn cứ Khoản 7 Điều 9 Luật Trật tự, an toàn giao thông đường bộ 2024: Nghiêm cấm tuyệt đối việc giao xe cơ giới, xe máy chuyên dùng cho người không đủ điều kiện điều khiển, như: chưa đủ tuổi, không có GPLX hoặc GPLX đã bị trừ hết điểm.' WHERE id = 20;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (21, 2, N'Hành vi nào sau đây bị nghiêm cấm?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 4 và 5 Điều 9 Luật Trật tự, ATGT đường bộ 2024, các hành vi sau bị nghiêm cấm:
+- Xúc phạm, đe dọa, cản trở, chống đối hoặc không chấp hành hiệu lệnh, hướng dẫn, yêu cầu kiểm tra, kiểm soát của người thi hành công vụ về bảo đảm trật tự, an toàn giao thông đường bộ.
+- Đua xe, tổ chức đua xe, xúi giục, giúp sức, cổ vũ đua xe trái phép; điều khiển phương tiện tham gia giao thông đường bộ lạng lách, đánh võng, rú ga liên tục.' WHERE id = 21;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (22, 1, N'Các hành vi nào sau đây bị cấm đối với phương tiện tham gia giao thông đường bộ?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 11 Điều 9 Luật Trật tự, ATGT đường bộ 2024: Cải tạo trái phép; cố ý can thiệp làm sai lệch chỉ số trên đồng hồ báo quãng đường đã chạy của xe ô tô; cắt, hàn, tẩy xóa, đục sửa, đóng lại trái phép số khung, số động cơ của xe cơ giới, xe máy chuyên dùng là hành vi bị nghiêm cấm.' WHERE id = 22;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (23, 2, N'Hành vi nào sau đây bị cấm?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 16 và 21 Điều 9 Luật Trật tự, ATGT đường bộ 2024, các hành vi sau bị nghiêm cấm:
+- Lắp đặt, sử dụng thiết bị âm thanh, ánh sáng trên xe cơ giới, xe máy chuyên dùng gây mất trật tự, an toàn giao thông đường bộ.
+- Cản trở người, phương tiện tham gia giao thông trên đường bộ; ném gạch, đất, đá, cát hoặc vật thể khác vào người, phương tiện đang tham gia giao thông trên đường bộ.' WHERE id = 23;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (24, 1, N'Việc sản xuất, sử dụng, mua, bán trái phép biển số xe có bị nghiêm cấm hay không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 17 Điều 9 Luật Trật tự, ATGT đường bộ 2024: Tuyệt đối nghiêm cấm các hành vi liên quan đến biển số xe như sản xuất, mua bán, sử dụng trái phép; gắn biển số không do cơ quan có thẩm quyền cấp hoặc gắn sai vị trí; bẻ cong, che lấp; tự ý thay đổi chữ, số, màu sắc, hình dạng, kích thước.' WHERE id = 24;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (25, 1, N'Khi điều khiển phương tiện tham gia giao thông, những hành vi nào dưới đây bị nghiêm cấm?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 5 Điều 9 Luật Trật tự, ATGT đường bộ 2024: Tuyệt đối nghiêm cấm hành vi đua xe trái phép, tổ chức, xúi giục, giúp sức hoặc cổ vũ đua xe; nghiêm cấm điều khiển phương tiện lạng lách, đánh võng, rú ga liên tục.' WHERE id = 25;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (26, 1, N'Có bao nhiêu nhóm biển báo hiệu đường bộ?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 5 Điều 11 Luật Trật tự, ATGT đường bộ 2024: Báo hiệu của biển báo hiệu đường bộ được quy định như sau:
+a) Biển báo cấm để biểu thị các điều cấm;
+b) Biển báo nguy hiểm để cảnh báo các tình huống nguy hiểm có thể xảy ra;
+c) Biển hiệu lệnh để báo hiệu lệnh phải thi hành;
+d) Biển chỉ dẫn để chỉ dẫn hướng đi hoặc các điều cần biết;
+đ) Biển phụ để thuyết minh bổ sung cho biển báo cấm, biển báo nguy hiểm, biển hiệu lệnh và biển chỉ dẫn.' WHERE id = 26;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (27, 1, N'Tại nơi có vạch kẻ đường hoặc tại nơi mà người đi bộ, xe lăn của người khuyết tật đang qua đường, người điều khiển phương tiện tham gia giao thông phải thực hiện như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm a Khoản 3 Điều 12 Luật Trật tự, ATGT đường bộ 2024: Người điều khiển phương tiện tham gia giao thông đường bộ phải quan sát, giảm tốc độ hoặc dừng lại để bảo đảm an toàn tại nơi có vạch kẻ đường hoặc báo hiệu khác dành cho người đi bộ hoặc tại nơi mà người đi bộ, xe lăn của người khuyết tật đang qua đường.' WHERE id = 27;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (28, 1, N'Người điều khiển xe mô tô phải phải quan sát, giảm tốc độ hoặc dừng lại để bảo đảm an toàn trong các trường hợp nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm d, đ, m Khoản 3 Điều 12 Luật Trật tự, ATGT đường bộ 2024: Người điều khiển phương tiện tham gia giao thông đường bộ phải quan sát, giảm tốc độ hoặc dừng lại để bảo đảm an toàn tại:
+- Nơi đường bộ giao nhau cùng mức với đường bộ, đường bộ giao nhau cùng mức với đường sắt; đường hẹp, đường vòng, đường quanh co, đường đèo, dốc;
+- Nơi cầu, cống hẹp, đập tràn, đường ngầm, hầm chui, hầm đường bộ;
+- Điều kiện trời mưa, gió, sương, khói, bụi, mặt đường trơn trượt, lầy lội, có nhiều đất đá, vật liệu rơi vãi ảnh hưởng đến an toàn giao thông đường bộ.' WHERE id = 28;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (29, 1, N'Khi gặp hiệu lệnh điều khiển của Cảnh sát giao thông như hình dưới đây thì người tham gia giao thông đường bộ phải đi như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm b Khoản 3 Điều 11 Luật Trật tự, ATGT đường bộ 2024: Hai tay hoặc một tay dang ngang để báo hiệu cho người tham gia giao thông đường bộ ở phía trước và ở phía sau người điều khiển giao thông phải dừng lại; người tham gia giao thông đường bộ ở phía bên phải và bên trái người điều khiển giao thông được đi.' WHERE id = 29;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (30, 1, N'Khi gặp hiệu lệnh điều khiển của Cảnh sát giao thông như hình dưới đây thì người tham gia giao thông đường bộ phải đi như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm a Khoản 3 Điều 11 Luật Trật tự, ATGT đường bộ 2024: Tay bên phải giơ thẳng đứng để báo hiệu cho người tham gia giao thông đường bộ ở tất cả các hướng phải dừng lại, trừ các xe đã ở trong khu vực giao nhau.' WHERE id = 30;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (31, 1, N'Khi hiệu lệnh của người điều khiển giao thông trái với tín hiệu đèn giao thông hoặc biển báo hiệu đường bộ thì người tham gia giao thông đường bộ phải chấp hành báo hiệu đường bộ nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 11 Luật Trật tự, ATGT đường bộ 2024: Người tham gia giao thông đường bộ phải chấp hành báo hiệu đường bộ theo thứ tự ưu tiên từ trên xuống dưới như sau:
+a) Hiệu lệnh của người điều khiển giao thông;
+b) Tín hiệu đèn giao thông;
+c) Biển báo hiệu đường bộ;
+d) Vạch kẻ đường và các dấu hiệu khác trên mặt đường;
+đ) Cọc tiêu, tường bảo vệ, rào chắn, đinh phản quang, tiêu phản quang, cột Km, cọc H;
+e) Thiết bị âm thanh báo hiệu đường bộ.' WHERE id = 31;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (32, 1, N'Khi ở một vị trí vừa có biển báo hiệu đặt cố định vừa có biển báo hiệu tạm thời mà hai biển có ý nghĩa khác nhau, người tham gia giao thông đường bộ phải chấp hành hiệu lệnh của biển báo hiệu nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 12 Điều 11 Luật Trật tự, ATGT đường bộ 2024: Khi ở một vị trí vừa có biển báo hiệu đặt cố định vừa có biển báo hiệu tạm thời mà hai biển có ý nghĩa khác nhau, người tham gia giao thông đường bộ phải chấp hành hiệu lệnh của biển báo hiệu tạm thời.' WHERE id = 32;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (33, 1, N'Tại nơi đường giao nhau, khi đèn điều khiển giao thông có tín hiệu màu vàng, người điều khiển phương tiện tham gia giao thông phải chấp hành như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm b Khoản 4 Điều 11 Luật Trật tự, ATGT đường bộ 2024: Tín hiệu đèn màu vàng phải dừng lại trước vạch dừng; trường hợp đang đi trên vạch dừng hoặc đã đi qua vạch dừng mà tín hiệu đèn màu vàng thì được đi tiếp; trường hợp tín hiệu đèn màu vàng nhấp nháy, người điều khiển phương tiện tham gia giao thông đường bộ được đi nhưng phải quan sát, giảm tốc độ hoặc dừng lại nhường đường cho người đi bộ, xe lăn của người khuyết tật qua đường hoặc các phương tiện khác.' WHERE id = 33;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (34, 1, N'Người lái xe trên đường cần chấp hành quy định về tốc độ tối đa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (35, 1, N'Phương tiện tham gia giao thông đường bộ di chuyển với tốc độ thấp hơn phải đi như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 1 Điều 13 Luật Trật tự, ATGT đường bộ 2024: Phương tiện tham gia giao thông đường bộ di chuyển với tốc độ thấp hơn phải đi về bên phải theo chiều đi của mình.' WHERE id = 35;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (36, 1, N'Trên một chiều đường có vạch kẻ phân làn đường, người lái xe cơ giới, xe máy chuyên dùng phải điều khiển xe đi trên làn đường nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 13 Luật Trật tự, ATGT đường bộ 2024: Trên một chiều đường có vạch kẻ phân làn đường, xe thô sơ phải đi trên làn đường bên phải trong cùng, xe cơ giới, xe máy chuyên dùng đi trên làn đường bên trái.' WHERE id = 36;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (37, 1, N'Người lái xe phải giảm tốc độ, có tín hiệu rẽ phải và đi sát về bên phải của phần đường xe chạy trong các trường hợp nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 4 Điều 14 Luật Trật tự, ATGT đường bộ 2024: Khi có xe xin vượt, người điều khiển phương tiện tham gia giao thông đường bộ phía trước phải quan sát phần đường phía trước, nếu đủ điều kiện an toàn thì phải giảm tốc độ, có tín hiệu rẽ phải để báo hiệu cho người điều khiển phương tiện tham gia giao thông đường bộ phía sau biết được vượt và đi sát về bên phải của phần đường xe chạy cho đến khi xe sau đã vượt qua, không được cản trở đối với xe xin vượt.' WHERE id = 37;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (38, 1, N'Vượt xe là gì?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 1 Điều 14 Luật Trật tự, ATGT đường bộ 2024: Vượt xe là tình huống giao thông trên đường mà mỗi chiều đường xe chạy chỉ có một làn đường dành cho xe cơ giới, xe đi phía sau di chuyển sang bên trái để di chuyển lên trước xe phía trước.' WHERE id = 38;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (39, 2, N'Người lái xe được phép vượt xe trên cầu hẹp có một làn đường, đường cong có tầm nhìn bị hạn chế hay không?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 6 Điều 14 Luật Trật tự, ATGT đường bộ 2024: có một số trường hợp tuyệt đối cấm vượt, trong đó bao gồm: Trên cầu hẹp có một làn đường và đường cong có tầm nhìn bị hạn chế.' WHERE id = 39;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (40, 2, N'Muốn vượt xe phía trước, người lái xe mô tô phải có tín hiệu như thế nào dưới đây để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 5 Điều 14 Luật Trật tự, ATGT đường bộ 2024: Xe xin vượt phải có báo hiệu nhấp nháy bằng đèn chiếu sáng phía trước hoặc còi, trừ loại xe thô sơ không có đèn chiếu sáng và còi, khi vượt xe phải có tín hiệu báo hướng chuyển, tín hiệu báo hướng chuyển được sử dụng, bảo đảm khoảng cách an toàn với xe phía trước và phía sau trong suốt quá trình vượt xe; trong đô thị và khu đông dân cư trong thời gian từ 22 giờ ngày hôm trước đến 05 giờ ngày hôm sau chỉ được báo hiệu xin vượt bằng đèn.' WHERE id = 40;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (41, 1, N'Khi lái xe trong khu đông dân cư, khu vực cơ sở khám bệnh, chữa bệnh trừ các khu vực có biển cấm sử dụng còi, người lái xe được sử dụng còi trong thời gian nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 21 Luật Trật tự, ATGT đường bộ 2024: Không sử dụng còi liên tục; không sử dụng còi có âm lượng không đúng quy định; không sử dụng còi trong thời gian từ 22 giờ ngày hôm trước đến 05 giờ ngày hôm sau trong khu đông dân cư, khu vực cơ sở khám bệnh, chữa bệnh, trừ xe ưu tiên.' WHERE id = 41;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (42, 1, N'Người lái xe sử dụng đèn như thế nào khi đi trên các đoạn đường qua khu đông dân cư có hệ thống chiếu sáng đang hoạt động?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 20 Luật Trật tự, ATGT đường bộ 2024: Người lái xe, người điều khiển xe máy chuyên dùng phải tắt đèn chiếu xa, bật đèn chiếu gần trong các trường hợp sau đây:
+a) Khi gặp người đi bộ qua đường;
+b) Khi đi trên các đoạn đường qua khu đông dân cư có hệ thống chiếu sáng đang hoạt động;
+c) Khi gặp xe đi ngược chiều, trừ trường hợp dải phân cách có khả năng chống chói;
+d) Khi chuyển hướng xe tại nơi đường giao nhau.' WHERE id = 42;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (43, 2, N'Khi điều khiển phương tiện tham gia giao thông, hành vi nào sau đây bị cấm?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 6 Điều 9 Luật Trật tự, ATGT đường bộ 2024: Hành vi bị cấm là dùng tay cầm và sử dụng điện thoại hoặc thiết bị điện tử khác khi điều khiển phương tiện tham gia giao thông đang di chuyển trên đường bộ.' WHERE id = 43;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (44, 2, N'Người lái xe không được vượt xe khác khi gặp trường hợp nào dưới đây?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 6 Điều 14 Luật Trật tự, ATGT đường bộ 2024: có một số trường hợp tuyệt đối cấm vượt, trong đó bao gồm: Trên cầu hẹp có một làn đường; nơi đường giao nhau, đường bộ giao nhau cùng mức với đường sắt; khi gặp xe ưu tiên.' WHERE id = 44;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (45, 1, N'Nơi nào cấm quay đầu xe?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 4 Điều 15 Luật Trật tự, ATGT đường bộ 2024: Không được quay đầu xe ở phần đường dành cho người đi bộ qua đường, trên cầu, đầu cầu, gầm cầu vượt, ngầm, tại nơi đường bộ giao nhau cùng mức với đường sắt, đường hẹp, đường dốc, đoạn đường cong tầm nhìn bị che khuất, trên đường cao tốc, trong hầm đường bộ, trên đường một chiều, trừ khi có hiệu lệnh của người điều khiển giao thông hoặc chỉ dẫn của biển báo hiệu tạm thời.' WHERE id = 45;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (46, 1, N'Trước khi cho xe chuyển hướng, người lái xe phải làm gì để bảo đảm an toàn giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 15 Luật Trật tự, ATGT đường bộ 2024: Trước khi chuyển hướng, người điều khiển phương tiện tham gia giao thông đường bộ phải quan sát, bảo đảm khoảng cách an toàn với xe phía sau, giảm tốc độ và có tín hiệu báo hướng rẽ hoặc có tín hiệu bằng tay theo hướng rẽ đối với xe thô sơ không có đèn báo hướng rẽ, chuyển dần sang làn gần nhất với hướng rẽ. Tín hiệu báo hướng rẽ hoặc tín hiệu bằng tay phải sử dụng liên tục trong quá trình chuyển hướng. Khi bảo đảm an toàn, không gây trở ngại cho người và phương tiện khác mới được chuyển hướng.' WHERE id = 46;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (47, 1, N'Khi chuyển làn đường, người lái xe phải bật đèn tín hiệu báo rẽ như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 13 Luật Trật tự, ATGT đường bộ 2024: Trên đường có nhiều làn đường cho xe đi cùng chiều được phân biệt bằng vạch kẻ phân làn đường, người điều khiển phương tiện tham gia giao thông đường bộ phải cho xe đi trong một làn đường và chỉ được chuyển làn đường ở những nơi cho phép; mỗi lần chuyển làn đường chỉ được phép chuyển sang một làn đường liền kề; khi chuyển làn đường phải có tín hiệu báo TRƯỚC; phải quan sát bảo đảm khoảng cách an toàn với xe phía trước, phía sau và hai bên mới được chuyển làn.' WHERE id = 47;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (48, 1, N'Người điều khiển phương tiện tham gia giao thông không được dừng xe, đỗ xe ở những vị trí nào sau đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 4 Điều 18 Luật Trật tự, ATGT đường bộ 2024: có một số trường hợp người điều khiển phương tiện tham gia giao thông đường bộ không được dừng xe, đỗ xe tại nhiều vị trí, trong đó bao gồm: Trên miệng cống thoát nước, miệng hầm của đường điện thoại, điện cao thế, chỗ dành riêng cho xe chữa cháy lấy nước và trong phạm vi an toàn của đường sắt.' WHERE id = 48;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (49, 2, N'Người điều khiển xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy có được phép sử dụng xe để kéo hoặc đẩy các phương tiện khác khi tham gia giao thông không?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 4 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy khi tham gia giao thông đường bộ không được thực hiện các hành vi sau đây:
+a) Mang, vác vật cồng kềnh;
+b) Sử dụng ô;
+c) Bám, kéo hoặc đẩy các phương tiện khác;
+d) Đứng trên yên, giá đèo hàng hoặc ngồi trên tay lái;
+đ) Hành vi khác gây mất trật tự, an toàn giao thông đường bộ.' WHERE id = 49;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (50, 2, N'Khi điều khiển xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy, những hành vi nào sau đây không được phép?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 33 Luật Trật tự, ATGT đường bộ 2024: có một số trường hợp người lái xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy không được thực hiện trong đó bao gồm: Buông cả hai tay; đứng, nằm trên xe điều khiển xe; sử dụng chân chống hoặc vật khác quệt xuống đường khi xe đang chạy.' WHERE id = 50;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (51, 2, N'Khi điều khiển xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy, những hành vi nào sau đây không được phép?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 33 Luật Trật tự, ATGT đường bộ 2024: có một số trường hợp người lái xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy không được thực hiện trong đó bao gồm: Buông cả hai tay; sử dụng xe để kéo, đẩy xe khác, vật khác; sử dụng chân chống hoặc vật khác quệt xuống đường khi xe đang chạy.' WHERE id = 51;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (52, 1, N'Người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy khi tham gia giao thông đường bộ không được thực hiện hành vi nào sau đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 4 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy khi tham gia giao thông đường bộ không được thực hiện các hành vi sau đây:
+a) Mang, vác vật cồng kềnh;
+b) Sử dụng ô;
+c) Bám, kéo hoặc đẩy các phương tiện khác;
+d) Đứng trên yên, giá đèo hàng hoặc ngồi trên tay lái;
+đ) Hành vi khác gây mất trật tự, an toàn giao thông đường bộ.' WHERE id = 52;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (53, 1, N'Người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy khi tham gia giao thông đường bộ có được bám, kéo hoặc đẩy các phương tiện khác không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 4 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy khi tham gia giao thông đường bộ không được thực hiện các hành vi sau đây:
+a) Mang, vác vật cồng kềnh;
+b) Sử dụng ô;
+c) Bám, kéo hoặc đẩy các phương tiện khác;
+d) Đứng trên yên, giá đèo hàng hoặc ngồi trên tay lái;
+đ) Hành vi khác gây mất trật tự, an toàn giao thông đường bộ.' WHERE id = 53;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (54, 2, N'Người lái xe, người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy phải thực hiện quy định nào dưới đây?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người lái xe, người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy phải đội mũ bảo hiểm theo đúng quy chuẩn kỹ thuật quốc gia và cài quai đúng quy cách.' WHERE id = 54;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (55, 1, N'Người lái xe mô tô hai bánh, xe gắn máy được phép chở tối đa hai người trong những trường hợp nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 1 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người lái xe mô tô hai bánh, xe gắn máy chỉ được chở một người, trừ những trường hợp sau thì được chở tối đa hai người:
+a) Chở người bệnh đi cấp cứu;
+b) Áp giải người có hành vi vi phạm pháp luật;
+c) Trẻ em dưới 12 tuổi;
+d) Người già yếu hoặc người khuyết tật.' WHERE id = 55;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (56, 2, N'Người lái xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy không được thực hiện các hành vi nào dưới đây?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người lái xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy không được thực hiện các hành vi sau đây:
+a) Đi xe dàn hàng ngang;
+b) Đi xe vào phần đường dành cho người đi bộ và phương tiện khác;
+c) Sử dụng ô, thiết bị âm thanh, trừ thiết bị trợ thính;
+d) Buông cả hai tay; đi xe bằng một bánh đối với xe mô tô, xe gắn máy hai bánh; đi xe bằng hai bánh đối với xe mô tô, xe gắn máy ba bánh;
+đ) Sử dụng xe để kéo, đẩy xe khác, vật khác, dẫn dắt vật nuôi, mang, vác và chở vật cồng kềnh; chở người đứng trên xe, giá đèo hàng hoặc ngồi trên tay lái; xếp hàng hóa trên xe quá giới hạn quy định;
+e) Ngồi về một bên điều khiển xe; đứng, nằm trên xe điều khiển xe; thay người lái xe khi xe đang chạy; quay người về phía sau để điều khiển xe hoặc bịt mắt điều khiển xe; sử dụng chân chống hoặc vật khác quệt xuống đường khi xe đang chạy;
+g) Hành vi khác gây mất trật tự, an toàn giao thông đường bộ.' WHERE id = 56;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (57, 2, N'Người lái xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy không được thực hiện các hành vi nào sau đây?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người lái xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy không được thực hiện các hành vi sau đây:
+a) Đi xe dàn hàng ngang;
+b) Đi xe vào phần đường dành cho người đi bộ và phương tiện khác;
+c) Sử dụng ô, thiết bị âm thanh, trừ thiết bị trợ thính;
+d) Buông cả hai tay; đi xe bằng một bánh đối với xe mô tô, xe gắn máy hai bánh; đi xe bằng hai bánh đối với xe mô tô, xe gắn máy ba bánh;
+đ) Sử dụng xe để kéo, đẩy xe khác, vật khác, dẫn dắt vật nuôi, mang, vác và chở vật cồng kềnh; chở người đứng trên xe, giá đèo hàng hoặc ngồi trên tay lái; xếp hàng hóa trên xe quá giới hạn quy định;
+e) Ngồi về một bên điều khiển xe; đứng, nằm trên xe điều khiển xe; thay người lái xe khi xe đang chạy; quay người về phía sau để điều khiển xe hoặc bịt mắt điều khiển xe; sử dụng chân chống hoặc vật khác quệt xuống đường khi xe đang chạy;
+g) Hành vi khác gây mất trật tự, an toàn giao thông đường bộ.' WHERE id = 57;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (58, 2, N'Người lái xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy không được thực hiện hành vi nào sau đây?', 'trac_nghiem', 'co_ban', 1, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người lái xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy không được thực hiện các hành vi sau đây:
+a) Đi xe dàn hàng ngang;
+b) Đi xe vào phần đường dành cho người đi bộ và phương tiện khác;
+c) Sử dụng ô, thiết bị âm thanh, trừ thiết bị trợ thính;
+d) Buông cả hai tay; đi xe bằng một bánh đối với xe mô tô, xe gắn máy hai bánh; đi xe bằng hai bánh đối với xe mô tô, xe gắn máy ba bánh;
+đ) Sử dụng xe để kéo, đẩy xe khác, vật khác, dẫn dắt vật nuôi, mang, vác và chở vật cồng kềnh; chở người đứng trên xe, giá đèo hàng hoặc ngồi trên tay lái; xếp hàng hóa trên xe quá giới hạn quy định;
+e) Ngồi về một bên điều khiển xe; đứng, nằm trên xe điều khiển xe; thay người lái xe khi xe đang chạy; quay người về phía sau để điều khiển xe hoặc bịt mắt điều khiển xe; sử dụng chân chống hoặc vật khác quệt xuống đường khi xe đang chạy;
+g) Hành vi khác gây mất trật tự, an toàn giao thông đường bộ.' WHERE id = 58;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (59, 1, N'Người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy khi tham gia giao thông đường bộ có được sử dụng ô khi trời mưa hay không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người lái xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy không được thực hiện các hành vi sau đây:
+a) Đi xe dàn hàng ngang;
+b) Đi xe vào phần đường dành cho người đi bộ và phương tiện khác;
+c) Sử dụng ô, thiết bị âm thanh, trừ thiết bị trợ thính;
+d) Buông cả hai tay; đi xe bằng một bánh đối với xe mô tô, xe gắn máy hai bánh; đi xe bằng hai bánh đối với xe mô tô, xe gắn máy ba bánh;
+đ) Sử dụng xe để kéo, đẩy xe khác, vật khác, dẫn dắt vật nuôi, mang, vác và chở vật cồng kềnh; chở người đứng trên xe, giá đèo hàng hoặc ngồi trên tay lái; xếp hàng hóa trên xe quá giới hạn quy định;
+e) Ngồi về một bên điều khiển xe; đứng, nằm trên xe điều khiển xe; thay người lái xe khi xe đang chạy; quay người về phía sau để điều khiển xe hoặc bịt mắt điều khiển xe; sử dụng chân chống hoặc vật khác quệt xuống đường khi xe đang chạy;
+g) Hành vi khác gây mất trật tự, an toàn giao thông đường bộ.' WHERE id = 59;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (60, 1, N'Người được chở trên xe mô tô có được kéo theo người đang điều khiển xe đạp hay không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 4 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy khi tham gia giao thông đường bộ không được thực hiện các hành vi sau đây:
+a) Mang, vác vật cồng kềnh;
+b) Sử dụng ô;
+c) Bám, kéo hoặc đẩy các phương tiện khác;
+d) Đứng trên yên, giá đèo hàng hoặc ngồi trên tay lái;
+đ) Hành vi khác gây mất trật tự, an toàn giao thông đường bộ.' WHERE id = 60;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (61, 1, N'Trường hợp người được chở trên xe mô tô, xe gắn máy, các loại xe tương tự xe mô tô và các loại xe tương tự xe gắn máy không đội "mũ bảo hiểm cho người đi mô tô, xe máy" hoặc không cài quai đúng quy cách (trừ trường hợp chở người bệnh đi cấp cứu, trẻ em dưới 06 tuổi, áp giải người có hành vi vi phạm pháp luật) thì việc xử phạt vi phạm hành chính được quy định như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm i Khoản 2 Điều 7 Nghị Định 168/2024: Phạt tiền từ 400.000 đồng đến 600.000 đồng đối với người điều khiển xe thực hiện hành vi vi phạm: Chở người ngồi trên xe không đội "mũ bảo hiểm cho người đi mô tô, xe máy" hoặc đội "mũ bảo hiểm cho người đi mô tô, xe máy" không cài quai đúng quy cách, trừ trường hợp chở người bệnh đi cấp cứu, trẻ em dưới 06 tuổi, áp giải người có hành vi vi phạm pháp luật; Theo Điểm b Khoản 5 Điều 12 Nghị Định 168/2024: Phạt tiền từ 400.000 đồng đến 600.000 đồng đối với người được chở trên xe mô tô, xe gắn máy... không đội mũ bảo hiểm.' WHERE id = 61;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (62, 1, N'Trong các trường hợp dưới đây, để bảo đảm an toàn khi tham gia giao thông, người lái xe mô tô cần thực hiện như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 33 Luật Trật tự, ATGT đường bộ 2024: Người lái xe, người được chở trên xe mô tô hai bánh, xe mô tô ba bánh, xe gắn máy phải đội mũ bảo hiểm theo đúng quy chuẩn kỹ thuật quốc gia và cài quai đúng quy cách.' WHERE id = 62;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (63, 1, N'Thứ tự xuống phà như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm b Khoản 3 Điều 23 Luật Trật tự, ATGT đường bộ 2024 Khi xuống phà, xe cơ giới, xe máy chuyên dùng xuống trước, xe thô sơ, người đi bộ xuống sau; khi lên bến, người đi bộ lên trước, các phương tiện giao thông đường bộ lên sau theo hướng dẫn của người điều khiển giao thông.' WHERE id = 63;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (64, 1, N'Khi lái xe trong đô thị và khu đông dân cư trong thời gian từ 22 giờ ngày hôm trước đến 05 giờ ngày hôm sau, nếu cần vượt một xe khác, người lái xe phải báo hiệu như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 5 Điều 14 Luật Trật tự, ATGT đường bộ 2024: Xe xin vượt phải có báo hiệu nhấp nháy bằng đèn chiếu sáng phía trước hoặc còi... trong đô thị và khu đông dân cư trong thời gian từ 22 giờ ngày hôm trước đến 05 giờ ngày hôm sau chỉ được báo hiệu xin vượt bằng đèn.' WHERE id = 64;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (65, 1, N'Khi điều khiển xe chạy trên đường, biết có xe sau xin vượt, nếu đủ điều kiện an toàn người điều khiển phương tiện phải làm gì?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 4 Điều 14 Luật Trật tự, ATGT đường bộ 2024: Khi có xe xin vượt, người điều khiển phương tiện tham gia giao thông đường bộ phía trước phải quan sát phần đường phía trước, nếu đủ điều kiện an toàn thì phải giảm tốc độ, có tín hiệu rẽ phải để báo hiệu cho người điều khiển phương tiện tham gia giao thông đường bộ phía sau biết được vượt...' WHERE id = 65;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (66, 1, N'Trên đường không phân chia thành hai chiều xe chạy riêng biệt, người điều khiển phương tiện tham gia giao thông đường bộ phải tránh xe đi ngược chiều như thế nào để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 1 Điều 17 Luật Trật tự, ATGT đường bộ 2024: Trên đường không phân chia thành hai chiều xe chạy riêng biệt, hai xe đi ngược chiều tránh nhau, người điều khiển phương tiện tham gia giao thông đường bộ phải giảm tốc độ và cho xe đi về bên phải theo chiều xe chạy của mình.' WHERE id = 66;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (67, 1, N'Khi tránh xe đi ngược chiều, các xe phải nhường đường như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 17 Luật Trật tự, ATGT đường bộ 2024: Các trường hợp nhường đường khi tránh nhau bao gồm: a) Nơi đường hẹp chỉ đủ cho một xe chạy và có chỗ tránh xe thì xe nào ở gần chỗ tránh hơn phải vào vị trí tránh, nhường đường cho xe đi ngược chiều; b) Xe xuống dốc phải nhường đường cho xe lên dốc; c) Xe có chướng ngại vật phía trước phải nhường đường cho xe không có chướng ngại vật phía trước.' WHERE id = 67;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (68, 1, N'Người lái xe phải làm gì để bảo đảm an toàn khi lái xe trên đường cong có tầm nhìn bị hạn chế?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Trên đường cong hoặc khuất tầm nhìn, sẽ không có tầm nhìn tốt đối với chiều xe ngược chiều hoặc xe cùng chiều ở phía trước, thế nên cần quan sát cẩn thận khi lưu thông, giảm tốc độ, đi chậm để đảm bảo an toàn. Khu vực đường cong không được vượt hoặc đi sang làn đường xe ngược chiều vì cực kỳ nguy hiểm.' WHERE id = 68;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (69, 1, N'Tại nơi đường giao nhau, người lái xe đang đi trên đường không ưu tiên, đường nhánh phải nhường đường như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 1 Điều 22 Luật Trật tự, ATGT đường bộ 2024: Tại nơi đường giao nhau giữa đường không ưu tiên với đường ưu tiên hoặc giữa đường nhánh với đường chính thì xe đi từ đường không ưu tiên hoặc đường nhánh phải nhường đường cho xe đi trên đường ưu tiên hoặc đường chính từ bất kỳ hướng nào tới;' WHERE id = 69;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (70, 1, N'Tại nơi đường giao nhau có báo hiệu đi theo vòng xuyến, người lái xe phải nhường đường như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 22 Luật Trật tự, ATGT đường bộ 2024: Tại nơi đường giao nhau có báo hiệu đi theo vòng xuyến, phải nhường đường cho xe đi đến từ bên trái.' WHERE id = 70;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (71, 1, N'Tại nơi đường giao nhau không có báo hiệu đi theo vòng xuyến, người điều khiển phương tiện phải nhường đường như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 22 Luật Trật tự, ATGT đường bộ 2024: Tại nơi đường giao nhau không có báo hiệu đi theo vòng xuyến, phải nhường đường cho xe đi đến từ bên phải;' WHERE id = 71;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (72, 1, N'Người lái xe phải nhanh chóng giảm tốc độ, đi sát lề đường bên phải hoặc dừng lại để nhường đường cho các loại xe nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Ý 3 sai do nếu không đủ điều kiện an toàn, thì không cần nhường cho đoàn xe đang xin vượt. Ý 1 sai do xe ưu tiên nhưng không đang đi làm nhiệm vụ thì không cần nhường đường.' WHERE id = 72;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (73, 1, N'Khi có tín hiệu của xe ưu tiên, người và phương tiện tham gia giao thông đường bộ phải tuân thủ quy định nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 5 Điều 27 Luật Trật tự, ATGT đường bộ 2024: Khi có tín hiệu của xe ưu tiên, người và phương tiện tham gia giao thông đường bộ phải giảm tốc độ, đi sát lề đường bên phải hoặc dừng lại để nhường đường, trạm thu phí phải ưu tiên cho xe ưu tiên qua trạm trong mọi tình huống, không được gây cản trở.' WHERE id = 73;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (74, 1, N'Khi đang lái xe, phía trước có một xe Cảnh sát giao thông không phát tín hiệu ưu tiên, người lái xe có được phép vượt hay không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe Cảnh sát giao thông là xe ưu tiên nhưng không đang đi làm nhiệm vụ (không phát tín hiệu ưu tiên) thì không cần nhường đường và vẫn được vượt khi bảo đảm an toàn.' WHERE id = 74;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (75, 1, N'Khi đang lái xe, phía trước có một xe cứu thương đang phát tín hiệu ưu tiên, người lái xe có được phép vượt hay không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 5 Điều 27 Luật Trật tự, ATGT đường bộ 2024: Khi có tín hiệu của xe ưu tiên, người và phương tiện tham gia giao thông đường bộ phải giảm tốc độ, đi sát lề đường bên phải hoặc dừng lại để nhường đường, trạm thu phí phải ưu tiên cho xe ưu tiên qua trạm trong mọi tình huống, không được gây cản trở.' WHERE id = 75;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (76, 1, N'Khi tới đường ngang không có người gác, chắn đường bộ, chuông, đèn tín hiệu, người tham gia giao thông đường bộ phải làm gì để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 24 Luật Trật tự, ATGT đường bộ 2024: Khi tới đường ngang không có người gác, chắn đường bộ, chuông, đèn tín hiệu, người tham gia giao thông đường bộ phải dừng lại về bên phải đường của mình, trước vạch dừng xe và quan sát hai phía, khi không có phương tiện giao thông đường sắt tới mới được đi qua.' WHERE id = 76;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (77, 1, N'Tại đường ngang, cầu chung đường sắt, khi có hiệu lệnh của nhân viên gác chắn, đèn đỏ sáng nhấp nháy, chuông kêu, chắn đường bộ đang dịch chuyển hoặc đã đóng, người tham gia giao thông đường bộ phải làm gì để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 24 Luật Trật tự, ATGT đường bộ 2024: Khi có hiệu lệnh của nhân viên gác chắn, đèn đỏ sáng nhấp nháy, chuông kêu, chắn đường bộ đang dịch chuyển hoặc đã đóng, người tham gia giao thông đường bộ phải dừng lại về bên phải đường của mình, trước vạch dừng xe.' WHERE id = 77;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (78, 1, N'Người tham gia giao thông đường bộ phải dừng lại về bên phải đường của mình trước vạch dừng xe tại đường ngang, cầu chung đường sắt khi có báo hiệu nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 24 Luật Trật tự, ATGT đường bộ 2024: Khi có hiệu lệnh của nhân viên gác chắn, đèn đỏ sáng nhấp nháy, chuông kêu, chắn đường bộ đang dịch chuyển hoặc đã đóng, người tham gia giao thông đường bộ phải dừng lại về bên phải đường của mình, trước vạch dừng xe.' WHERE id = 78;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (79, 1, N'Người điều khiển phương tiện tham gia giao thông trong hầm đường bộ ngoài việc phải tuân thủ các quy tắc giao thông còn phải thực hiện những quy định nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điều 26 Luật Trật tự, ATGT đường bộ 2024: Người điều khiển phương tiện tham gia giao thông đường bộ khi điều khiển phương tiện trong hầm đường bộ phải tuân thủ quy tắc giao thông đường bộ sau đây: 1. Xe cơ giới, xe máy chuyên dùng phải bật đèn chiếu gần; xe thô sơ phải bật đèn hoặc có vật phát sáng báo hiệu; 2. Không dừng xe, đỗ xe trong hầm đường bộ...' WHERE id = 79;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (80, 1, N'Người điều khiển phương tiện tham gia giao thông đường bộ phải quan sát, giảm tốc độ hoặc dừng lại để bảo đảm an toàn trong các trường hợp nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 12 Luật Trật tự, ATGT đường bộ 2024: Người điều khiển phương tiện tham gia giao thông đường bộ phải quan sát, giảm tốc độ hoặc dừng lại để bảo đảm an toàn trong các trường hợp sau đây: b) Có báo hiệu cảnh báo nguy hiểm hoặc có chướng ngại vật trên đường; c) Chuyển hướng xe chạy hoặc tầm nhìn bị hạn chế; đ) Nơi cầu, cống hẹp, đập tràn, đường ngầm, hầm chui, hầm đường bộ; g) Có vật nuôi đi trên đường hoặc chăn thả ở ven đường; i) Điểm dừng xe, đỗ xe trên đường bộ có khách đang lên, xuống xe.' WHERE id = 80;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (81, 1, N'Người lái xe được phép vượt xe khác về bên phải trong trường hợp nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 14 Luật Trật tự, ATGT đường bộ 2024: Khi vượt các xe phải vượt bên trái; trường hợp khi xe phía trước có tín hiệu rẽ trái hoặc đang rẽ trái hoặc khi xe chuyên dùng đang làm việc trên đường mà không thể vượt bên trái thì được vượt về bên phải.' WHERE id = 81;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (82, 1, N'Khi có xe xin vượt, người lái xe mô tô xử lý như thế nào nếu đủ điều kiện an toàn cho xe phía sau vượt?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 14 Luật Trật tự, ATGT đường bộ 2024: Khi có xe xin vượt, người điều khiển phương tiện tham gia giao thông đường bộ phía trước phải quan sát phần đường phía trước, nếu đủ điều kiện an toàn thì phải giảm tốc độ, có tín hiệu rẽ phải để báo hiệu cho người điều khiển phương tiện tham gia giao thông đường bộ phía sau biết được vượt...' WHERE id = 82;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (83, 1, N'Những trường hợp nào dưới đây không được đi trên đường cao tốc, trừ người, phương tiện giao thông đường bộ và thiết bị phục vụ việc quản lý, bảo trì đường cao tốc?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 25 Luật Trật tự, ATGT đường bộ 2024: Xe máy chuyên dùng có tốc độ thiết kế nhỏ hơn tốc độ tối thiểu quy định đối với đường cao tốc, xe chở người bốn bánh có gắn động cơ, xe chở hàng bốn bánh có gắn động cơ, xe mô tô, xe gắn máy, các loại xe tương tự xe mô tô, xe gắn máy, xe thô sơ, người đi bộ không được đi trên đường cao tốc...' WHERE id = 83;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (84, 1, N'Theo quy định về độ tuổi, người đủ bao nhiêu tuổi trở lên thì được cấp giấy phép lái xe mô tô hai bánh có dung tích xi lanh đến 125 cm3 và xe ô tô chở người đến 8 chỗ (không kể chỗ của người lái xe); xe ô tô tải và ô tô chuyên dùng có khối lượng toàn bộ theo thiết kế đến 3.500 kg?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm b Khoản 1 Điều 59 Luật Trật tự, ATGT đường bộ 2024: Người đủ 18 tuổi trở lên được cấp giấy phép lái xe hạng A1, A, B1, B, C1, được cấp chứng chỉ bồi dưỡng kiến thức pháp luật về giao thông đường bộ để điều khiển xe máy chuyên dùng tham gia giao thông đường bộ.' WHERE id = 84;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (85, 1, N'Người đủ 16 tuổi đến dưới 18 tuổi chỉ được điều khiển các loại xe nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm a Khoản 1 Điều 59 Luật Trật tự, ATGT đường bộ 2024: Người đủ 16 tuổi trở lên được điều khiển xe gắn máy.' WHERE id = 85;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (86, 1, N'Người có Giấy phép lái xe mô tô hạng A1 không được phép điều khiển loại xe nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm a Khoản 1 Điều 57 Luật Trật tự, ATGT đường bộ 2024: Hạng A1 cấp cho người lái xe mô tô hai bánh có dung tích xi-lanh đến 125 cm³ hoặc có công suất động cơ điện đến 11 kW. Lưu ý: Xe mô tô ba bánh là dành cho hạng B1.' WHERE id = 86;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (87, 1, N'Người có Giấy phép lái xe mô tô hạng A1 được cấp sau ngày 01/01/2025 được phép điều khiển loại xe nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm a Khoản 1 Điều 57 Luật Trật tự, ATGT đường bộ 2024: Hạng A1 cấp cho người lái xe mô tô hai bánh có dung tích xi-lanh đến 125 cm³ hoặc có công suất động cơ điện đến 11 kW.' WHERE id = 87;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (88, 1, N'Người có Giấy phép lái xe mô tô hạng A được phép điều khiển loại xe nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm b Khoản 1 Điều 57 Luật Trật tự, ATGT đường bộ 2024: Hạng A cấp cho người lái xe mô tô hai bánh có dung tích xi-lanh trên 125 cm³ hoặc có công suất động cơ điện trên 11 kW và các loại xe quy định cho giấy phép lái xe hạng A1.' WHERE id = 88;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (89, 1, N'Người lái xe khi tham gia giao thông đường bộ phải đảm bảo các điều kiện nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 1 Điều 56 Luật Trật tự, ATGT đường bộ 2024: Người lái xe tham gia giao thông đường bộ phải đủ tuổi, sức khỏe theo quy định của pháp luật; có giấy phép lái xe đang còn điểm, còn hiệu lực phù hợp với loại xe đang điều khiển do cơ quan có thẩm quyền cấp, trừ người lái xe gắn máy.' WHERE id = 89;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (90, 1, N'Khi tham gia giao thông đường bộ, người lái xe phải mang theo các giấy tờ gì?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 1 Điều 56 Luật Trật tự, ATGT đường bộ 2024: Khi tham gia giao thông đường bộ, người lái xe phải mang theo các giấy tờ sau đây: a) Chứng nhận đăng ký xe...; b) Giấy phép lái xe phù hợp với loại xe đang điều khiển; c) Chứng nhận kiểm định an toàn kỹ thuật và bảo vệ môi trường...; d) Chứng nhận bảo hiểm bắt buộc trách nhiệm dân sự của chủ xe cơ giới.' WHERE id = 90;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (91, 1, N'Người có giấy phép lái xe chưa bị trừ hết 12 điểm, được phục hồi điểm giấy phép lái xe trong trường hợp nào sau đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 58 Luật Trật tự, ATGT đường bộ 2024: Giấy phép lái xe chưa bị trừ hết điểm và không bị trừ điểm trong thời hạn 12 tháng từ ngày bị trừ điểm gần nhất thì được phục hồi đủ 12 điểm.' WHERE id = 91;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (92, 1, N'Người có giấy phép lái xe đã bị trừ hết điểm phải làm gì để phục hồi điểm giấy phép lái xe?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 58 Luật Trật tự, ATGT đường bộ 2024: Trường hợp giấy phép lái xe bị trừ hết điểm thì người có giấy phép lái xe không được điều khiển phương tiện tham gia giao thông đường bộ theo giấy phép lái xe đó. Sau thời hạn ít nhất là 06 tháng kể từ ngày bị trừ hết điểm, người có giấy phép lái xe được tham gia kiểm tra nội dung kiến thức pháp luật... có kết quả đạt yêu cầu thì được phục hồi đủ 12 điểm.' WHERE id = 92;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (93, 1, N'Trách nhiệm của tổ chức, cá nhân đứng tên trong giấy chứng nhận đăng ký xe khi chưa thực hiện thu hồi chứng nhận đăng ký xe, biển số xe được quy định như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Điểm c Khoản 2 Điều 43 Luật Trật tự, ATGT đường bộ 2024: Tổ chức, cá nhân đứng tên trong giấy chứng nhận đăng ký xe tiếp tục chịu trách nhiệm của chủ xe khi chưa thực hiện thu hồi chứng nhận đăng ký xe, biển số xe đối với trường hợp phải thu hồi.' WHERE id = 93;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (94, 1, N'Trên đường bộ, trong khu vực đông dân cư, đường đôi hoặc đường một chiều có từ hai làn xe cơ giới trở lên, xe mô tô hai bánh, ô tô chở người đến 28 chỗ không kể chỗ của người lái xe tham gia giao thông với tốc độ khai thác tối đa cho phép là bao nhiêu?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Trong khu vực đông dân cư, đường đôi hoặc đường một chiều có từ hai làn xe cơ giới trở lên xe mô tô hai bánh, ô tô chở người đến 28 chỗ không kể chỗ của người lái xe tham gia giao thông với tốc độ khai thác tối đa cho phép là 60km/h.' WHERE id = 94;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (95, 1, N'Trên đường bộ (trừ đường cao tốc) trong khu vực đông dân cư, đường hai chiều hoặc đường một chiều có một làn xe cơ giới, xe mô tô hai bánh, ô tô chở người đến 28 chỗ không kể chỗ của người lái xe tham gia giao thông với tốc độ khai thác tối đa cho phép là bao nhiêu?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Trong khu vực đông dân cư, đường hai chiều hoặc đường một chiều có một làn xe cơ giới, xe mô tô hai bánh, ô tô chở người đến 28 chỗ không kể chỗ của người lái xe tham gia giao thông với tốc độ khai thác tối đa cho phép là 50km/h.' WHERE id = 95;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (96, 1, N'Trên đường bộ ngoài khu vực đông dân cư, đường đôi hoặc đường một chiều có từ hai làn xe cơ giới trở lên (trừ đường cao tốc) loại xe nào dưới đây được tham gia giao thông với tốc độ khai thác tối đa cho phép là 70 km/h?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Ngoài khu vực đông dân cư, đường đôi hoặc đường một chiều có từ hai làn xe cơ giới trở lên (trừ đường cao tốc) loại Xe buýt; ô tô đầu kéo kéo sơ mi rơ moóc; xe mô tô; ô tô chuyên dùng có tốc độ khai thác tối đa cho phép là 70 km/h.' WHERE id = 96;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (97, 1, N'Trên đường bộ ngoài khu vực đông dân cư, đường hai chiều hoặc đường một chiều có một làn xe cơ giới (trừ đường cao tốc), loại xe nào dưới đây được tham gia giao thông với tốc độ khai thác tối đa cho phép là 60 km/h?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Ngoài khu vực đông dân cư, đường hai chiều hoặc đường một chiều có một làn xe cơ giới (trừ đường cao tốc), loại Xe buýt; ô tô đầu kéo kéo sơ mi rơ moóc; xe mô tô; ô tô chuyên dùng có tốc độ khai thác tối đa cho phép là 60 km/h.' WHERE id = 97;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (98, 1, N'Người lái xe phải giảm tốc độ thấp hơn tốc độ tối đa cho phép đến mức cần thiết, chú ý quan sát và chuẩn bị sẵn sàng những tình huống có thể xảy ra để phòng ngừa tai nạn trong các trường hợp nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển báo nguy hiểm (hình tam giác, viền đỏ nền vàng) và cảnh báo được dùng để báo cho người tham gia giao thông biết trước nguy hiểm phía trước hoặc cần lưu ý khác, nhằm phòng ngừa tai nạn xảy ra.' WHERE id = 98;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (99, 1, N'Khi gặp xe buýt đang dừng đón, trả khách, người điều khiển xe mô tô phải xử lý như thế nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe buýt đang dừng đón trả khách thì nên giảm tốc độ và quan sát, khi đảm bảo an toàn thì từ từ vượt qua xe buýt.' WHERE id = 99;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (100, 1, N'Việc sử dụng xe mô tô, xe gắn máy, xe thô sơ để vận chuyển hành khách, hàng hóa phải thực hiện các quy định nào dưới đây để đảm bảo an toàn giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 1 Điều 47, Luật Trật Tự ATGT 2024, Việc sử dụng xe mô tô, xe gắn máy, xe thô sơ để vận chuyển hành khách, hàng hóa phải thực hiện các quy định sau đây: a) Kiểm tra điều kiện bảo đảm an toàn của xe trước khi tham gia giao thông đường bộ; c) Kiểm tra việc sắp xếp hàng hóa bảo đảm an toàn; không chở quá số người, chở hành lý, hàng hoá vượt quá khối lượng cho phép hoặc vượt quá khổ giới hạn của xe.' WHERE id = 100;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (101, 3, N'Những hành vi nào sau đây thể hiện là người có văn hóa giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Hành vi vượt đèn đỏ là vi phạm pháp luật và thiếu văn hóa giao thông. Hành động bấm còi và nháy đèn liên tục sẽ gây phiền hà cho người khác. Hành động không nhường đường thể hiện sự ích kỷ và không có văn hóa giao thông. Loại trừ các ý sai và chọn ý còn lại.' WHERE id = 101;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (102, 3, N'Khái niệm về văn hóa giao thông được hiểu như thế nào là đúng?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Là sự hiểu biết và chấp hành nghiêm chỉnh pháp luật về giao thông, là ý thức trách nhiệm với cộng đồng và là sự tôn trọng, nhường nhịn, giúp đỡ và ứng xử có văn hóa.' WHERE id = 102;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (103, 3, N'Người lái xe không điều khiển xe đi đúng làn đường quy định, phóng nhanh, vượt ẩu, vượt đèn đỏ, đi vào đường cấm được coi là hành vi nào trong các hành vi dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Hành vi được nêu trên câu hỏi vừa vi phạm pháp luật, vừa thiếu văn hóa.' WHERE id = 103;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (104, 3, N'Người lái xe có văn hóa giao thông khi tham gia giao thông đường bộ phải đáp ứng các điều kiện nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Ý 2 sai do đi xe quá tốc độ, không đúng làn đường là vi phạm luật và không có văn hóa giao thông. Chọn ý 1 đúng.' WHERE id = 104;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (105, 3, N'Người lái xe mô tô có văn hóa giao thông khi tham gia giao thông phải tuân thủ những quy định nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Khi lái xe không được uống rượu bia, phải đậu xe đúng nơi quy định, đi trên phần đường dành cho xe của mình.' WHERE id = 105;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (106, 3, N'Trong các hành vi dưới đây, người lái xe có văn hóa giao thông phải ứng xử như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Khi lái xe không được uống rượu bia, phải đậu xe đúng nơi quy định, đi trên phần đường dành cho xe của mình.' WHERE id = 106;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (107, 3, N'Khi tham gia giao thông việc sử dụng còi xe nên dùng như thế nào để thể hiện là người có văn hóa giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Chỉ sử dụng còi khi cần thiết và đúng nơi được cho phép là có văn hóa giao thông. Hành vi bấm còi liên tục, bấm to ở khu đông dân cư vừa thiếu lịch sự vừa không có văn hóa.' WHERE id = 107;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (108, 3, N'Người điều khiển phương tiện tham giao thông đường bộ gây ra tai nạn giao thông đường bộ, người liên quan đến vụ tai nạn giao thông đường bộ có trách nhiệm gì dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 1 Điều 80 Luật Trật Tự ATGT 2024: Người điều khiển phương tiện tham gia giao thông đường bộ gây ra tai nạn giao thông đường bộ có trách nhiệm: Dừng ngay phương tiện, cảnh báo nguy hiểm, giữ nguyên hiện trường, trợ giúp người bị nạn... Ở lại hiện trường vụ tai nạn... Cung cấp thông tin xác định danh tính về bản thân...' WHERE id = 108;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (109, 3, N'Người có mặt tại nơi xảy ra vụ tai giao thông đường bộ có trách nhiệm gì dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 2 Điều 80, Luật Trật Tự ATGT 2024: Người có mặt tại nơi xảy ra vụ tai nạn giao thông đường bộ có trách nhiệm: Giúp đỡ, cứu chữa kịp thời người bị nạn; Báo tin ngay cho cơ quan Công an...; Tham gia bảo vệ hiện trường, tài sản; Cung cấp thông tin liên quan.' WHERE id = 109;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (110, 3, N'Trong đoạn đường hai chiều tại khu đông dân cư đang ùn tắc, người điều khiển xe mô tô có văn hóa giao thông sẽ lựa chọn cách xử lý tình huống nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Tại khu vực dân cư đang ùn tắc, không được lấn sang làn ngược chiều vì làm ùn tắc nghiêm trọng hơn. Hành vi chạy lên vỉa hè để tránh ùn tắc cũng không được phép.' WHERE id = 110;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (111, 4, N'Khi điều khiển xe mô tô tay ga xuống đường dốc dài, độ dốc cao, người lái xe cần thực hiện các thao tác nào dưới đây để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Giữ tay ga ở mức phù hợp để kết hợp độ ghì từ động cơ, còn sử dụng phanh thì phải sử dụng cả phanh trước phanh sau để tăng lực phanh và xe được thăng bằng. Không nên chỉ dùng 1 phanh, dễ gây cháy phanh hoặc sàng xe, gây tai nạn không mong muốn.' WHERE id = 111;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (112, 4, N'Khi điều khiển xe trên đường vòng người lái xe cần phải làm gì để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Điều khiển xe trên đường vòng cần giảm tốc độ tới mức cần thiết nhằm đảm bảo an toàn, không nên tăng tốc vì tầm nhìn ở đường vòng thường hạn chế và tiềm ẩn nhiều rủi ro nguy hiểm.' WHERE id = 112;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (113, 4, N'Khi điều khiển xe qua đường sắt, người lái xe cần phải thực hiện các thao tác nào dưới đây để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Cả ý 1 và 2 đều đúng.' WHERE id = 113;
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (114, 4, N'Trong các loại nhiên liệu dưới đây, loại nhiên liệu nào giảm thiểu ô nhiễm môi trường?', 'trac_nghiem', 'co_ban', 0, 'approved');
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (115, 4, N'Các biện pháp tiết kiệm nhiên liệu khi chạy xe?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Bảo dưỡng xe thường xuyên giúp xe luôn vận hành tốt, áp suất lốp đúng theo quy định giúp xe di chuyển ổn định và tiết kiệm nhiên liệu.' WHERE id = 115;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (116, 4, N'Khi tầm nhìn bị hạn chế bởi sương mù hoặc mưa to, người lái xe phải thực hiện các thao tác nào để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Tầm nhìn hạn chế thì cần giảm tốc độ, để có thể phản ứng ngay khi có vấn đề xảy ra. Bật đèn sương mù và đèn chiếu gần để tăng khả năng quan sát và giúp xe đối diện dễ thấy xe mình.' WHERE id = 116;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (117, 4, N'Khi đèn pha của xe đi ngược chiều gây chói mắt, làm giảm khả năng quan sát trên đường, người lái xe xử lý như thế nào dưới đây để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Tương tự tầm nhìn hạn chế, bị chói mắt thì cần giảm tốc độ, giữ vững tay lái để có thể phản ứng ngay khi có vấn đề xảy ra. Để hạn chế ảnh hưởng của đèn chói đến mắt, nên nhìn chếch nhẹ về phía bên phải.' WHERE id = 117;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (118, 4, N'Để đạt được hiệu quả phanh cao nhất, người lái xe mô tô phải sử dụng các kỹ năng như thế nào dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Khi phanh thì giảm hết ga, dùng cả phanh trước và phanh sau để tăng lực phanh và chống sàng xe, tránh sử dụng chỉ một phanh gây quá tải và có thể cháy phanh.' WHERE id = 118;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (119, 4, N'Khi đang lái xe mô tô hoặc ô tô, nếu có nhu cầu sử dụng điện thoại để nhắn tin hoặc gọi điện, người lái xe phải thực hiện như thế nào trong các tình huống nêu dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Phải dừng xe mới được sử dụng điện thoại để liên lạc.' WHERE id = 119;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (120, 4, N'Những thói quen nào dưới đây khi điều khiển xe mô tô tay ga tham gia giao thông dễ gây tai nạn nguy hiểm?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Nguyên tắc sử dụng phanh là kết hợp phanh trước phanh sau. Nếu chỉ sử dụng phanh trước dễ gây sàng xe và té ngã.' WHERE id = 120;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (121, 4, N'Khi điều khiển xe mô tô quay đầu, người lái xe cần thực hiện như thế nào để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Chỉ được quay đầu nơi được phép, có tín hiệu quay đầu, giảm tốc độ, quan sát đảm bảo an toàn rồi mới được quay đầu. Cả ba ý 1, 2 và 3 đều đúng và bổ trợ ý nghĩa cho nhau.' WHERE id = 121;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (122, 4, N'Tay ga trên xe mô tô hai bánh có tác dụng gì dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Tay ga dùng để điều tiết động cơ, điều khiển xe chạy về phía trước. Chú ý, xe mô tô hai bánh không có chạy lùi.' WHERE id = 122;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (123, 4, N'Gương chiếu hậu của xe mô tô hai bánh có tác dụng gì dưới đây?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Gương chiếu hậu là để quan sát an toàn phía sau xe về cả 2 hướng.' WHERE id = 123;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (124, 4, N'Để bảo đảm an toàn khi tham gia giao thông, người lái xe mô tô hai bánh cần điều khiển tay ga như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Để đảm bảo an toàn khi tham gia giao thông, tăng ga từ từ để làm chủ tốc độ của xe; giảm ga thật nhanh khi gặp chướng ngại vật hoặc tai nạn bất ngờ để giảm tốc độ nhanh nhất có thể, có thêm thời gian xử lý tình huống.' WHERE id = 124;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (125, 4, N'Để tránh đổ, ngã khi điều khiển xe mô tô hai bánh ở nơi đường xấu, nhỏ và hẹp, người lái xe cần xử lý như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Khi đi ở đường gồ ghề, cần đi chậm và quan sát phía trước nhằm điều khiển xe cho hợp lý. Không nên dùng phanh trước tránh sàng xe té ngã, trọng tâm xe và người thấp để dễ giữ thăng bằng và điều khiển qua đường xấu an toàn nhất.' WHERE id = 125;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (126, 5, N'Biển nào cấm máy kéo?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.104): Cấm xe máy. Biển 2 (P.106a): Cấm các loại ô tô tải kể cả máy kéo. Biển 3 (P.109): Cấm các loại máy kéo, kể cả máy kéo bánh hơi và bánh xích đi qua. Vậy biển 2 và biển 3 cấm máy kéo.' WHERE id = 126;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (127, 5, N'Biển nào báo hiệu cấm xe mô tô ba bánh chở hàng đi qua?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.104): Cấm xe mô tô, không cấm xe gắn máy... Biển 2 (P.103a): Cấm xe ô tô không cấm xe gắn máy. Cấm các loại xe cơ giới kể cả xe máy 3 bánh có thùng đi qua... Biển 3: Cấm ô tô tải, không cấm xe mô tô... Vậy biển 1 và 2 đều cấm mô tô 3 bánh đi vào.' WHERE id = 127;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (128, 5, N'Biển nào dưới đây xe gắn máy được phép đi vào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'CHÚ Ý: Xe gắn máy không phải xe mô tô. Biển 1 (P.104): Cấm xe mô tô, không cấm xe gắn máy... Biển 2 (P.103a): Cấm xe ô tô không cấm xe gắn máy... Nên đáp án là cả 2 biển đều cho phép xe gắn máy đi vào.' WHERE id = 128;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (129, 5, N'Biển nào báo hiệu cấm xe mô tô đi vào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.104): Cấm xe mô tô, không cấm xe gắn máy... Biển 2 (P.103a): Cấm xe ô tô không cấm xe gắn máy... Biển 3: Cấm ô tô tải, không cấm xe mô tô... Vậy biển 1 cấm xe mô tô đi vào.' WHERE id = 129;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (130, 5, N'Khi gặp biển nào thì xe mô tô hai bánh được đi vào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.104): Cấm xe mô tô... Biển 2 (P.103a): Cấm xe ô tô... Biển 3: Cấm ô tô tải... Vậy gặp biển 2 và 3, xe mô tô hai bánh vẫn được đi vào.' WHERE id = 130;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (131, 5, N'Biển nào cấm quay đầu xe?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.123a): "Cấm rẽ trái"... Biển không có giá trị cấm quay đầu xe. Biển 2 (P.124a): "Cấm quay xe" không cấm rẽ trái... Vậy biển 2 cấm quay xe.' WHERE id = 131;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (132, 5, N'Biển nào cấm xe rẽ trái?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.123a): "Cấm rẽ trái"... Biển 2 (P.124a): "Cấm quay xe" không cấm rẽ trái... Vậy biển 1 cấm xe rẽ trái.' WHERE id = 132;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (133, 5, N'Khi gặp biển nào xe được rẽ trái?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.123a): "Cấm rẽ trái"... Biển 2 (P.124a): "Cấm quay xe" không cấm rẽ trái... Gặp biển 2 xe được rẽ trái.' WHERE id = 133;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (134, 5, N'Biển nào cấm các phương tiện rẽ phải?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (123b) "Cấm rẽ phải" – cấm toàn bộ các phương tiện. Biển 2 (124d): "Cấm rẽ phải và quay xe" – cấm toàn bộ các phương tiện. Biển 3 (124f): "Cấm ô tô rẽ phải và quay xe" – CHỈ CẤM XE Ô TÔ rẽ phải. Câu hỏi hỏi cấm TOÀN BỘ CÁC PHƯƠNG TIỆN, thế nên đáp án là biển 1 và biển 2.' WHERE id = 134;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (135, 5, N'Biển nào cấm các phương tiện rẽ trái?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (123a): "Cấm rẽ trái" – cấm toàn bộ các phương tiện. Biển 2 (124c): "Cấm rẽ trái và quay xe" – cấm toàn bộ các phương tiện. Biển 3 (124e): "Cấm ô tô rẽ trái và quay xe" – CHỈ CẤM XE Ô TÔ rẽ trái. Câu hỏi hỏi cấm TOÀN BỘ CÁC PHƯƠNG TIỆN, thế nên đáp án là biển 1 và biển 2.' WHERE id = 135;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (136, 5, N'Biển nào xe được phép rẽ trái?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.123a): "Cấm rẽ trái". Biển 2 (1.410): "Khu vực quay xe" – không cấm rẽ trái. Gặp biển 2 xe vẫn được rẽ trái.' WHERE id = 136;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (137, 5, N'Biển nào xe quay đầu không bị cấm?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.123a): "Cấm rẽ trái", không có giá trị cấm quay đầu xe. Biển 2 (1.410): "Khu vực quay xe" – không cấm rẽ trái. Cả 2 biển đều không cấm quay đầu.' WHERE id = 137;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (138, 5, N'Biển nào xe được phép quay đầu nhưng không được rẽ trái?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.123a): "Cấm rẽ trái", không có giá trị cấm quay đầu xe. Biển 2 (R.301e): "Hướng đi phải theo – chỉ được rẽ trái". Vậy chỉ có biển 1 cho phép quay đầu.' WHERE id = 138;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (139, 5, N'Biển nào là biển "Cấm đi ngược chiều"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.101): "Đường cấm" không cấm xe ưu tiên. Biển 2 (P.102): "Cấm đi ngược chiều" không áp dụng với xe ưu tiên. Biển 3 (P.301a): "Cấm đỗ xe". Chọn biển 2.' WHERE id = 139;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (140, 5, N'Biển nào dưới đây các phương tiện không được phép đi vào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.101): "Đường cấm". Biển 2 (P.102): "Cấm đi ngược chiều". Biển 3 (P.301a): "Cấm đỗ xe". Nên gặp biển 1 và biển 2 các phương tiện không được phép đi vào.' WHERE id = 140;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (141, 5, N'Khi gặp biển nào xe ưu tiên theo luật định vẫn phải dừng lại?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.101): "Đường cấm" không cấm xe ưu tiên. Biển 2 (R.122): "Dừng lại" áp dụng với cả xe ưu tiên. Biển 3 (P.102): "Cấm đi ngược chiều" không áp dụng với xe ưu tiên. Gặp biển 2 xe ưu tiên vẫn phải dừng lại.' WHERE id = 141;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (142, 5, N'Biển nào cấm tất cả các loại xe cơ giới và thô sơ đi lại trên đường, trừ xe ưu tiên theo luật định (nếu đường vẫn cho xe chạy được)?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.101): "Đường cấm" không cấm xe ưu tiên. Biển 2 (R.122): "Dừng lại" áp dụng với cả xe ưu tiên. Biển 1 cấm tất cả các xe cơ giới và thô sơ (trừ xe ưu tiên).' WHERE id = 142;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (143, 5, N'Biển báo này có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'CHÚ Ý: Câu hỏi hỏi ý nghĩa của biển chứ không phải tên biển. Biển P.127a: Tốc độ tối đa cho phép về ban đêm. Trong phạm vi hiệu lực của biển "Tốc độ tối đa cho phép về ban đêm", nếu gặp biển "Tốc độ tối đa cho phép" thì người lái phải tuân thủ theo giá trị tốc độ tối đa quy định ghi trên biển.' WHERE id = 143;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (144, 5, N'Biển này có hiệulực đối với xe mô tô hai bánh, ba bánh chở hàng không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển chính P.105: Cấm các loại xe cơ giới và xe mô tô đi qua trừ các xe được ưu tiên theo quy định nên có hiệu lực cấm trên cả xe mô tô 3 bánh, không phân biệt có hay không có chở hàng. Biển này có hiệu lực với xe mô tô hai bánh và ba bánh.' WHERE id = 144;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (145, 5, N'Biển này có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển chính P.105: có hiệu lực cấm các loại xe cơ giới và xe mô tô. Biển phụ S.503b: Hướng tác dụng của biển – hướng rẽ bên trái và hướng rẽ bên phải. Kết hợp ý nghĩa cả 2 biển, biển này cấm xe cơ giới, mô tô (trừ xe ưu tiên) đi về bên trái và bên phải.' WHERE id = 145;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (146, 5, N'Biển phụ đặt dưới biển cấm bóp còi có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển phụ là biển S.501 "Phạm vi tác dụng của biển" xác định chiều dài áp dụng biển chính từ nơi đặt biển. Biển phụ báo hiệu đoạn đường 500m từ nơi đặt biển cấm bấm còi. Không được phép bấm còi.' WHERE id = 146;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (147, 5, N'Chiều dài đoạn đường 500 m từ nơi đặt biển này, người lái xe có được phép bấm còi không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển phụ là biển S.501 "Phạm vi tác dụng của biển" xác định chiều dài áp dụng biển chính từ nơi đặt biển. Biển phụ báo hiệu đoạn đường 500m từ nơi đặt biển cấm bấm còi. Không được phép bấm còi.' WHERE id = 147;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (148, 5, N'Biển nào xe mô tô hai bánh được đi vào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển chính là P.101 "Đường cấm". Bên dưới có biển phụ để chỉ loại phương tiện được áp dụng. Chỉ có biển phụ số 2 là cấm xe mô tô, biển phụ số 1 và số 3 không cấm xe mô tô.' WHERE id = 148;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (149, 5, N'Biển nào xe mô tô hai bánh không được đi vào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển chính là P.101 "Đường cấm". Bên dưới có biển phụ để chỉ loại phương tiện được áp dụng. Chỉ có biển phụ số 2 là cấm xe mô tô, biển phụ số 1 và 3 không cấm xe mô tô.' WHERE id = 149;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (150, 5, N'Ba biển này có hiệu lực như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển chính là P.101 "Đường cấm". Bên dưới có biển phụ để chỉ loại phương tiện được áp dụng. Cấm các loại xe ở biển phụ bên dưới đi vào.' WHERE id = 150;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (151, 5, N'Biển này có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển chính (P.130): Cấm dừng xe và đỗ xe. Biển phụ (S.503a): Hướng tác dụng của biển về bên phải. Kết hợp ý nghĩa cả 2 biển, biển này cấm dừng và đỗ xe theo hướng bên phải.' WHERE id = 151;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (152, 5, N'Biển nào là biển "Tốc độ tối đa cho phép về ban đêm"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'CHÚ Ý: Câu hỏi hỏi tên biển, không phải hỏi ý nghĩa của biển. Theo quy chuẩn quốc gia, biển 1 (P.127a) có tên là Tốc độ tối đa cho phép về ban đêm, thế nên BẮT BUỘC phải chọn biển 1, mặc dù về mặt ý nghĩa, biển 2 cũng có ý nghĩa về ban đêm.' WHERE id = 152;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (153, 5, N'Biển nào báo hiệu hạn chế tốc độ của phương tiện không vượt quá trị số ghi trên biển?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.306): Tốc độ tối thiểu cho phép. Biển 2 (P.127): Tốc độ tối đa cho phép. Biển 2 báo hiệu tốc độ tối đa mà các phương tiện được chạy.' WHERE id = 153;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (154, 5, N'Số 50 ghi trên biển báo dưới đây có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển P.127: Tốc độ tối đa cho phép. Biển báo báo tốc độ tối đa cho phép các xe cơ giới chạy. Biển có hiệu lực cấm các loại xe cơ giới chạy với tốc độ tối đa vượt quá trị số ghi trên biển trừ các xe được ưu tiên theo quy định.' WHERE id = 154;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (155, 5, N'Biển báo dưới đây có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển R.306: Tốc độ tối thiểu cho phép. Biển này báo hiệu tốc độ tối thiểu cho phép các xe chạy.' WHERE id = 155;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (156, 5, N'Gặp biển nào người lái xe phải nhường đường cho người đi bộ?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.224): "Đường người đi bộ cắt ngang" – gặp biển này phải chạy chậm lại và chú ý nhường đường cho người đi bộ. Biển 2 (P.112): "Cấm người đi bộ". Biển 3 (R.305): "Đường dành cho người đi bộ".' WHERE id = 156;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (157, 5, N'Biển nào chỉ đường dành cho người đi bộ, các loại xe không được đi vào khi gặp biển này?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.224): "Đường người đi bộ cắt ngang" – gặp biển này phải chạy chậm lại và chú ý nhường đường cho người đi bộ. Biển 2 (P.112): “Cấm người đi bộ". Biển 3 (R.305): "Đường dành cho người đi bộ". Các loại xe cơ giới và thô sơ không được phép đi vào trên đường đã đặt biển này, trừ trường hợp đi cắt ngang qua nhưng phải đảm bảo tuyệt đối an toàn cho người đi bộ.' WHERE id = 157;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (158, 5, N'Biển nào báo hiệu "Đường dành cho xe thô sơ"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.304): Đường dành cho xe thô sơ. Biển có hiệu lực bắt buộc các loại xe thô sơ và người đi bộ phải dùng đường dành riêng này để đi và cấm các xe cơ giới đi vào. Biển 2 (P.110a): Cấm xe đạp. Biển 3 (W.226): Đường người đi xe đạp cắt ngang. Chọn biển 1.' WHERE id = 158;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (159, 5, N'Biển nào báo hiệu sắp đến chỗ giao nhau nguy hiểm?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.210): Giao nhau với đường sắt có rào chắn. Biển 2 (W.208): Giao nhau với đường ưu tiên. Biển 3 (W.209): Giao nhau có tín hiệu đèn. Cả 3 biển đều báo hiệu sắp đến chỗ giao nhau nguy hiểm.' WHERE id = 159;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (160, 5, N'Biển nào báo hiệu "Giao nhau với đường sắt có rào chắn"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.210): Giao nhau với đường sắt có rào chắn. Biển 2 (W.208): Giao nhau với đường ưu tiên. Biển 3 (W.209): Giao nhau có tín hiệu đèn. Chỉ biển 1 báo hiệu giao nhau với đường sắt có rào chắn.' WHERE id = 160;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (161, 5, N'Biển nào báo hiệu "Giao nhau có tín hiệu đèn"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.210): Giao nhau với đường sắt có rào chắn. Biển 2 (W.208): Giao nhau với đường ưu tiên. Biển 3 (W.209): Giao nhau có tín hiệu đèn. Chỉ biển 3 báo hiệu giao nhau có tín hiệu đèn.' WHERE id = 161;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (162, 5, N'Biển nào báo hiệu nguy hiểm giao nhau với đường sắt?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.210): Giao nhau với đường sắt có rào chắn. Biển 2 (W.234): Giao nhau với đường hai chiều. Biển 3 (W.242a): Nơi đường sắt giao vuông góc với đường bộ, không có rào chắn. Biển 1 và biển 3 báo hiệu giao nhau với đường sắt.' WHERE id = 162;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (163, 5, N'Biển nào báo hiệu đường bộ giao nhau với đường sắt không có rào chắn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.210): Giao nhau với đường sắt có rào chắn. Biển 2 (W.211a): Giao nhau với đường sắt không có rào chắn. Biển 3 (W.242a): Nơi đường sắt giao vuông góc với đường bộ, không có rào chắn. Biển 2 và 3 báo hiệu giao nhau với đường sắt không rào chắn.' WHERE id = 163;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (164, 5, N'Biển nào báo hiệu sắp đến chỗ giao nhau giữa đường bộ và đường sắt?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.211a): Giao nhau với đường sắt không có rào chắn. Biển 2 (W.208): Giao nhau với đường ưu tiên. Biển 3 (W.211b): Giao nhau với đường tàu điện. Chọn biển 1.' WHERE id = 164;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (165, 5, N'Biển nào báo hiệu "Cửa chui"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.237): Cầu vòng. Biển 2 (W.218): Cửa chui. Để báo trước sắp đến đường có cổng chắn ngang, kiểu cổng như cổng thành, cầu vượt đường bộ dạng cầu vòm... Biển 3 (W.240): Đường hầm. Chọn biển 2.' WHERE id = 165;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (166, 5, N'Hai biển này có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.242a): Nơi đường sắt giao vuông góc với đường bộ, không có rào chắn. Để chỉ chỗ đường sắt giao vuông góc đường bộ, đường sắt chỉ có một cặp đường ray cắt ngang. Biển 2 (W.242a): Nơi đường sắt giao vuông góc với đường bộ, không có rào chắn, đường sắt có từ 2 cặp đường ray trở lên.' WHERE id = 166;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (167, 5, N'Biển nào báo hiệu "Hết đoạn đường ưu tiên"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.207a): Giao nhau với đường không ưu tiên. Biển 2 (W.208): Giao nhau với đường ưu tiên. Biển 3 (1.402): Hết đoạn đường ưu tiên. Chọn biển 3.' WHERE id = 167;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (168, 5, N'Biển nào báo hiệu, chỉ dẫn xe đi trên đường này được quyền ưu tiên qua nơi giao nhau?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.207a): Giao nhau với đường không ưu tiên. Biển 2 (W.208): Giao nhau với đường ưu tiên. Biển 3 (1.401): Bắt đầu đường ưu tiên. Biển 1 và biển 3 chỉ dẫn xe đang đi có quyền ưu tiên qua giao lộ.' WHERE id = 168;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (169, 5, N'Biển nào báo hiệu "Giao nhau với đường không ưu tiên"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.207a): Giao nhau với đường không ưu tiên. Để báo trước sắp đến nơi giao nhau với đường không ưu tiên. Biển 2 (W.208): Giao nhau với đường ưu tiên. Biển 3 (1.401): Bắt đầu đường ưu tiên. Chọn biển 1.' WHERE id = 169;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (170, 5, N'Biển nào báo hiệu "Giao nhau với đường ưu tiên"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.205a): Đường giao nhau cùng cấp. Biển 2 (W.207a): Giao nhau với đường không ưu tiên. Biển 3 (W.208): Giao nhau với đường ưu tiên. Chọn biển 3.' WHERE id = 170;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (171, 5, N'Biển nào báo hiệu "Đường giao nhau" của các tuyến đường cùng cấp?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.205a): Đường giao nhau cùng cấp. Để báo trước sắp đến nơi giao nhau cùng mức của các tuyến đường cùng cấp. Biển 2 (W.207a): Giao nhau với đường không ưu tiên. Biển 3 (W.208): Giao nhau với đường ưu tiên. Chọn biển 1.' WHERE id = 171;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (172, 5, N'Biển nào báo hiệu "Đường hai chiều"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.204): Đường hai chiều. Biển 2 (P.132): Nhường đường cho xe cơ giới đi ngược chiều qua đường hẹp. Biển 3 (1.406): Được ưu tiên qua đường hẹp. Chọn biển 1.' WHERE id = 172;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (173, 5, N'Biển nào báo hiệu phải giảm tốc độ, nhường đường cho xe cơ giới đi ngược chiều qua đường hẹp?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.204): Đường hai chiều. Biển 2 (P.132): Nhường đường cho xe cơ giới đi ngược chiều qua đường hẹp. Biển 3 (1.406): Được ưu tiên qua đường hẹp. Chọn biển 2.' WHERE id = 173;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (174, 5, N'Biển nào chỉ dẫn "Được ưu tiên qua đường hẹp"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.204): Đường hai chiều. Biển 2 (P.132): Nhường đường cho xe cơ giới đi ngược chiều qua đường hẹp. Biển 3 (1.406): Được ưu tiên qua đường hẹp. Chọn biển 3.' WHERE id = 174;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (175, 5, N'Biển nào báo hiệu "Đường đôi"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.204): Đường hai chiều. Biển 2 (W.234): Giao nhau với đường hai chiều. Biển 3 (W.235): Đường đôi: Để báo trước sắp đến đoạn đường có chiều đi và chiều về phân biệt bằng dải phân cách cứng. Biển 3 đúng.' WHERE id = 175;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (176, 5, N'Biển nào báo hiệu "Kết thúc đường đôi"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.204): Đường hai chiều. Biển 2 (W.235): Đường đôi. Biển 3 (W.236): Kết thúc đường đôi. Để báo trước sắp kết thúc đoạn đường có chiều đi và chiều về phân biệt bằng dải phân cách cứng. Biển 3 đúng.' WHERE id = 176;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (177, 5, N'Biển nào báo hiệu "Giao nhau với đường hai chiều"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.234): Giao nhau với đường hai chiều. Trên đường một chiều, để báo trước sắp đến vị trí giao nhau với đường hai chiều. Biển 2 (W.235): Đường đôi. Biển 3 (W.205a): Đường giao nhau cùng cấp. Biển 1 đúng.' WHERE id = 177;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (178, 5, N'Biển nào báo hiệu "Giao nhau với đường hai chiều"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.204): Đường hai chiều. Biển 2 (W.234): Giao nhau với đường hai chiều. Biển 3 (W.205a): Đường giao nhau cùng cấp. Biển 2 đúng.' WHERE id = 178;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (179, 5, N'Biển nào báo hiệu "Chú ý chướng ngại vật"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.236): Kết thúc đường đôi. Biển 2 (W.246a): Chú ý chướng ngại vật – Vòng tránh ra hai bên. Biển 3 (W.246b): Chú ý chướng ngại vật – Vòng tránh sang bên trái. Biển 2 và biển 3 đúng.' WHERE id = 179;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (180, 5, N'Biển nào báo hiệu "Đường hầm"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.218): Cửa chui. Biển 2 (W.240): Đường hầm. Để nhắc lái xe chú ý chuẩn bị đi vào hầm đường bộ. Biển 3 (W.237): Cầu vòng. Chọn biển 2.' WHERE id = 180;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (181, 5, N'Biển nào dưới đây là biển "Cầu hẹp"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.213): Cầu tạm. Biển 2 (W.212): Cầu hẹp. Để báo trước sắp đến cầu hẹp là loại cầu có chiều rộng phần xe chạy nhỏ hơn hoặc bằng 4,50 m. Biển 3 (W.214): Cầu quay – cầu cất. Biển 2 đúng.' WHERE id = 181;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (182, 5, N'Gặp biển nào người tham gia giao thông phải đi chậm và thận trọng đề phòng khả năng xuất hiện và di chuyển bất ngờ của trẻ em trên mặt đường?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.224): Đường người đi bộ cắt ngang. Biển 2 (W.225): Trẻ em. Để báo trước là gần đến đoạn đường thường có trẻ em đi ngang qua hoặc tụ tập trên đường như ở vườn trẻ, trường học. Biển 2 đúng.' WHERE id = 182;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (183, 5, N'Biển nào chỉ dẫn nơi bắt đầu đoạn đường dành cho người đi bộ?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.224): Đường người đi bộ cắt ngang. Biển 2 (1.423c): Điểm bắt đầu đường đi bộ. Biển 3 (W.225): Trẻ em. Biển 2 đúng.' WHERE id = 183;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (184, 5, N'Biển nào dưới đây báo hiệu gần đến đoạn đường thường có trẻ em đi ngang qua?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.224): Đường người đi bộ cắt ngang. Biển 2 (W.225): Trẻ em. Biển 3 (W.226): Đường người đi xe đạp cắt ngang. Biển 2 đúng.' WHERE id = 184;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (185, 5, N'Biển nào sau đây là biển "Dốc xuống nguy hiểm"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (W.219): Dốc xuống nguy hiểm. Biển 2 (W.220): Dốc lên nguy hiểm. Biển 1 đúng. MẸO: Nhìn biển theo hướng từ trái qua phải để chiều dốc lên hay dốc xuống.' WHERE id = 185;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (186, 5, N'Biển báo này có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển (W.221a) Đường không bằng phẳng – lồi lõm. Để báo trước sắp tới đoạn đường có mặt đường không bằng phẳng, lồi lõm, gập ghềnh, ổ gà, lượn sóng.' WHERE id = 186;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (187, 5, N'Các biển báo này có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển W.228a và W.228b: Đá lở. Để báo trước gần tới đoạn đường có hiện tượng đất đá từ trên ta luy dương sụt lở bất ngờ gây nguy hiểm cho xe cộ và người đi đường.' WHERE id = 187;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (188, 5, N'Biển nào báo hiệu các phương tiện phải tuân thủ tốc độ tối đa cho phép trên từng làn đường?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (P.127b): Tốc độ tối đa trên từng làn đường. Biển 2 (P.127c): tốc độ tối đa cho phép theo phương tiện trên từng làn đường. Câu hỏi hỏi về tốc độ tối đa cho phép trên từng làn đường nên cả 2 biển đều đáp ứng nội dung trên.' WHERE id = 188;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (189, 5, N'Khi gặp biển nào thì các phương tiện không được đi vào, trừ xe ô tô và xe mô tô?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.403a): Đường dành cho xe ô tô, xe máy. Biển 2 (R.404a): Hết đoạn đường dành cho xe ô tô, xe máy. Biển 1 xe ô tô, mô tô được đi, các xe khác không được đi vào.' WHERE id = 189;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (190, 5, N'Biển này có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển R.411: Hướng đi trên mỗi làn đường phải theo. Để báo hiệu cho người tham gia giao thông biết số lượng làn đường trên mặt đường và hướng đi trên mỗi làn đường theo vạch kẻ đường.' WHERE id = 190;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (191, 5, N'Biển nào (đặt trước ngã ba, ngã tư) cho phép xe được rẽ sang hướng khác?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.301a): Hướng đi phải theo – chỉ được di thẳng – biển được ĐẶT TRƯỚC ngã ba, ngã tư. Biển 2 (R.301h): Hướng đi phải theo – chỉ được rẽ trái rẽ phải – biển được ĐẶT SAU ngã ba, ngã tư. Không biển nào thỏa điều kiện câu hỏi.' WHERE id = 191;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (192, 5, N'Biển nào báo hiệu "Hướng đi thẳng phải theo"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.301a): Hướng đi phải theo – chỉ được đi thẳng. Biển 2 (1.407a): Đường một chiều. Biển số 1.407a đặt sau nơi đường giao nhau. Biển 1 đúng.' WHERE id = 192;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (193, 5, N'Biển nào báo hiệu "Đường một chiều"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.301a): Hướng đi phải theo – chỉ được đi thẳng. Biển 2 (1.407a): Đường một chiều. Để chỉ dẫn những đoạn đường chạy một chiều. Biển 2 đúng.' WHERE id = 193;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (194, 5, N'Trong các biển dưới đây biển nào là biển "Hết tốc độ tối đa cho phép"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (DP.134): Hết tốc độ tối đa cho phép. Biển 2 (DP.135): Hết tất cả các lệnh cấm. Biển 3 (R.307): Hết hạn chế tốc độ tối thiểu. Câu hỏi hỏi cụ thể TÊN biển báo theo luật (có dấu ngoặc kép), nên phải chọn Biển 1.' WHERE id = 194;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (195, 5, N'Trong các biển dưới đây biển nào là biển "Hết tốc độ tối thiểu"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (DP.134): Hết tốc độ tối đa cho phép. Biển 2 (DP.135): Hết tất cả các lệnh cấm. Biển 3 (R.307): Hết hạn chế tốc độ tối thiểu. Câu hỏi hỏi cụ thể TÊN biển báo theo luật (có dấu ngoặc kép), nên phải chọn biển 3.' WHERE id = 195;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (196, 5, N'Biển nào dưới đây báo hiệu hết cấm vượt?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (DP.134): Hết tốc độ tối đa cho phép. Biển 2 (DP.135): Hết tất cả các lệnh cấm. Biển 3 (DP.133): Hết cấm vượt. Câu hỏi hỏi ý nghĩa của biển, biển 2 là hết mọi lệnh cấm (bao gồm cả cấm vượt), biển 3 là hết cấm vượt. Đáp án là biển 2 và biển 3.' WHERE id = 196;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (197, 5, N'Trong các biển dưới đây biển nào là biển "Hết mọi lệnh cấm"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (DP.134): Hết tốc độ tối đa cho phép. Biển 2 (DP.135): Hết tất cả các lệnh cấm. Biển 3 (R.307): Hết hạn chế tốc độ tối thiểu. Câu hỏi hỏi cụ thể TÊN biển báo theo luật, nên phải chọn biển 2.' WHERE id = 197;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (198, 5, N'Biển nào cho phép được quay đầu xe đi theo hướng ngược lại khi đặt biển trước ngã ba, ngã tư?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.301e): Hướng đi phải theo – chỉ được rẽ trái – ĐẶT TRƯỚC ngã ba, ngã tư. Biển 2 (R.301h): Hướng đi phải theo – chỉ được rẽ trái rẽ phải – ĐẶT SAU ngã ba, ngã tư. Biển 3 (R.301f): Hướng đi phải theo – chỉ được đi thẳng hay rẽ phải - ĐẶT TRƯỚC ngã ba, ngã tư và được phép quay đầu xe. Chọn biển 3.' WHERE id = 198;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (199, 5, N'Biển nào không cho phép rẽ phải?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.301e): Hướng đi phải theo – chỉ được rẽ trái – ĐẶT TRƯỚC ngã ba, ngã tư, chỉ được rẽ trái. Biển 2 và 3 đều cho phép rẽ phải. Thế nên chọn biển 1.' WHERE id = 199;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (200, 5, N'Khi đến chỗ giao nhau, gặp biển nào thì người lái xe không được cho xe đi thẳng, phải rẽ sang hướng khác?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.301e): Hướng đi phải theo – chỉ được rẽ trái. Biển 2 (R.301h): Hướng đi phải theo – chỉ được rẽ trái rẽ phải. Biển 3 (R.301f): Hướng đi phải theo – chỉ được đi thẳng hay rẽ phải. Chỉ có biển 3 cho phép đi thẳng, biển 1 và 2 lái xe phải rẽ hướng khác.' WHERE id = 200;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (201, 5, N'Biển số 1 có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.E, 10b): Hết cấm đỗ xe theo giờ trong khu vực. Biển 2 (R.E,10a): Hết cấm đỗ xe trong khu vực. Biển 3 (R.E, 10c): Hết khu vực đỗ xe. Biển 1 chỉ dẫn hết cấm đỗ xe theo giờ trong khu vực.' WHERE id = 201;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (202, 5, N'Biển nào chỉ dẫn cho người đi bộ sử dụng cầu vượt qua đường?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (1.424a): Cầu vượt qua đường cho người đi bộ. Biển 2 (1.424c): Hầm chui qua đường cho người đi bộ. Mẹo đọc biển: hướng người đi bộ đi lên cầu thang là cầu vượt, hướng người đi bộ đi xuống cầu thang là hầm chui.' WHERE id = 202;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (203, 5, N'Biển nào chỉ dẫn cho người đi bộ sử dụng hầm chui qua đường?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (1.424b): Cầu vượt qua đường cho người đi bộ. Biển 2 (1.424d): Hầm chui qua đường cho người đi bộ. Biển 2 đúng. Mẹo đọc biển: hướng người đi bộ đi lên cầu thang là cầu vượt, hướng người đi bộ đi xuống cầu thang là hầm chui.' WHERE id = 203;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (204, 5, N'Biển nào báo hiệu "Nơi đỗ xe dành cho người khuyết tật"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.304): Đường dành cho xe thô sơ. Biển 2 (1.446): Nơi đỗ xe dành cho người khuyết tật. Biển 3 (R.305): Đường dành cho người đi bộ. Biển 2 đúng.' WHERE id = 204;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (205, 5, N'Gặp biển báo này, người tham gia giao thông phải xử lý như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1.436: Trạm cảnh sát giao thông. Các phương tiện phải giảm tốc độ đến mức an toàn và không được vượt khi đi qua khu vực này.' WHERE id = 205;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (206, 5, N'Gặp biển báo dưới đây, người lái xe có bắt buộc phải chạy vòng theo đảo an toàn theo hướng mũi tên khi muốn chuyển hướng hay không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển R.303: Nơi giao nhau chạy theo vòng xuyến. Để báo cho các loại xe (thô sơ và cơ giới) phải chạy vòng theo đảo an toàn ở nơi đường giao nhau. Bắt buộc các phương tiện phải chạy theo vòng xuyến.' WHERE id = 206;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (207, 5, N'Biển nào báo hiệu "Cầu vượt liên thông"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 và 3: Biển báo cầu vượt liên thông. Biển 2: Tuyến đường cầu vượt cắt qua. Biển 1 và 3 đúng.' WHERE id = 207;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (208, 5, N'Biển số 1 có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1: Biển báo cầu vượt liên thông. Biển 2 và 3: Tuyến đường cầu vượt cắt qua. Biển 1 báo hiệu cầu vượt liên thông.' WHERE id = 208;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (209, 5, N'Biển nào báo hiệu "Tuyến đường cầu vượt cắt qua"?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (R.308a) và Biển 2 (R.308b): Tuyến đường cầu vượt cắt qua. Biểu thị phía trước có cầu vượt, xe có thể đi thẳng hoặc theo chỉ dẫn trên hình vẽ để rẽ trái (hay rẽ phải). Biển 3 (W.237): Cầu vòng. Biển 1 và biển 2 đúng.' WHERE id = 209;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (210, 5, N'Biển báo dưới đây có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1.448: Làn đường cứu nạn hay làn thoát xe khẩn cấp. Biển chỉ dẫn gồm 4 cặp biển ở các cự ly 2 km, 1 km, 300 m và tại chỗ rẽ nhằm chỉ dẫn cho người tham gia giao thông biết vị trí và khoảng cách có làn cứu nạn.' WHERE id = 210;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (211, 5, N'Tại đoạn đường có biển "Làn đường dành riêng cho từng loại xe" dưới đây, các phương tiện có được phép chuyển sang làn khác để đi theo hành trình mong muốn khi đến gần nơi đường bộ giao nhau hay không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'CHÚ Ý: Nhiều bạn làm sai câu này. Biển báo trên (R.412) báo hiệu làn đường dành cho từng loại xe, các xe phải đi đúng làn theo loại xe của mình. Tuy nhiên, giả sử khi đến gần ngã 3 ngã tư, bạn đang cần đi thẳng, phía trước có xe đang chờ rẽ trái, thì bạn có thể xin chuyển làn tránh xe đang chờ rẽ trái và tiếp tục đi thẳng.' WHERE id = 211;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (212, 5, N'Biển nào chỉ dẫn người lái xe đi được cả hai hướng?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển 1 (IE.469a): Hướng rẽ phải – báo hiệu sắp vào đường cong nguy hiểm có bán kính nhỏ. Biển 2 (IE.468b): Chướng ngại vật phía trước, đi được cả 2 hướng. Biển 2 đúng.' WHERE id = 212;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (213, 5, N'Biển này có ý nghĩa như thế nào?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển (IE.469a): Hướng rẽ phải – báo hiệu sắp vào đường cong nguy hiểm có bán kính nhỏ. Chỉ dẫn hướng rẽ để nhắc người điều khiển phương tiện chuẩn bị đổi hướng đi khi sắp vào đường cong nguy hiểm, có bán kính cong nhỏ.' WHERE id = 213;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (214, 5, N'Vạch mũi tên chỉ hướng trên mặt đường nào dưới đây cho phép xe chỉ được đi thẳng và rẽ phải?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Vạch V.9.3: Vạch mũi tên chỉ hướng trên mặt đường. Mũi tên được sử dụng tương ứng với hướng giao thông mà xe có thể đi. Mũi tên chỉ hướng chủ yếu sử dụng ở các nút giao có tách nhập làn và trên đường có nhiều làn xe.' WHERE id = 214;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (215, 5, N'Vạch kẻ đường nào dưới đây là vạch phân chia hai chiều xe chạy (vạch tim đường), xe không được lấn làn, không được đè lên vạch?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Vạch vàng là vạch phân chia hai chiều xe chạy (tim đường), còn vạch trắng là vạch phân chia các làn xe cùng chiều. Vạch 2: Vạch phân chia hai chiều xe chạy (vạch tim đường), dạng đơn, nét liền. Dùng để phân chia hai chiều xe chạy ngược chiều; xe không được lấn làn, không được đè lên vạch.' WHERE id = 215;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (216, 6, N'Theo hướng mũi tên, xe nào chấp hành đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'- Xe khách: Đi sai làn (đi thẳng nhưng đi trên làn rẽ trái); đi thắng khi đèn đi thẳng đang đỏ. - Xe tải (bên trái): Đi sai làn (rẽ trái nhưng đi trên làn đi thẳng). - Xe tải (bên phải): Đi sai làn (rẽ trái nhưng đi trên làn rẽ phải). - Xe mô tô: Đi sai làn (rẽ phải nhưng đi trên làn rẽ trái). - Xe con: đi đúng (đi đúng làn, đúng đèn xanh rẽ phải). -> Chỉ có xe con đi đúng quy tắc giao thông.' WHERE id = 216;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (217, 6, N'Theo hướng mũi tên, thứ tự các xe đi như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc xét thứ tự ưu tiên như sau: – Xe vào giao lộ trước được đi trước. - Xe ưu tiên theo thứ tự: hỏa, quân, công, thương. - Xe trên đường ưu tiên được đi trước. Trên đường cùng cấp, xe nào đường phía bên phải trống được đi trước. Hướng đi theo thứ tự: rẽ phải, đi thẳng, rẽ trái. Xét 2 biển báo trên hình: Trước đầu xe tải là biển W.207a. Trước đầu xe con là biển W.208. Xe tải và xe mô tô đang đi trên đường ưu tiên. Xe con và xe khách đang đi trên đường không ưu tiên. Thứ tự các xe đi như sau: 1. Xe tải. 2. Mô tô. 3. Xe khách. 4. Xe con.' WHERE id = 217;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (218, 6, N'Theo hướng mũi tên, thứ tự các xe đi như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc xét thứ tự ưu tiên như sau: – Xe vào giao lộ trước được đi trước. - Xe ưu tiên theo thứ tự: hỏa, quân, công, thương. Xe trên đường ưu tiên được đi trước. - Trên đường cùng cấp, xe nào đường phía bên phải trống được đi trước. Hướng đi theo thứ tự: rẽ phải, đi thẳng, rẽ trái. Thứ tự các xe đi như sau: 1. Xe mô tô: Bên phải trống. 2. Xe con: Đi thẳng. 3. Xe tải: Rẽ trái.' WHERE id = 218;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (219, 6, N'Trường hợp này xe nào được quyền đi trước?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe con được đi trước vì mô tô có biển STOP trước mặt, nên phải dừng lại nhường đường. Biển Dừng lại: Đây là biển hiệu lệnh dạng đặc biệt. Biển có hiệu lực buộc các xe cơ giới và thô sơ kể cả các xe được ưu tiên theo luật lệ Nhà nước quy định dừng lại trước biển hoặc trước vạch ngang đường và chỉ được phép đi khi thấy các tín hiệu cho phép đi.' WHERE id = 219;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (220, 6, N'Xe nào được quyền đi trước trong trường hợp này?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc xét thứ tự ưu tiên như sau: 1. Xe vào giao lộ trước được đi trước. 2. Xe ưu tiên theo thứ tự: hỏa, quân, công, thương. 3. Xe trên đường ưu tiên được đi trước. 4. Trên đường cùng cấp, xe nào đường phía bên phải trống được đi trước. 5. Hướng đi theo thứ tự: rẽ phải, đi thẳng, rẽ trái. Thứ tự: 1. Xe cứu thương: Xe ưu tiên. 2. Xe mô tô: Mặc dù đi trên đường ưu tiên, nhưng phải nhường đường xe ưu tiên đi trước.' WHERE id = 220;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (221, 6, N'Theo tín hiệu đèn, xe nào được phép đi?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe con và xe khách đang ở làn đường có tín hiệu đèn xanh nên được phép đi. Xe mô tô đang ở làn đường có tín hiệu đỏ nên phải dừng lại.' WHERE id = 221;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (222, 6, N'Theo tín hiệu đèn, xe nào đi là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe con và xe tải đang ở trên làn đường có tín hiệu đèn xanh nên được phép đi. Xe mô tô và xe khách đang ở làn đường có tín hiệu đỏ nên phải dừng lại.' WHERE id = 222;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (223, 6, N'Các xe đi theo hướng mũi tên, những xe nào vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'- Xe khách: Đi sai làn (đi thẳng nhưng đi trên làn rẽ trái); đi thẳng khi đèn đi thẳng đang đỏ. - Xe tải (bên trái): Đi sai làn. - Xe tải (bên phải): Đi sai làn. - Xe mô tô: Đi sai làn. - Xe con: đi đúng. Nên đáp án đúng là xe khách, xe tải và xe mô tô đều vi phạm quy tắc giao thông.' WHERE id = 223;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (224, 6, N'Theo hướng mũi tên, thứ tự các xe đi như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Giao nhau cùng cấp có biển báo hiệu đi theo vòng xuyến: Nhường đường cho xe đi bên trái. Giao nhau cùng cấp KHÔNG có biển báo hiệu đi theo vòng xuyến: Nhường đường cho xe đi đến từ bên phải. Tất cả các xe chưa vào vòng xuyến, nhường đường cho xe phía đường tay phải. Thứ tự: 1. Xe mô tô. 2. Xe tải. 3. Xe khách. 4. Xe con.' WHERE id = 224;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (225, 6, N'Trong trường hợp này xe nào đỗ vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển chính là biển cấm đỗ. Biển phụ áp dụng cho xe tải. Nên đáp án là xe tải đỗ sai quy tắc giao thông.' WHERE id = 225;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (226, 6, N'Theo hướng mũi tên, những hướng nào xe gắn máy được phép đi?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'CHÚ Ý: xe gắn máy và mô tô là 2 loại xe khác nhau. Hướng 1: Rẽ phải được đi. Hướng 2: Có biển báo cấm xe MÔ TÔ, nên xe gắn máy vẫn được đi. Hướng 3: Cấm xe ô tô nên xe gắn máy vẫn được đi. Nếu đường cấm vì lý do đường, cầu bị yếu, có thể đặt hàng rào chắn hay chướng ngại vật trong phần đường xe chạy.' WHERE id = 226;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (227, 6, N'Xe nào đỗ vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển chính là biển cấm đỗ. Biển có hiệu lực cấm các loại xe cơ giới dừng và đỗ ở phía đường có đặt biển trừ các xe được ưu tiên theo quy định. Biển phụ báo hiệu hướng tác dụng của biển chính, theo hướng mũi tên là cả phía trước và phía sau mặt biển chính. Nên đáp án là cả 2 xe đều vi phạm.' WHERE id = 227;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (228, 6, N'Xe nào đỗ vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Các xe đỗ vi phạm quy tắc như sau: 1. Xe tải: Đỗ trái đường. 2. Xe con: Đỗ đè lên vạch kẻ đường dành cho người đi bộ. 3. Xe mô tô: Đỗ đè lên vạch kẻ đường dành cho người đi bộ. Do đó đáp án là cả 3 xe đều đỗ sai.' WHERE id = 228;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (229, 6, N'Xe nào được quyền đi trước trong trường hợp này?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc xét thứ tự ưu tiên như sau: Xe vào giao lộ trước được đi trước. Xe ưu tiên. Xe trên đường ưu tiên. Trên đường cùng cấp, xe bên phải trống đi trước. Hướng đi: rẽ phải, đi thẳng, rẽ trái. Làn đường mô tô và xe con đều có tín hiệu đèn xanh và là đường cùng cấp. Xe mô tô rẽ phải đi trước, xe con rẽ trái đi sau.' WHERE id = 229;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (230, 6, N'Theo hướng mũi tên, thứ tự các xe đi như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc xét thứ tự ưu tiên: Xe vào giao lộ trước đi trước. Xe ưu tiên. Xe trên đường ưu tiên. Xe có đường bên phải trống. Hướng đi: rẽ phải, đi thẳng, rẽ trái. Thứ tự: 1. Mô tô và xe đạp (Bên phải trống). 2. Xe con (A) (Đi thẳng). 3. Xe con (B) (Rẽ trái).' WHERE id = 230;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (231, 6, N'Xe nào được quyền đi trước trong trường hợp này?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc xét thứ tự ưu tiên: Xe vào giao lộ trước đi trước. Xe ưu tiên. Xe trên đường ưu tiên. Trên đường cùng cấp, xe bên phải trống đi trước. Hướng đi: rẽ phải, đi thẳng, rẽ trái. Thứ tự: 1. Xe mô tô: Rẽ trái từ đường ưu tiên vào đường ưu tiên (theo biển báo và biển phụ bên dưới). 2. Xe con: Đường không ưu tiên nên đi sau.' WHERE id = 231;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (232, 6, N'Xe nào vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe con quay đầu đè vạch liền (Dùng để phân chia hai chiều xe chạy ngược chiều; xe không được lấn làn, không được đè lên vạch) trên đường nên vi phạm. Xe mô tô vượt bên trái xe tải và đảm bảo không cán vạch liền là đúng quy tắc giao thông.' WHERE id = 232;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (233, 6, N'Các xe đi như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 11 Luật trật tự ATGT 2024: CSGT giơ tay thẳng đứng: Tất cả dừng lại. CSGT giang tay ngang 2 bên: Bên trái và bên phải được đi; phía trước và phía sau dừng lại. CSGT tay phải giơ về phía trước: phía sau và bên phải dừng lại; phía trước được rẽ phải; bên trái được đi tất cả các hướng.' WHERE id = 233;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (234, 6, N'Theo hướng mũi tên, xe nào được phép đi?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Theo Khoản 3 Điều 11 Luật trật tự ATGT 2024: CSGT giang tay ngang 2 bên: Bên trái và bên phải được đi; phía trước và phía sau dừng lại. Xe mô tô và xe tải được phép đi, xe con dừng lại.' WHERE id = 234;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (235, 6, N'Trong hình dưới đây, xe nào chấp hành đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'- Xe khách đang dừng chờ đèn đỏ rẽ trái là đúng quy tắc. - Xe tải đi thẳng và rẽ phải (đã đúng làn) theo tín hiệu đèn xanh là đúng. - Xe con đi thẳng và rẽ phải theo tín hiệu đèn xanh là đúng. - Xe mô tô chờ đèn đỏ rẽ trái là đúng. Tất cả xe đều chấp hành quy tắc giao thông.' WHERE id = 235;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (236, 6, N'Theo hướng mũi tên, những hướng nào xe mô tô được phép đi?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Hướng 1: Rẽ phải được đi bình thường. Hướng 2: có biển báo "Cấm mô tô" nên không được đi. Hướng 3: biển báo “Cấm ô tô" nhưng không cấm mô tô nên được phép đi. Đáp án đúng là hướng 1 và hướng 3.' WHERE id = 236;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (237, 6, N'Trong trường hợp này, thứ tự xe đi như thế nào là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc xét thứ tự ưu tiên: 1. Xe vào giao lộ trước. 2. Xe ưu tiên theo thứ tự: hỏa, quân, công, thương. 3. Xe trên đường ưu tiên. 4. Đường cùng cấp, xe bên phải trống. 5. Hướng đi: rẽ phải, đi thẳng, rẽ trái. Thứ tự: 1. Xe quân sự (ưu tiên cao hơn xe công an). 2. Xe công an. 3. Xe con và xe mô tô.' WHERE id = 237;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (238, 6, N'Trong hình dưới, những xe nào vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe mô tô C chạy vào làn dành riêng xe ô tô nên vi phạm. Xe con E chạy vào làn dành riêng xe mô tô nên vi phạm. Các xe khác đều chạy đúng làn theo biển báo.' WHERE id = 238;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (239, 6, N'Trong hình dưới, những xe nào vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xét biển phân làn trên cần vươn: xe con (E) đi trên làn dành riêng cho mô tô nên vi phạm; xe mô tô (D) chạy trên làn dành riêng xe ô tô nên cũng vi phạm; các xe còn lại chạy đúng làn.' WHERE id = 239;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (240, 6, N'Theo tín hiệu đèn, xe nào phải dừng lại là đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Trên làn đường của xe tải và xe con có tín hiệu đèn đỏ nên phải dừng lại là đúng quy tắc giao thông.' WHERE id = 240;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (241, 6, N'Bạn có được phép vượt xe mô tô phía trước không?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe mô tô đang đi thẳng (không có tín hiệu xin rẽ), đã đến giao lộ, có phần đường cho người đi bộ, nên không được vượt (Theo Điểm h Khoản 6 Điều 14, Luật trật tự ATGT 2024: Không được vượt xe ở phần đường dành cho người đi bộ qua đường).' WHERE id = 241;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (242, 6, N'Theo tín hiệu đèn của xe cơ giới, xe nào vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển báo chỉ cho phép các phương tiện đi thẳng. Trong tình huống, cả hai xe đều có tín hiệu xi nhan rẽ sang hướng khác nên cả 2 xe đều vi phạm quy tắc giao thông. Khi đặt biển báo "Hướng đi phải theo – chỉ được đi thẳng" ở trước nơi đường giao nhau thì hiệu lực là ở phạm vi phía sau biển tức cấm rẽ phải hay rẽ trái.' WHERE id = 242;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (243, 6, N'Các xe đi theo hướng mũi tên, xe nào vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'- Xe khách và xe mô tô đang dừng chờ đèn đỏ là đúng quy tắc giao thông. - Xe con trong cả 2 phía đều đi đúng làn đường và đúng hướng đèn xanh nên đúng quy tắc giao thông. - Xe tải trong cả 2 phía đều đi sai làn đường so với vạch kẻ đường nên sai quy tắc giao thông.' WHERE id = 243;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (244, 6, N'Các xe đi theo hướng mũi tên, xe nào vi phạm quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe con đi đúng làn đường theo hướng rẽ phải và đúng tín hiệu đèn xanh rẽ phải. Xe khách đi sai làn đường (đi thẳng trên làn rẽ trái) và sai tín hiệu đèn (đèn đi thẳng đang đỏ). Xe tải và xe mô tô vượt đèn đỏ (đèn đi thẳng đang đỏ).' WHERE id = 244;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (245, 6, N'Các xe đi theo hướng mũi tên, xe nào chấp hành đúng quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe con và xe tải vi phạm tín hiệu đèn (hướng muốn di chuyển đèn đang đỏ). Xe khách và xe mô tô đi đúng làn đường và đúng tín hiệu đèn.' WHERE id = 245;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (246, 6, N'Các xe đi theo thứ tự nào là đúng quy tắc giao thông đường bộ?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc ưu tiên: Xe vào giao lộ trước. Xe ưu tiên. Xe trên đường ưu tiên. Xe bên phải trống. Hướng đi. Thứ tự: 1. Xe mô tô: Đang trên nhánh đường ưu tiên (chú ý biển báo và biển phụ). 2. Xe con xanh: Đường không ưu tiên, đường phía tay phải trống. 3. Xe của bạn: Đường không ưu tiên, đường phía tay phải vướng xe con.' WHERE id = 246;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (247, 6, N'Các xe đi theo thứ tự nào là đúng quy tắc giao thông đường bộ?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc ưu tiên: Xe vào giao lộ trước. Xe ưu tiên. Xe trên đường ưu tiên. Xe bên phải trống. Hướng đi: rẽ phải, đi thẳng, rẽ trái. Thứ tự: 1. Xe con: Rẽ phải. 2. Xe của bạn: Đi thẳng. 3. Mô tô: Rẽ trái.' WHERE id = 247;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (248, 6, N'Các xe đi theo thứ tự nào là đúng quy tắc giao thông đường bộ?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Quy tắc ưu tiên: Xe vào giao lộ trước. Xe ưu tiên. Xe trên đường ưu tiên. Xe bên phải trống. Hướng đi: rẽ phải, đi thẳng, rẽ trái. Thứ tự: 1. Xe đạp: đi thẳng, đường phía tay phải trống. 2. Xe mô tô: Đi thẳng. 3. Xe của bạn: Rẽ trái.' WHERE id = 248;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (249, 6, N'Xe nào dừng đúng theo quy tắc giao thông?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Biển báo W.211a "Giao nhau với đường sắt không có rào chắn": Để báo trước sắp đến chỗ giao nhau giữa đường bộ và đường sắt không có rào chắn, không có người điều khiển giao thông. Các phương tiện phải đứng cách xa đường sắt tối thiểu 5m nên xe mô tô vi phạm quy tắc giao thông.' WHERE id = 249;
+
+INSERT INTO cau_hoi (id, chu_de_id, noi_dung, loai_cau_hoi, muc_do, la_cau_diem_liet, trang_thai) VALUES (250, 6, N'Trong tình huống dưới đây, xe đầu kéo kéo rơ moóc (xe container) đang rẽ phải, xe con màu xanh và xe máy phía sau xe container đi như thế nào để bảo đảm an toàn?', 'trac_nghiem', 'co_ban', 0, 'approved');
+UPDATE cau_hoi SET giai_thich_dap_an = N'Xe đầu kéo có góc cua rất lớn, và tầm nhìn hạn chế, điểm mù lớn. Do đó để đảm bảo an toàn, bạn nên giảm tốc độ, nhường đường và không gian đường đủ rộng cho xe đầu kéo rẽ phải, rồi mới được đi tiếp.' WHERE id = 250;
+
+SET IDENTITY_INSERT cau_hoi OFF;

@@ -5,8 +5,7 @@
              x:Class="MauiApp1.Controls.ChatOverlayView"
              x:Name="Root">
 
-    <AbsoluteLayout InputTransparent="True"
-                    CascadeInputTransparent="False">
+    <AbsoluteLayout CascadeInputTransparent="False">
         <Border x:Name="ChatPopup"
                 AbsoluteLayout.LayoutBounds="0.5,0.5,0.94,0.82"
                 AbsoluteLayout.LayoutFlags="All"
@@ -142,14 +141,15 @@
                             StrokeThickness="1"
                             StrokeShape="RoundRectangle 24"
                             Shadow="0,4,12,#08000000">
-                        <Entry Margin="16,0"
-                               HeightRequest="50"
-                               Placeholder="Nhập câu hỏi..."
-                               PlaceholderColor="#94A3B8"
-                               ReturnType="Send"
-                               TextColor="#111827"
-                               Text="{Binding DraftMessage}"
-                               Completed="OnMessageEntryCompleted" />
+                          <Entry x:Name="MessageEntry"
+                                 Margin="16,0"
+                                 HeightRequest="50"
+                                 Placeholder="Nhập câu hỏi..."
+                                 PlaceholderColor="#94A3B8"
+                                 ReturnType="Send"
+                                TextColor="#111827"
+                                Text="{Binding DraftMessage, Mode=TwoWay}"
+                                Completed="OnMessageEntryCompleted" />
                     </Border>
 
                     <Button Grid.Column="1"
@@ -158,9 +158,9 @@
                             MinimumWidthRequest="52"
                             MinimumHeightRequest="52"
                             Padding="0"
-                            BackgroundColor="{StaticResource AppBrand}"
-                            Command="{Binding SendMessageCommand}"
-                            CornerRadius="26"
+                             BackgroundColor="{StaticResource AppBrand}"
+                             Clicked="OnSendButtonClicked"
+                             CornerRadius="26"
                             FontSize="20"
                             Text="➤"
                             TextColor="White" />

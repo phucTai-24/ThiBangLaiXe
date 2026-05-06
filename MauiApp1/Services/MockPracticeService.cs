@@ -176,6 +176,16 @@ public class MockPracticeService : IPracticeService
         throw new InvalidOperationException("Không tìm thấy phiên ôn tập mock.");
     }
 
+    public Task SaveLocalPracticeSessionAsync(PracticeSession session)
+    {
+        if (string.IsNullOrWhiteSpace(session.Id))
+            session.Id = Guid.NewGuid().ToString("N");
+
+        session.TotalQuestions = session.Questions.Count;
+        _sessions[session.Id] = session;
+        return Task.CompletedTask;
+    }
+
     public Task<PracticeAnswerSubmissionResult> SubmitAnswerAsync(string sessionId, string questionId, string answerId)
     {
         if (!_sessions.TryGetValue(sessionId, out var session))

@@ -179,18 +179,68 @@ public partial class ChatOverlayView : ContentView
         if (_viewModel.Messages.Count == 0)
             return;
 
-        MainThread.BeginInvokeOnMainThread(() =>
+        MainThread.BeginInvokeOnMainThread(async () =>
         {
-            MessagesCollection.ScrollTo(
-                _viewModel.Messages[^1],
-                position: ScrollToPosition.End,
-                animate: true);
+            try
+            {
+                await Task.Delay(50);
+
+                if (_viewModel.Messages.Count == 0)
+                    return;
+
+                MessagesCollection.ScrollTo(
+                    _viewModel.Messages[^1],
+                    position: ScrollToPosition.End,
+                    animate: true);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Chat scroll failed: {ex.Message}");
+            }
         });
     }
 
-    private void OnMessageEntryCompleted(object? sender, EventArgs e)
+    private async void OnMessageEntryCompleted(object? sender, EventArgs e)
     {
-        if (_viewModel.SendMessageCommand.CanExecute(null))
-            _viewModel.SendMessageCommand.Execute(null);
+        try
+        {
+            Console.WriteLine("Entry completed");
+            await SendMessage();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Entry send failed: {ex.Message}");
+        }
+    }
+
+    private async void OnSendButtonClicked(object? sender, EventArgs e)
+    {
+        try
+        {
+            Console.WriteLine("Send clicked");
+            await SendMessage();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Button send failed: {ex.Message}");
+        }
+    }
+
+    private async Task SendMessage()
+    {
+        SyncDraftMessageFromEntry();
+
+        if (string.IsNullOrWhiteSpace(_viewModel.DraftMessage))
+            return;
+
+        await _viewModel.SendMessageAsync();
+
+        if (MessageEntry != null)
+            MessageEntry.Text = _viewModel.DraftMessage;
+    }
+
+    private void SyncDraftMessageFromEntry()
+    {
+        _viewModel.DraftMessage = MessageEntry.Text ?? string.Empty;
     }
 }

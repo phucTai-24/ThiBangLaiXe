@@ -262,11 +262,23 @@ public sealed class ApiPracticeService : IPracticeService
         return session;
     }
 
+    public Task SaveLocalPracticeSessionAsync(PracticeSession session)
+    {
+        if (string.IsNullOrWhiteSpace(session.Id))
+            session.Id = $"local-{Guid.NewGuid():N}";
+
+        session.CreatedAt = session.CreatedAt == default ? DateTime.Now : session.CreatedAt;
+        session.StartTime = session.StartTime == default ? session.CreatedAt : session.StartTime;
+        session.TotalQuestions = session.Questions.Count;
+        SessionCache[session.Id] = session;
+        return Task.CompletedTask;
+    }
+
     public async Task<PracticeAnswerSubmissionResult> SubmitAnswerAsync(string sessionId, string questionId, string answerId)
     {
         await AttachAuthHeaderAsync();
 
-        if (sessionId.StartsWith(FilteredSessionPrefix, StringComparison.OrdinalIgnoreCase))
+        if (IsLocalPracticeSession(sessionId))
             return SubmitFilteredSessionAnswer(sessionId, questionId, answerId);
 
         if (!long.TryParse(questionId, out var qid) || !long.TryParse(answerId, out var aid))
@@ -316,7 +328,7 @@ public sealed class ApiPracticeService : IPracticeService
     {
         await AttachAuthHeaderAsync();
 
-        if (sessionId.StartsWith(FilteredSessionPrefix, StringComparison.OrdinalIgnoreCase))
+        if (IsLocalPracticeSession(sessionId))
         {
             if (!SessionCache.TryGetValue(sessionId, out var bankSession))
                 throw new InvalidOperationException("Không tìm thấy phiên ôn tập.");
@@ -416,6 +428,13 @@ public sealed class ApiPracticeService : IPracticeService
         }
 
         throw new InvalidOperationException("Không tìm thấy kết quả phiên ôn tập.");
+    }
+
+    private static bool IsLocalPracticeSession(string sessionId)
+    {
+        return sessionId.StartsWith(FilteredSessionPrefix, StringComparison.OrdinalIgnoreCase)
+            || sessionId.StartsWith("ai-chat-", StringComparison.OrdinalIgnoreCase)
+            || sessionId.StartsWith("local-", StringComparison.OrdinalIgnoreCase);
     }
 
     public async Task<List<PracticeHistoryItem>> GetPracticeHistoryAsync()

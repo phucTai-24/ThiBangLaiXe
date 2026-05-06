@@ -8,8 +8,13 @@ namespace MauiApp1
 {
     public static class MauiProgram
     {
+        private const string GeminiApiKeyPreferenceKey = "Gemini.ApiKey";
+        private const string DefaultGeminiApiKey = "AIzaSyBPkF0q8hWxQofcAj_VbyDhtSp7affSwFU";
+
         public static MauiApp CreateMauiApp()
         {
+            ConfigureGeminiApiKey();
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -54,9 +59,20 @@ namespace MauiApp1
                   client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
                   client.Timeout = TimeSpan.FromSeconds(30);
               });
-              
-              // ViewModels
-              builder.Services.AddTransient<MockExamViewModel>();
+              builder.Services.AddHttpClient<IChatPracticeService, PracticeService>(client =>
+              {
+                  client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
+                  client.Timeout = TimeSpan.FromSeconds(30);
+              });
+              builder.Services.AddHttpClient<IChatService, ChatService>(client =>
+              {
+                  client.Timeout = TimeSpan.FromSeconds(60);
+              });
+              builder.Services.AddSingleton<IPracticeSessionStore, PracticeSessionStore>();
+               
+               // ViewModels
+              builder.Services.AddTransient<ChatOverlayViewModel>();
+               builder.Services.AddTransient<MockExamViewModel>();
              builder.Services.AddTransient<ExamListViewModel>();
              builder.Services.AddTransient<ExamResultViewModel>();
              builder.Services.AddTransient<WrongAnswersViewModel>();
@@ -85,6 +101,12 @@ namespace MauiApp1
 #endif
 
             return builder.Build();
+        }
+
+        private static void ConfigureGeminiApiKey()
+        {
+            if (string.IsNullOrWhiteSpace(Preferences.Get(GeminiApiKeyPreferenceKey, string.Empty)))
+                Preferences.Set(GeminiApiKeyPreferenceKey, DefaultGeminiApiKey);
         }
     }
 }

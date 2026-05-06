@@ -9,14 +9,16 @@ namespace MauiApp1.ViewModels;
 public class PracticeSessionViewModel : BaseViewModel
 {
     private readonly IPracticeService _practiceService;
+    private readonly IPracticeSessionStore _practiceSessionStore;
     private string _sessionId = string.Empty;
     private PracticeSession? _currentSession;
     private PracticeQuestionItem? _currentQuestion;
     private int _currentQuestionIndex = -1;
 
-    public PracticeSessionViewModel(IPracticeService practiceService)
+    public PracticeSessionViewModel(IPracticeService practiceService, IPracticeSessionStore practiceSessionStore)
     {
         _practiceService = practiceService;
+        _practiceSessionStore = practiceSessionStore;
         Questions = new ObservableCollection<PracticeQuestionItem>();
 
         PreviousQuestionCommand = new Command(OnPreviousQuestion, () => CurrentQuestionIndex > 0);
@@ -92,7 +94,9 @@ public class PracticeSessionViewModel : BaseViewModel
 
     private async Task LoadSessionAsync()
     {
-        CurrentSession = await _practiceService.GetPracticeSessionAsync(SessionId);
+        CurrentSession = _practiceSessionStore.TryGetSession(SessionId, out var storedSession)
+            ? storedSession
+            : await _practiceService.GetPracticeSessionAsync(SessionId);
 
         Questions.Clear();
         foreach (var question in CurrentSession.Questions)

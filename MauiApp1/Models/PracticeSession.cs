@@ -13,5 +13,6 @@ public class PracticeSession
     public int WrongAnswers { get; set; }
     public int Score { get; set; }
     public string Note { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
     public List<PracticeQuestionItem> Questions { get; set; } = new();
 }

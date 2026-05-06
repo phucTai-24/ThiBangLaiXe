@@ -11,6 +11,7 @@ public interface IPracticeService
     Task<int> GetCriticalSummaryAsync();
     Task<string> StartCriticalPracticeAsync(int size = 10);
     Task<PracticeSession> GetPracticeSessionAsync(string sessionId);
+    Task SaveLocalPracticeSessionAsync(PracticeSession session);
     Task<PracticeAnswerSubmissionResult> SubmitAnswerAsync(string sessionId, string questionId, string answerId);
     Task<PracticeSessionResult> SubmitPracticeSessionAsync(string sessionId);
     Task<PracticeSessionResult> GetPracticeSessionResultAsync(string sessionId);

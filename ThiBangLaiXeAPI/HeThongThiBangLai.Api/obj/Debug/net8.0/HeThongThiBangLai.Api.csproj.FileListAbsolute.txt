@@ -596,8 +596,6 @@ d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThon
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.AssemblyInfoInputs.cache
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.AssemblyInfo.cs
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\ref\HeThongThiBangLai.Api.dll
-d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\swae.build.ex.cache
-d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.exe
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\TempBuildCheck\appsettings.Development.json
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\TempBuildCheck\appsettings.json
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\TempBuildCheck\global.json
@@ -753,3 +751,4 @@ d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck\HeThongThiBangLai.Api.deps.jso
 d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck\HeThongThiBangLai.Api.runtimeconfig.json
 d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck\HeThongThiBangLai.Api.dll
 d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck\HeThongThiBangLai.Api.pdb
+d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\swae.build.ex.cache

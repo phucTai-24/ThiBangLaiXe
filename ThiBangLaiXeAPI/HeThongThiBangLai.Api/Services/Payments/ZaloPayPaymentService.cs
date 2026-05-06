@@ -96,7 +96,7 @@ public sealed class ZaloPayPaymentService : IZaloPayPaymentService
             }
         }, JsonOptions);
         var description = $"Thanh toán học phí {registration.khoa_hoc.ten_khoa_hoc}";
-        var bankCode = string.Empty;
+        var bankCode = ResolveBankCode(request.PaymentMethod);
         var macData = $"{_options.AppId}|{appTransId}|{appUser}|{amount}|{appTime}|{embedData}|{item}";
         var mac = ComputeHmacSha256(macData, _options.Key1);
 
@@ -267,6 +267,25 @@ public sealed class ZaloPayPaymentService : IZaloPayPaymentService
     private static string GenerateAppTransId()
     {
         return $"{DateTime.UtcNow:yyMMdd}_{Guid.NewGuid():N}"[..30];
+    }
+
+    private static string ResolveBankCode(string? paymentMethod)
+    {
+        if (string.IsNullOrWhiteSpace(paymentMethod))
+        {
+            return string.Empty;
+        }
+
+        return paymentMethod.Trim().ToUpperInvariant() switch
+        {
+            "DEFAULT" or "AUTO" => string.Empty,
+            "QR" or "ZALO_PAY" or "ZALOPAY" or "ZALOPAYAPP" => "zalopayapp",
+            "ATM" or "NAPAS" or "BANK" or "BANK_CARD" => "ATM",
+            "CC" or "CREDIT" or "CREDIT_CARD" or "VISA" or "MASTERCARD" => "CC",
+            _ => throw new BusinessRuleAppException(
+                "Phương thức thanh toán ZaloPay không được hỗ trợ. Chỉ hỗ trợ: QR, ZALOPAYAPP, ATM, CC.",
+                "ZALOPAY_PAYMENT_METHOD_NOT_SUPPORTED")
+        };
     }
 
     private static string ComputeHmacSha256(string data, string key)

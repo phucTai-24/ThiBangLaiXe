@@ -3,6 +3,13 @@ namespace HeThongThiBangLai.Api.DTOs.Payments;
 public sealed class CreateZaloPayOrderRequestDto
 {
     public long RegistrationId { get; set; }
+
+    /// <summary>
+    /// Optional ZaloPay bank_code/payment channel selected by FE.
+    /// Supported aliases: QR, ZALOPAYAPP, ATM, CC.
+    /// Leave empty to let ZaloPay choose the default payment page.
+    /// </summary>
+    public string? PaymentMethod { get; set; }
 }
 
 public sealed class CreateZaloPayOrderResponseDto

@@ -49,6 +49,11 @@ namespace MauiApp1
                   client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
                   client.Timeout = TimeSpan.FromSeconds(30);
               });
+              builder.Services.AddHttpClient<ICriticalPracticeService, ApiCriticalPracticeService>(client =>
+              {
+                  client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
+                  client.Timeout = TimeSpan.FromSeconds(30);
+              });
               
               // ViewModels
               builder.Services.AddTransient<MockExamViewModel>();
@@ -56,6 +61,7 @@ namespace MauiApp1
              builder.Services.AddTransient<ExamResultViewModel>();
              builder.Services.AddTransient<WrongAnswersViewModel>();
              builder.Services.AddTransient<PracticeViewModel>();
+             builder.Services.AddTransient<CriticalPracticeViewModel>();
              builder.Services.AddTransient<PracticeSessionViewModel>();
              builder.Services.AddTransient<PracticeResultViewModel>();
              builder.Services.AddTransient<StudyScheduleViewModel>();
@@ -67,6 +73,7 @@ namespace MauiApp1
                builder.Services.AddTransient<ExamResultPage>();
               builder.Services.AddTransient<WrongAnswersPage>();
              builder.Services.AddTransient<TrafficSignsPage>();
+             builder.Services.AddTransient<CriticalPracticePage>();
              builder.Services.AddTransient<PracticeSessionPage>();
              builder.Services.AddTransient<PracticeResultPage>();
              builder.Services.AddTransient<StudySchedulePage>();

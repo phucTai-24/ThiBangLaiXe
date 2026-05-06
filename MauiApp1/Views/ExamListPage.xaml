@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.Views.ExamListPage"
              x:DataType="viewmodels:ExamListViewModel"
-             BackgroundColor="#FCF9F2">
+             Style="{StaticResource AppPageStyle}">
 
     <Grid RowDefinitions="Auto,*,Auto">
         <Border Grid.Row="0"
@@ -197,6 +197,8 @@
 
         <controls:AppBottomNavView Grid.Row="2"
                                    CurrentTab="exam" />
+
+        <controls:ChatOverlayView Grid.RowSpan="3" />
     </Grid>
 
 </ContentPage>

@@ -6,9 +6,9 @@ namespace MauiApp1.Views;
 public partial class DashboardPage : ContentPage
 {
     private readonly IEntitlementService _entitlementService;
-    private bool _isLoadingPackages;
+    private bool _isLoadingMyCourses;
 
-    public List<EntitlementPackageItem> CoursePackages { get; } = new();
+    public List<EntitlementPackageItem> MyRegisteredCourses { get; } = new();
 
     public DashboardPage(IEntitlementService entitlementService)
     {
@@ -28,104 +28,81 @@ public partial class DashboardPage : ContentPage
             LoginSourceLabel.Text = "Nguồn dữ liệu sau đăng nhập: API thật từ backend";
             LoginSourceBadge.BackgroundColor = Color.FromArgb("#E8F7EA");
             LoginSourceLabel.TextColor = Color.FromArgb("#1E7A35");
-            return;
         }
-
-        if (string.Equals(loginSource, "MOCK", StringComparison.OrdinalIgnoreCase))
+        else if (string.Equals(loginSource, "MOCK", StringComparison.OrdinalIgnoreCase))
         {
             LoginSourceLabel.Text = "Nguồn dữ liệu sau đăng nhập: dữ liệu MOCK";
             LoginSourceBadge.BackgroundColor = Color.FromArgb("#FFF4D6");
             LoginSourceLabel.TextColor = Color.FromArgb("#9A6700");
-            return;
+        }
+        else
+        {
+            LoginSourceLabel.Text = "Nguồn dữ liệu sau đăng nhập: chưa xác định";
+            LoginSourceBadge.BackgroundColor = Color.FromArgb("#ECECEC");
+            LoginSourceLabel.TextColor = Color.FromArgb("#5F5F5F");
         }
 
-        LoginSourceLabel.Text = "Nguồn dữ liệu sau đăng nhập: chưa xác định";
-        LoginSourceBadge.BackgroundColor = Color.FromArgb("#ECECEC");
-        LoginSourceLabel.TextColor = Color.FromArgb("#5F5F5F");
-
-        await LoadCoursePackagesAsync();
+        await LoadMyRegisteredCoursesAsync();
     }
 
-    private async Task LoadCoursePackagesAsync()
+    private async Task LoadMyRegisteredCoursesAsync()
     {
-        if (_isLoadingPackages)
+        if (_isLoadingMyCourses)
             return;
 
         try
         {
-            _isLoadingPackages = true;
-            CourseRegisterLoading.IsVisible = true;
-            CourseRegisterLoading.IsRunning = true;
-            CourseRegistrationStatusLabel.Text = "Đang tải danh sách khóa học...";
+            _isLoadingMyCourses = true;
+            MyCourseLoading.IsVisible = true;
+            MyCourseLoading.IsRunning = true;
+            MyCoursesStatusLabel.Text = "Đang tải khóa học của bạn...";
 
-            var packages = await _entitlementService.GetPackagesAsync();
+            var packages = await _entitlementService.GetMyRegisteredPackagesAsync();
 
-            CoursePackages.Clear();
-            CoursePackages.AddRange(packages);
+            MyRegisteredCourses.Clear();
+            MyRegisteredCourses.AddRange(packages);
 
-            if (CoursePackages.Count == 0)
+            if (MyRegisteredCourses.Count == 0)
             {
-                CourseRegistrationStatusLabel.Text = "Hiện chưa có khóa học mở đăng ký.";
+                MyCoursesStatusLabel.Text = "Bạn chưa đăng ký khóa học nào.";
             }
             else
             {
-                CourseRegistrationStatusLabel.Text = $"Có {CoursePackages.Count} khóa học có thể đăng ký.";
+                MyCoursesStatusLabel.Text = $"Bạn đã đăng ký {MyRegisteredCourses.Count} khóa học.";
             }
 
-            OnPropertyChanged(nameof(CoursePackages));
+            OnPropertyChanged(nameof(MyRegisteredCourses));
         }
         catch (UnauthorizedAccessException)
         {
-            CourseRegistrationStatusLabel.Text = "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.";
+            MyCoursesStatusLabel.Text = "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.";
             await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
         }
         catch (Exception ex)
         {
-            CourseRegistrationStatusLabel.Text = "Không tải được danh sách khóa học.";
-            Console.WriteLine($"[Dashboard][Courses][Load][Error] {ex.Message}");
+            MyCoursesStatusLabel.Text = "Không tải được khóa học của bạn.";
+            Console.WriteLine($"[Dashboard][MyCourses][Load][Error] {ex.Message}");
         }
         finally
         {
-            _isLoadingPackages = false;
-            CourseRegisterLoading.IsVisible = false;
-            CourseRegisterLoading.IsRunning = false;
+            _isLoadingMyCourses = false;
+            MyCourseLoading.IsVisible = false;
+            MyCourseLoading.IsRunning = false;
         }
     }
 
-    private async void OnRegisterCourseClicked(object? sender, EventArgs e)
+    private async void OnRegisterCourseNowTapped(object? sender, EventArgs e)
     {
-        if (sender is not Button button || button.CommandParameter is null)
-            return;
+        await Shell.Current.GoToAsync(nameof(CourseRegistrationPage));
+    }
 
-        if (!long.TryParse(button.CommandParameter.ToString(), out var packageId) || packageId <= 0)
-            return;
+    protected override async void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
 
-        try
+        if (Shell.Current?.CurrentState?.Location?.OriginalString?.Contains("refreshRegisteredCourses=true", StringComparison.OrdinalIgnoreCase) == true)
         {
-            button.IsEnabled = false;
-            await _entitlementService.RegisterPackageAsync(packageId);
-
-            var item = CoursePackages.FirstOrDefault(x => x.Id == packageId);
-            if (item != null)
-                item.IsRegistered = true;
-
-            OnPropertyChanged(nameof(CoursePackages));
-            CourseRegistrationStatusLabel.Text = "Đăng ký khóa học thành công.";
-        }
-        catch (UnauthorizedAccessException)
-        {
-            CourseRegistrationStatusLabel.Text = "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.";
-            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
-        }
-        catch (Exception ex)
-        {
-            CourseRegistrationStatusLabel.Text = "Đăng ký khóa học thất bại.";
-            Console.WriteLine($"[Dashboard][Courses][Register][Error] {ex.Message}");
-            await DisplayAlert("Lỗi", "Không thể đăng ký khóa học. Vui lòng thử lại.", "OK");
-        }
-        finally
-        {
-            button.IsEnabled = true;
+            await LoadMyRegisteredCoursesAsync();
         }
     }
 

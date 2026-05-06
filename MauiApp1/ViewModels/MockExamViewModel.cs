@@ -105,6 +105,11 @@ public class MockExamViewModel : BaseViewModel
                 OnPropertyChanged(nameof(AnsweredQuestionsText));
             }
         }
+        catch (UnauthorizedAccessException ex)
+        {
+            await Application.Current?.MainPage?.DisplayAlert("Phiên đăng nhập", ex.Message, "OK")!;
+            await Shell.Current.GoToAsync($"//{nameof(Views.LoginPage)}");
+        }
         catch (Exception ex)
         {
             // Log error
@@ -232,8 +237,17 @@ public class MockExamViewModel : BaseViewModel
 
         CurrentExam.IsCompleted = true;
         CurrentExam.EndTime = DateTime.Now;
-        
-        await _examService.SubmitExamAsync(CurrentExam);
+
+        try
+        {
+            await _examService.SubmitExamAsync(CurrentExam);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            await Application.Current?.MainPage?.DisplayAlert("Phiên đăng nhập", ex.Message, "OK")!;
+            await Shell.Current.GoToAsync($"//{nameof(Views.LoginPage)}");
+            return;
+        }
 
         // Navigate to result page
         await Shell.Current.GoToAsync($"{nameof(Views.ExamResultPage)}?examId={CurrentExam.Id}");

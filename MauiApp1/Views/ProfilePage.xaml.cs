@@ -73,4 +73,23 @@ public partial class ProfilePage : ContentPage
     {
         await DisplayAlert("Chỉnh sửa hồ sơ", "Điểm gắn API cập nhật hồ sơ sẽ được nối ở bước sau.", "Đã hiểu");
     }
+
+    private async void OnLogoutClicked(object sender, EventArgs e)
+    {
+        var confirm = await DisplayAlert("Đăng xuất", "Bạn có chắc muốn đăng xuất?", "Đăng xuất", "Hủy");
+        if (!confirm)
+            return;
+
+        try
+        {
+            LogoutButton.IsEnabled = false;
+            LogoutButton.Text = "Đang đăng xuất...";
+            await _authController.LogoutAsync();
+        }
+        finally
+        {
+            LogoutButton.IsEnabled = true;
+            LogoutButton.Text = "Đăng xuất";
+        }
+    }
 }

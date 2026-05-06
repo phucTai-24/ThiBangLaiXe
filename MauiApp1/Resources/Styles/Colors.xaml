@@ -28,17 +28,17 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
 
-    <Color x:Key="AppPageBackground">#FCF9F2</Color>
+    <Color x:Key="AppPageBackground">#F5F5F5</Color>
     <Color x:Key="AppSurface">#FFFFFF</Color>
-    <Color x:Key="AppSurfaceMuted">#F6F3EC</Color>
-    <Color x:Key="AppSurfaceAccent">#FFF0C7</Color>
-    <Color x:Key="AppPrimaryText">#271900</Color>
-    <Color x:Key="AppSecondaryText">#5F564B</Color>
-    <Color x:Key="AppTertiaryText">#7E7468</Color>
-    <Color x:Key="AppBrand">#7C5800</Color>
-    <Color x:Key="AppBrandStrong">#271900</Color>
+    <Color x:Key="AppSurfaceMuted">#F2F3F5</Color>
+    <Color x:Key="AppSurfaceAccent">#EAF1FF</Color>
+    <Color x:Key="AppPrimaryText">#151515</Color>
+    <Color x:Key="AppSecondaryText">#6F6F6F</Color>
+    <Color x:Key="AppTertiaryText">#9A9A9A</Color>
+    <Color x:Key="AppBrand">#2563EB</Color>
+    <Color x:Key="AppBrandStrong">#123D6B</Color>
     <Color x:Key="AppBrandAccent">#FFB800</Color>
-    <Color x:Key="AppBorder">#14D5C4AB</Color>
+    <Color x:Key="AppBorder">#E7EAF0</Color>
     <Color x:Key="AppSuccess">#2E7D32</Color>
     <Color x:Key="AppDanger">#BA1A1A</Color>
     <Color x:Key="AppSelectedAnswer">#4CAF50</Color>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:MauiApp1.ViewModels"
+             x:Class="MauiApp1.Controls.ChatOverlayView"
+             x:Name="Root">
+
+    <AbsoluteLayout InputTransparent="True"
+                    CascadeInputTransparent="False">
+        <Border x:Name="ChatPopup"
+                AbsoluteLayout.LayoutBounds="0.5,0.5,0.94,0.82"
+                AbsoluteLayout.LayoutFlags="All"
+                Margin="0,8,0,56"
+                Padding="0"
+                BackgroundColor="{StaticResource AppSurface}"
+                InputTransparent="False"
+                IsVisible="False"
+                Opacity="0"
+                Scale="0.96"
+                Stroke="#15FFFFFF"
+                StrokeThickness="1"
+                Shadow="0,22,54,#36000000">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="28" />
+            </Border.StrokeShape>
+
+            <Grid RowDefinitions="Auto,*,Auto"
+                  RowSpacing="0">
+                <Grid Grid.Row="0"
+                      Padding="20,18,16,18"
+                      ColumnDefinitions="Auto,*,Auto"
+                      ColumnSpacing="14">
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#2563EB" Offset="0.0" />
+                            <GradientStop Color="#4F46E5" Offset="0.58" />
+                            <GradientStop Color="#7C3AED" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Grid.Background>
+
+                    <Border WidthRequest="46"
+                            HeightRequest="46"
+                            BackgroundColor="#24FFFFFF"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 23">
+                        <Label Text="🤖"
+                               FontSize="22"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1"
+                                         Spacing="1"
+                                         VerticalOptions="Center">
+                        <Label Text="Trợ lý học tập"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="20"
+                               TextColor="White" />
+                        <HorizontalStackLayout Spacing="6">
+                            <Border WidthRequest="8"
+                                    HeightRequest="8"
+                                    BackgroundColor="#34D399"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 4"
+                                    VerticalOptions="Center" />
+                            <Label Text="Đang hoạt động • Luôn sẵn sàng hỗ trợ ôn thi"
+                               FontSize="12"
+                               TextColor="#DCE8FF" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <Button Grid.Column="2"
+                            Padding="0"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            MinimumWidthRequest="40"
+                            MinimumHeightRequest="40"
+                            BackgroundColor="#22FFFFFF"
+                            BorderWidth="0"
+                            Command="{Binding CloseChatCommand}"
+                            CornerRadius="20"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="×"
+                            TextColor="White" />
+                </Grid>
+
+                <CollectionView x:Name="MessagesCollection"
+                                Grid.Row="1"
+                                ItemsSource="{Binding Messages}"
+                                SelectionMode="None"
+                                Margin="0"
+                                BackgroundColor="#F8FAFC">
+                    <CollectionView.Header>
+                        <VerticalStackLayout Padding="18,16,18,8"
+                                             Spacing="8">
+                            <Border Padding="14,10"
+                                    BackgroundColor="#EEF2FF"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 18">
+                                <Label Text="Gợi ý: hỏi về mẹo ghi nhớ biển báo, câu điểm liệt hoặc lịch ôn tập hôm nay."
+                                       FontSize="12"
+                                       LineBreakMode="WordWrap"
+                                       TextColor="#4338CA" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="viewModels:ChatMessageViewModel">
+                            <Grid Padding="18,7">
+                                <Border Padding="12,9"
+                                        MaximumWidthRequest="300"
+                                        HorizontalOptions="{Binding HorizontalAlignment}"
+                                        BackgroundColor="{Binding BubbleColor}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 20"
+                                        Shadow="0,6,14,#0F000000">
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="{Binding Sender}"
+                                               FontFamily="OpenSansSemibold"
+                                               FontSize="11"
+                                               TextColor="{Binding SenderTextColor}" />
+                                        <Label Text="{Binding Text}"
+                                               FontSize="14"
+                                               LineHeight="1.25"
+                                               LineBreakMode="WordWrap"
+                                               TextColor="{Binding MessageTextColor}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Grid Grid.Row="2"
+                      Padding="16,14,16,18"
+                      ColumnDefinitions="*,Auto"
+                      ColumnSpacing="12"
+                      BackgroundColor="#FFFFFF">
+                    <Border BackgroundColor="{StaticResource AppSurfaceMuted}"
+                            Stroke="{StaticResource AppBorder}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 24"
+                            Shadow="0,4,12,#08000000">
+                        <Entry Margin="16,0"
+                               HeightRequest="50"
+                               Placeholder="Nhập câu hỏi..."
+                               PlaceholderColor="#94A3B8"
+                               ReturnType="Send"
+                               TextColor="#111827"
+                               Text="{Binding DraftMessage}"
+                               Completed="OnMessageEntryCompleted" />
+                    </Border>
+
+                    <Button Grid.Column="1"
+                            WidthRequest="52"
+                            HeightRequest="52"
+                            MinimumWidthRequest="52"
+                            MinimumHeightRequest="52"
+                            Padding="0"
+                            BackgroundColor="{StaticResource AppBrand}"
+                            Command="{Binding SendMessageCommand}"
+                            CornerRadius="26"
+                            FontSize="20"
+                            Text="➤"
+                            TextColor="White" />
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Border x:Name="FloatingButton"
+                AbsoluteLayout.LayoutBounds="1,1,56,56"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                Margin="0,0,20,104"
+                Padding="0"
+                BackgroundColor="{StaticResource AppBrand}"
+                HeightRequest="56"
+                InputTransparent="False"
+                MinimumHeightRequest="56"
+                MinimumWidthRequest="56"
+                WidthRequest="56"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 28"
+                Shadow="0,12,28,#33000000">
+            <Label Text="{Binding FloatingButtonText}"
+                   FontAttributes="Bold"
+                   FontSize="24"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   VerticalOptions="Center"
+                   VerticalTextAlignment="Center" />
+
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnFloatingButtonTapped" />
+                <PanGestureRecognizer PanUpdated="OnFloatingButtonPanUpdated" />
+            </Border.GestureRecognizers>
+        </Border>
+    </AbsoluteLayout>
+</ContentView>

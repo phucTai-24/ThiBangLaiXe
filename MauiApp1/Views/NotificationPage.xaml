@@ -17,6 +17,9 @@
                            TextColor="{StaticResource AppPrimaryText}"
                            HorizontalOptions="Center"
                            VerticalOptions="Center" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackTapped" />
+                    </Border.GestureRecognizers>
                 </Border>
 
                 <VerticalStackLayout Grid.Column="1"

@@ -11,8 +11,12 @@ namespace MauiApp1.Services;
 public sealed class ApiPracticeService : IPracticeService
 {
     private readonly HttpClient _httpClient;
-    private readonly Dictionary<string, PracticeSession> _sessionCache = new();
-    private readonly Dictionary<string, PracticeSessionResult> _resultCache = new();
+    private static readonly Dictionary<string, PracticeSession> SessionCache = new();
+    private static readonly Dictionary<string, PracticeSessionResult> ResultCache = new();
+    private const string FilteredSessionPrefix = "filtered-";
+    private const string CriticalTopicCode = "CD_LIET";
+    private const string TrafficSignsTopicCode = "CD_BH";
+    private const string SituationalTopicCode = "CD_SH";
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -36,7 +40,7 @@ public sealed class ApiPracticeService : IPracticeService
         {
             return v1Items
                 .OrderByDescending(x => x.QuestionCount)
-                .Select((x, idx) => ToPracticeTopic(x.Id, x.Name, x.Description, x.QuestionCount, idx))
+                .Select((x, idx) => ToPracticeTopic(x.Id, x.Code, x.Name, x.Description, x.QuestionCount, idx))
                 .ToList();
         }
 
@@ -45,7 +49,7 @@ public sealed class ApiPracticeService : IPracticeService
         {
             return topicDemoItems
                 .OrderByDescending(x => x.QuestionCount)
-                .Select((x, idx) => ToPracticeTopic(x.TopicId, x.Name, string.Empty, x.QuestionCount, idx))
+                .Select((x, idx) => ToPracticeTopic(x.TopicId, string.Empty, x.Name, string.Empty, x.QuestionCount, idx))
                 .ToList();
         }
 
@@ -87,7 +91,67 @@ public sealed class ApiPracticeService : IPracticeService
         if (session.Questions.Count > 0)
             session.TopicName = session.Questions[0].Category;
 
-        _sessionCache[session.Id] = session;
+        SessionCache[session.Id] = session;
+        return session;
+    }
+
+    public async Task<PracticeQuestionGroupCounts> GetPracticeQuestionGroupCountsAsync(string? topicCode = null)
+    {
+        await AttachAuthHeaderAsync();
+
+        var questions = await LoadPracticeQuestionsWithAnswersAsync(topicCode, includeCorrectAnswer: true);
+        return new PracticeQuestionGroupCounts
+        {
+            Theory = questions.Count(IsTheoryQuestion),
+            TrafficSigns = questions.Count(IsTrafficSignQuestion),
+            Situational = questions.Count(IsSituationalQuestion)
+        };
+    }
+
+    public async Task<PracticeSession> StartFilteredPracticeSessionAsync(string groupCode, int questionCount, string? topicCode = null, string note = "")
+    {
+        await AttachAuthHeaderAsync();
+
+        var effectiveTopicCode = string.IsNullOrWhiteSpace(topicCode)
+            ? ResolvePracticeGroupTopicCode(groupCode)
+            : topicCode;
+
+        var questions = await LoadPracticeQuestionsWithAnswersAsync(effectiveTopicCode, includeCorrectAnswer: true);
+        var normalizedGroupCode = groupCode.Trim().ToLowerInvariant();
+        var filtered = questions
+            .Where(x => ResolvePracticeGroupPredicate(normalizedGroupCode)(x))
+            .OrderBy(x => x.Id)
+            .Take(Math.Max(1, questionCount))
+            .ToList();
+
+        if (filtered.Count == 0 && normalizedGroupCode == "critical")
+        {
+            var allQuestions = await LoadPracticeQuestionsWithAnswersAsync(null, includeCorrectAnswer: true);
+            filtered = allQuestions
+                .Where(IsCriticalQuestion)
+                .OrderBy(x => x.Id)
+                .Take(Math.Max(1, questionCount))
+                .ToList();
+        }
+
+        if (filtered.Count == 0)
+            throw new InvalidOperationException("Không có câu hỏi phù hợp để bắt đầu ôn tập.");
+
+        var topicName = ResolvePracticeGroupName(groupCode);
+
+        var session = new PracticeSession
+        {
+            Id = $"{FilteredSessionPrefix}{groupCode}-{Guid.NewGuid():N}",
+            TopicId = 0,
+            TopicName = topicName,
+            Status = "DANG_LAM",
+            StartTime = DateTime.Now,
+            TotalQuestions = filtered.Count,
+            Note = note,
+            Questions = filtered.Select((x, idx) => ToPracticeQuestionItem(x, idx + 1)).ToList()
+        };
+
+        SessionCache[session.Id] = session;
         return session;
     }
 
@@ -95,10 +159,22 @@ public sealed class ApiPracticeService : IPracticeService
     {
         await AttachAuthHeaderAsync();
 
-        var summary = await GetWithFallbackAsync<CriticalSummaryDto>(
-            "api/v1/critical-questions/summary");
+        // Số câu điểm liệt phải lấy theo cờ la_cau_diem_liet/isCritical.
+        // CD_LIET chỉ là chủ đề điểm liệt, không bao phủ hết các câu điểm liệt nằm ở chủ đề khác.
+        var paged = await GetWithFallbackAsync<PagedResponse<CriticalQuestionListItemDto>>(
+            "api/v1/questions/with-answers?page=1&pageSize=1&isCritical=true&status=approved",
+            $"api/v1/questions/with-answers?page=1&pageSize=1&topicCode={CriticalTopicCode}");
 
-        return summary?.TotalCriticalQuestions ?? 0;
+        if (paged?.TotalCount > 0)
+        {
+            Console.WriteLine($"[Practice][Critical][Summary] TotalCount={paged.TotalCount} by isCritical=true.");
+            return paged.TotalCount;
+        }
+
+        var criticalQuestions = await GetWithFallbackAsync<List<CriticalQuestionDto>>(
+            "api/v1/critical-questions");
+
+        return criticalQuestions?.Count ?? 0;
     }
 
     public async Task<string> StartCriticalPracticeAsync(int size = 10)
@@ -107,31 +183,47 @@ public sealed class ApiPracticeService : IPracticeService
 
         try
         {
+            size = size == 20 ? 20 : 10;
+
             var payload = new StartCriticalPracticeRequestDto
             {
                 Size = size
             };
 
-            const string endpoint = "api/v1/critical-questions/start-practice";
-            var response = await _httpClient.PostAsJsonAsync(endpoint, payload);
+            // Ưu tiên endpoint mới nếu backend đã bổ sung.
+            var response = await _httpClient.PostAsJsonAsync("api/v1/critical-questions/start-practice", payload);
             var content = await response.Content.ReadAsStringAsync();
 
-            Console.WriteLine($"[Practice][Critical][Start] POST {endpoint} -> {(int)response.StatusCode} {response.StatusCode}");
-            Console.WriteLine($"[Practice][Critical][Start] Response: {content}");
-
-            if (!response.IsSuccessStatusCode)
+            Console.WriteLine($"[Practice][Critical][Start] POST api/v1/critical-questions/start-practice -> {(int)response.StatusCode} {response.StatusCode}");
+            if (response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException($"Không thể bắt đầu phiên ôn tập. HTTP {(int)response.StatusCode}");
+                var sessionId = ExtractCriticalSessionId(content);
+                if (!string.IsNullOrWhiteSpace(sessionId))
+                    return sessionId;
             }
 
-            var sessionId = ExtractCriticalSessionId(content);
-            if (string.IsNullOrWhiteSpace(sessionId))
+            // Fallback production: dùng wrong-questions/start-practice (đang có controller thật).
+            var wrongPayload = new StartWrongPracticeRequestDto
             {
+                Size = size
+            };
+
+            var wrongResponse = await _httpClient.PostAsJsonAsync("api/v1/wrong-questions/start-practice", wrongPayload);
+            var wrongContent = await wrongResponse.Content.ReadAsStringAsync();
+
+            Console.WriteLine($"[Practice][Critical][Fallback] POST api/v1/wrong-questions/start-practice -> {(int)wrongResponse.StatusCode} {wrongResponse.StatusCode}");
+
+            if (!wrongResponse.IsSuccessStatusCode)
+            {
+                var errorMessage = ExtractErrorDetail(wrongContent) ?? $"Không thể bắt đầu phiên ôn tập. HTTP {(int)wrongResponse.StatusCode}";
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var fallbackSessionId = ExtractCriticalSessionId(wrongContent) ?? ExtractWrongPracticeSessionId(wrongContent);
+            if (string.IsNullOrWhiteSpace(fallbackSessionId))
                 throw new InvalidOperationException("API start-practice không trả sessionId hợp lệ.");
-            }
 
-            Console.WriteLine($"[Practice][Critical][Start] SessionId: {sessionId}");
-            return sessionId;
+            return fallbackSessionId;
         }
         catch (Exception ex)
         {
@@ -144,11 +236,14 @@ public sealed class ApiPracticeService : IPracticeService
     {
         await AttachAuthHeaderAsync();
 
-        if (_sessionCache.TryGetValue(sessionId, out var cachedSession) && cachedSession.Questions.Count > 0)
+        if (SessionCache.TryGetValue(sessionId, out var cachedSession) && cachedSession.Questions.Count > 0)
             return cachedSession;
 
+        if (sessionId.StartsWith(FilteredSessionPrefix, StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("Không tìm thấy phiên ôn tập biển báo/sa hình trong bộ nhớ ứng dụng.");
+
         var questions = await LoadQuestionsAsync(sessionId);
-        if (!_sessionCache.TryGetValue(sessionId, out var session))
+        if (!SessionCache.TryGetValue(sessionId, out var session))
         {
             session = new PracticeSession
             {
@@ -162,7 +257,7 @@ public sealed class ApiPracticeService : IPracticeService
 
         session.Questions = questions;
         session.TotalQuestions = questions.Count;
-        _sessionCache[sessionId] = session;
+        SessionCache[sessionId] = session;
 
         return session;
     }
@@ -170,6 +265,9 @@ public sealed class ApiPracticeService : IPracticeService
     public async Task<PracticeAnswerSubmissionResult> SubmitAnswerAsync(string sessionId, string questionId, string answerId)
     {
         await AttachAuthHeaderAsync();
+
+        if (sessionId.StartsWith(FilteredSessionPrefix, StringComparison.OrdinalIgnoreCase))
+            return SubmitFilteredSessionAnswer(sessionId, questionId, answerId);
 
         if (!long.TryParse(questionId, out var qid) || !long.TryParse(answerId, out var aid))
             throw new InvalidOperationException("Dữ liệu câu hỏi/đáp án không hợp lệ.");
@@ -188,7 +286,7 @@ public sealed class ApiPracticeService : IPracticeService
         if (result is null)
             throw new InvalidOperationException("Nộp đáp án thất bại.");
 
-        if (_sessionCache.TryGetValue(sessionId, out var session))
+        if (SessionCache.TryGetValue(sessionId, out var session))
         {
             var question = session.Questions.FirstOrDefault(x => x.Id == questionId);
             if (question != null)
@@ -218,6 +316,35 @@ public sealed class ApiPracticeService : IPracticeService
     {
         await AttachAuthHeaderAsync();
 
+        if (sessionId.StartsWith(FilteredSessionPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            if (!SessionCache.TryGetValue(sessionId, out var bankSession))
+                throw new InvalidOperationException("Không tìm thấy phiên ôn tập.");
+
+            bankSession.Status = "HOAN_THANH";
+            bankSession.EndTime = DateTime.Now;
+            bankSession.CorrectAnswers = bankSession.Questions.Count(x => x.IsCorrectlyAnswered);
+            bankSession.WrongAnswers = Math.Max(0, bankSession.TotalQuestions - bankSession.CorrectAnswers);
+            bankSession.Score = bankSession.TotalQuestions > 0
+                ? (int)Math.Round(bankSession.CorrectAnswers * 100.0 / bankSession.TotalQuestions)
+                : 0;
+
+            var filteredResult = new PracticeSessionResult
+            {
+                SessionId = sessionId,
+                TopicName = bankSession.TopicName,
+                TotalQuestions = bankSession.TotalQuestions,
+                CorrectAnswers = bankSession.CorrectAnswers,
+                WrongAnswers = bankSession.WrongAnswers,
+                Score = bankSession.Score,
+                ResultText = bankSession.Score >= 80 ? "Ôn tập đạt" : "Cần ôn thêm",
+                DurationText = bankSession.EndTime.HasValue ? (bankSession.EndTime.Value - bankSession.StartTime).ToString(@"mm\:ss") : "--:--"
+            };
+
+            ResultCache[sessionId] = filteredResult;
+            return filteredResult;
+        }
+
         var submitted = await PostWithFallbackAsync<SubmitPracticeSessionResponseDto>(
             null,
             $"api/practice-sessions/{sessionId}/submit",
@@ -229,7 +356,7 @@ public sealed class ApiPracticeService : IPracticeService
         var result = new PracticeSessionResult
         {
             SessionId = sessionId,
-            TopicName = _sessionCache.TryGetValue(sessionId, out var cached) ? cached.TopicName : "Ôn tập lý thuyết",
+            TopicName = SessionCache.TryGetValue(sessionId, out var cached) ? cached.TopicName : "Ôn tập lý thuyết",
             TotalQuestions = submitted.CorrectAnswers + submitted.WrongAnswers,
             CorrectAnswers = submitted.CorrectAnswers,
             WrongAnswers = submitted.WrongAnswers,
@@ -238,7 +365,7 @@ public sealed class ApiPracticeService : IPracticeService
             DurationText = ParseDurationText(submitted.Duration)
         };
 
-        if (_sessionCache.TryGetValue(sessionId, out var session))
+        if (SessionCache.TryGetValue(sessionId, out var session))
         {
             session.Status = "HOAN_THANH";
             session.EndTime = DateTime.Now;
@@ -247,13 +374,13 @@ public sealed class ApiPracticeService : IPracticeService
             session.Score = result.Score;
         }
 
-        _resultCache[sessionId] = result;
+        ResultCache[sessionId] = result;
         return result;
     }
 
     public async Task<PracticeSessionResult> GetPracticeSessionResultAsync(string sessionId)
     {
-        if (_resultCache.TryGetValue(sessionId, out var cachedResult))
+        if (ResultCache.TryGetValue(sessionId, out var cachedResult))
             return cachedResult;
 
         var history = await GetPracticeHistoryAsync();
@@ -273,7 +400,7 @@ public sealed class ApiPracticeService : IPracticeService
             };
         }
 
-        if (_sessionCache.TryGetValue(sessionId, out var session))
+        if (SessionCache.TryGetValue(sessionId, out var session))
         {
             return new PracticeSessionResult
             {
@@ -370,23 +497,7 @@ public sealed class ApiPracticeService : IPracticeService
                 Console.WriteLine($"[Practice][Questions] sessionId={sessionId} trả về danh sách rỗng.");
             }
 
-            return questions.OrderBy(x => x.Number).Select(x => new PracticeQuestionItem
-            {
-                Id = x.QuestionId.ToString(),
-                Number = x.Number,
-                Text = x.Content,
-                Category = "Ôn tập lý thuyết",
-                IsCritical = x.IsCritical,
-                Answers = x.Answers.Select((a, idx) => new PracticeAnswerOption
-                {
-                    Id = a.AnswerId.ToString(),
-                    Label = ((char)('A' + idx)).ToString(),
-                    Text = a.Content,
-                    IsCorrectAnswer = false,
-                    IsSelected = false,
-                    IsRevealed = false
-                }).ToList()
-            }).ToList();
+            return questions.OrderBy(x => x.Number).Select(ToPracticeQuestionItem).ToList();
         }
         catch (UnauthorizedAccessException)
         {
@@ -419,6 +530,230 @@ public sealed class ApiPracticeService : IPracticeService
         }
 
         return default;
+    }
+
+    private async Task<List<QuestionWithAnswersDto>> LoadPracticeQuestionsWithAnswersAsync(string? topicCode, bool includeCorrectAnswer)
+    {
+        var topicFilter = string.IsNullOrWhiteSpace(topicCode)
+            ? string.Empty
+            : $"&topicCode={Uri.EscapeDataString(topicCode)}";
+
+        var firstPage = await GetWithFallbackAsync<PagedResponse<QuestionWithAnswersDto>>(
+            $"api/v1/questions/with-answers?page=1&pageSize=1&status=approved&includeCorrectAnswer={includeCorrectAnswer.ToString().ToLowerInvariant()}{topicFilter}");
+
+        var total = Math.Max(firstPage?.TotalCount ?? 0, 1);
+        var pageSize = Math.Min(Math.Max(total, 100), 500);
+        var paged = await GetWithFallbackAsync<PagedResponse<QuestionWithAnswersDto>>(
+            $"api/v1/questions/with-answers?page=1&pageSize={pageSize}&status=approved&includeCorrectAnswer={includeCorrectAnswer.ToString().ToLowerInvariant()}{topicFilter}");
+
+        if (paged?.Items is { Count: > 0 })
+            return paged.Items;
+
+        return new List<QuestionWithAnswersDto>();
+    }
+
+    private static bool IsTheoryQuestion(QuestionWithAnswersDto question) => !IsTrafficSignQuestion(question) && !IsSituationalQuestion(question);
+
+    private static bool IsCriticalQuestion(QuestionWithAnswersDto question) => question.IsCritical || IsCriticalTopicCode(question.TopicCode);
+
+    private static bool IsImageQuestion(QuestionWithAnswersDto question) => !string.IsNullOrWhiteSpace(question.ImageUrl);
+
+    private static bool IsTrafficSignQuestion(QuestionWithAnswersDto question)
+    {
+        return question.TopicId == 5
+            || IsTrafficSignTopicCode(question.TopicCode)
+            || IsTrafficSignTopic(question.TopicCode)
+            || IsTrafficSignTopic(question.TopicName);
+    }
+
+    private static bool IsSituationalQuestion(QuestionWithAnswersDto question)
+    {
+        return question.TopicId == 6
+            || IsSituationalTopicCode(question.TopicCode)
+            || IsSaHinhTopic(question.TopicCode)
+            || IsSaHinhTopic(question.TopicName);
+    }
+
+    private static Func<QuestionWithAnswersDto, bool> ResolvePracticeGroupPredicate(string groupCode)
+    {
+        return groupCode.Trim().ToLowerInvariant() switch
+        {
+            "critical" => IsCriticalQuestion,
+            "traffic-signs" => IsTrafficSignQuestion,
+            "situational" => IsSituationalQuestion,
+            _ => IsTheoryQuestion
+        };
+    }
+
+    private static string ResolvePracticeGroupName(string groupCode)
+    {
+        return groupCode.Trim().ToLowerInvariant() switch
+        {
+            "critical" => "Ôn tập điểm liệt",
+            "traffic-signs" => "Ôn tập biển báo",
+            "situational" => "Ôn tập sa hình",
+            _ => "Ôn tập lý thuyết"
+        };
+    }
+
+    private static string? ResolvePracticeGroupTopicCode(string groupCode)
+    {
+        return groupCode.Trim().ToLowerInvariant() switch
+        {
+            "critical" => CriticalTopicCode,
+            "traffic-signs" => TrafficSignsTopicCode,
+            "situational" => SituationalTopicCode,
+            _ => null
+        };
+    }
+
+    private static bool IsTrafficSignTopicCode(string? value)
+    {
+        return string.Equals(value?.Trim(), TrafficSignsTopicCode, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsCriticalTopicCode(string? value)
+    {
+        return string.Equals(value?.Trim(), CriticalTopicCode, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsSituationalTopicCode(string? value)
+    {
+        return string.Equals(value?.Trim(), SituationalTopicCode, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsTrafficSignTopic(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return false;
+
+        var normalized = NormalizeClassificationText(value);
+        return normalized.Contains("bien bao", StringComparison.Ordinal)
+            || normalized.Contains("bien_bao", StringComparison.Ordinal)
+            || normalized.Contains("bien-bao", StringComparison.Ordinal)
+            || normalized.Contains("bao hieu", StringComparison.Ordinal)
+            || normalized.Contains("traffic sign", StringComparison.Ordinal)
+            || normalized.Contains("traffic-sign", StringComparison.Ordinal)
+            || normalized.Contains("traffic_sign", StringComparison.Ordinal);
+    }
+
+    private static bool IsSituationalTopic(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return false;
+
+        var normalized = NormalizeClassificationText(value);
+        return normalized.Contains("sa hinh", StringComparison.Ordinal)
+            || normalized.Contains("sa_hinh", StringComparison.Ordinal)
+            || normalized.Contains("sa-hinh", StringComparison.Ordinal)
+            || normalized.Contains("tinh huong", StringComparison.Ordinal)
+            || normalized.Contains("xu ly tinh huong", StringComparison.Ordinal)
+            || normalized.Contains("situation", StringComparison.Ordinal)
+            || normalized.Contains("situational", StringComparison.Ordinal);
+    }
+
+    private static bool IsSaHinhTopic(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return false;
+
+        var normalized = NormalizeClassificationText(value);
+        return normalized.Contains("sa hinh", StringComparison.Ordinal)
+            || normalized.Contains("sa_hinh", StringComparison.Ordinal)
+            || normalized.Contains("sa-hinh", StringComparison.Ordinal);
+    }
+
+    private static string NormalizeClassificationText(string value)
+    {
+        return RemoveVietnameseDiacritics(value).Trim().ToLowerInvariant();
+    }
+
+    private static string RemoveVietnameseDiacritics(string value)
+    {
+        var normalized = value.Normalize(System.Text.NormalizationForm.FormD);
+        var builder = new System.Text.StringBuilder(normalized.Length);
+
+        foreach (var character in normalized)
+        {
+            var category = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(character);
+            if (category != System.Globalization.UnicodeCategory.NonSpacingMark)
+                builder.Append(character == 'đ' ? 'd' : character == 'Đ' ? 'D' : character);
+        }
+
+        return builder.ToString().Normalize(System.Text.NormalizationForm.FormC);
+    }
+
+    private static PracticeQuestionItem ToPracticeQuestionItem(PracticeQuestionDto question)
+    {
+        return new PracticeQuestionItem
+        {
+            Id = question.QuestionId.ToString(),
+            Number = question.Number,
+            Text = question.Content,
+            Category = "Ôn tập lý thuyết",
+            IsCritical = question.IsCritical,
+            ImageUrl = NormalizeAssetUrl(question.ImageUrl),
+            Answers = question.Answers.Select((a, idx) => new PracticeAnswerOption
+            {
+                Id = a.AnswerId.ToString(),
+                Label = ((char)('A' + idx)).ToString(),
+                Text = a.Content,
+                IsCorrectAnswer = false,
+                IsSelected = false,
+                IsRevealed = false
+            }).ToList()
+        };
+    }
+
+    private static PracticeQuestionItem ToPracticeQuestionItem(QuestionWithAnswersDto question, int number)
+    {
+        return new PracticeQuestionItem
+        {
+            Id = question.Id.ToString(),
+            Number = number,
+            Text = question.Content,
+            Category = question.TopicName,
+            IsCritical = question.IsCritical,
+            ImageUrl = NormalizeAssetUrl(question.ImageUrl),
+            Answers = question.Answers.OrderBy(x => x.Order).Select((a, idx) => new PracticeAnswerOption
+            {
+                Id = a.AnswerId.ToString(),
+                Label = ((char)('A' + idx)).ToString(),
+                Text = a.Content,
+                IsCorrectAnswer = a.IsCorrect == true,
+                IsSelected = false,
+                IsRevealed = false
+            }).ToList()
+        };
+    }
+
+    private PracticeAnswerSubmissionResult SubmitFilteredSessionAnswer(string sessionId, string questionId, string answerId)
+    {
+        if (!SessionCache.TryGetValue(sessionId, out var session))
+            throw new InvalidOperationException("Không tìm thấy phiên ôn tập.");
+
+        var question = session.Questions.FirstOrDefault(x => x.Id == questionId)
+            ?? throw new InvalidOperationException("Không tìm thấy câu hỏi.");
+
+        var selected = question.Answers.FirstOrDefault(x => x.Id == answerId)
+            ?? throw new InvalidOperationException("Không tìm thấy đáp án.");
+
+        question.SelectedAnswerId = answerId;
+        question.IsAnswered = true;
+        question.IsCorrectlyAnswered = selected.IsCorrectAnswer;
+
+        foreach (var answer in question.Answers)
+        {
+            answer.IsSelected = answer.Id == answerId;
+            answer.IsRevealed = true;
+        }
+
+        return new PracticeAnswerSubmissionResult
+        {
+            IsCorrect = selected.IsCorrectAnswer,
+            CorrectAnswerId = question.Answers.FirstOrDefault(x => x.IsCorrectAnswer)?.Id ?? string.Empty,
+            Explanation = question.Explanation
+        };
     }
 
     private async Task<T?> PostWithFallbackAsync<T>(object? payload, params string[] endpoints) where T : class
@@ -492,6 +827,133 @@ public sealed class ApiPracticeService : IPracticeService
         }
     }
 
+    private static string? NormalizeAssetUrl(string? imageUrl)
+    {
+        if (string.IsNullOrWhiteSpace(imageUrl))
+        {
+            Console.WriteLine("[Practice][Image] original=<empty> normalized=<null> extension=<none>");
+            return null;
+        }
+
+        var trimmed = imageUrl.Trim();
+
+        if (trimmed.StartsWith("data:image", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("[Practice][Image] original=data-image normalized=data-image extension=data");
+            return trimmed;
+        }
+
+        var candidate = trimmed.Replace('\\', '/');
+        if (IsRelativeAssetPath(candidate))
+        {
+            if (!Uri.TryCreate(ApiEndpoints.GetBaseUrl(), UriKind.Absolute, out var baseUri))
+            {
+                Console.WriteLine($"[Practice][Image] original={trimmed} normalized=<null> extension=<unknown> reason=invalid-base-url");
+                return null;
+            }
+
+            candidate = new Uri(baseUri, NormalizeRelativeAssetPath(candidate)).ToString();
+        }
+        else if (IsMissingSchemeAbsoluteUrl(candidate))
+        {
+            candidate = $"http://{candidate}";
+        }
+
+        var escapedCandidate = Uri.EscapeUriString(candidate);
+        var normalizedUrl = NormalizeLoopbackUrlForDevice(escapedCandidate);
+
+        return ValidateAndLogAssetUrl(trimmed, normalizedUrl);
+    }
+
+    private static string? ValidateAndLogAssetUrl(string originalUrl, string normalizedUrl)
+    {
+        if (!Uri.TryCreate(normalizedUrl, UriKind.Absolute, out var uri)
+            || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
+        {
+            Console.WriteLine($"[Practice][Image] original={originalUrl} normalized=<null> extension=<unknown> reason=invalid-absolute-uri");
+            return null;
+        }
+
+        var extension = GetImageExtension(uri);
+        var isSupported = IsSupportedImageExtension(extension);
+        Console.WriteLine($"[Practice][Image] original={originalUrl} normalized={uri.AbsoluteUri} extension={extension ?? "<none>"} supported={isSupported}");
+        return uri.AbsoluteUri;
+    }
+
+    private static bool IsRelativeAssetPath(string value)
+    {
+        var normalized = value.TrimStart();
+        return normalized.StartsWith("/assets", StringComparison.OrdinalIgnoreCase)
+            || normalized.StartsWith("assets", StringComparison.OrdinalIgnoreCase)
+            || normalized.StartsWith("./assets", StringComparison.OrdinalIgnoreCase)
+            || normalized.StartsWith("../assets", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string NormalizeRelativeAssetPath(string value)
+    {
+        var normalized = value.Trim();
+        while (normalized.StartsWith("../", StringComparison.Ordinal))
+            normalized = normalized[3..];
+
+        if (normalized.StartsWith("./", StringComparison.Ordinal))
+            normalized = normalized[2..];
+
+        return normalized.TrimStart('/');
+    }
+
+    private static bool IsMissingSchemeAbsoluteUrl(string value)
+    {
+        if (value.StartsWith("//", StringComparison.Ordinal))
+            return true;
+
+        var firstSlashIndex = value.IndexOf('/');
+        var hostPart = firstSlashIndex >= 0 ? value[..firstSlashIndex] : value;
+
+        return hostPart.Contains('.', StringComparison.Ordinal)
+            || hostPart.Contains(':', StringComparison.Ordinal)
+            || hostPart.Equals("localhost", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string? GetImageExtension(Uri uri)
+    {
+        var extension = Path.GetExtension(uri.AbsolutePath);
+        return string.IsNullOrWhiteSpace(extension) ? null : extension.ToLowerInvariant();
+    }
+
+    private static bool IsSupportedImageExtension(string? extension)
+    {
+        return extension is null
+            or ".jpg"
+            or ".jpeg"
+            or ".png"
+            or ".gif"
+            or ".bmp"
+            or ".webp";
+    }
+
+    private static string NormalizeLoopbackUrlForDevice(string url)
+    {
+        if (DeviceInfo.Platform != DevicePlatform.Android)
+            return url;
+
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            return url;
+
+        var isLoopbackHost = string.Equals(uri.Host, "localhost", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(uri.Host, "127.0.0.1", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(uri.Host, "::1", StringComparison.OrdinalIgnoreCase);
+
+        if (!isLoopbackHost)
+            return url;
+
+        var builder = new UriBuilder(uri)
+        {
+            Host = "10.0.2.2"
+        };
+
+        return builder.Uri.ToString();
+    }
+
     private static string? ExtractCriticalSessionId(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
@@ -529,6 +991,67 @@ public sealed class ApiPracticeService : IPracticeService
         }
     }
 
+    private static string? ExtractWrongPracticeSessionId(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+            return null;
+
+        try
+        {
+            using var document = JsonDocument.Parse(content);
+            var root = document.RootElement;
+            var target = root;
+
+            if (root.ValueKind == JsonValueKind.Object && root.TryGetProperty("data", out var dataElement))
+                target = dataElement;
+
+            if (target.ValueKind != JsonValueKind.Object)
+                return null;
+
+            if (TryReadSessionId(target, "practiceSessionId", out var camelId))
+                return camelId;
+
+            if (TryReadSessionId(target, "practice_session_id", out var snakeId))
+                return snakeId;
+
+            return null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static string? ExtractErrorDetail(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+            return null;
+
+        try
+        {
+            using var document = JsonDocument.Parse(content);
+            var root = document.RootElement;
+
+            if (root.TryGetProperty("errors", out var errors)
+                && errors.ValueKind == JsonValueKind.Array
+                && errors.GetArrayLength() > 0)
+            {
+                var first = errors[0];
+                if (first.TryGetProperty("detail", out var detail) && detail.ValueKind == JsonValueKind.String)
+                    return detail.GetString();
+            }
+
+            if (root.TryGetProperty("message", out var message) && message.ValueKind == JsonValueKind.String)
+                return message.GetString();
+        }
+        catch
+        {
+            // ignore
+        }
+
+        return null;
+    }
+
     private static bool TryReadSessionId(JsonElement element, string propertyName, out string? sessionId)
     {
         sessionId = null;
@@ -563,7 +1086,7 @@ public sealed class ApiPracticeService : IPracticeService
         return "--:--";
     }
 
-    private static PracticeTopic ToPracticeTopic(long id, string name, string? description, int questionCount, int index)
+    private static PracticeTopic ToPracticeTopic(long id, string? code, string name, string? description, int questionCount, int index)
     {
         var accents = new[] { "📘", "🚦", "🛣️", "⚠️", "📙", "🧠" };
         var colors = new[] { "#7C5800", "#C62828", "#1565C0", "#8E24AA", "#2E7D32", "#455A64" };
@@ -571,6 +1094,7 @@ public sealed class ApiPracticeService : IPracticeService
         return new PracticeTopic
         {
             Id = (int)id,
+            Code = code ?? string.Empty,
             Name = name,
             Description = string.IsNullOrWhiteSpace(description) ? "Ôn tập theo chủ đề từ hệ thống." : description,
             QuestionCount = questionCount,
@@ -590,6 +1114,18 @@ public sealed class ApiPracticeService : IPracticeService
 
         [JsonPropertyName("latestPracticeAt")]
         public DateTime? LatestPracticeAt { get; set; }
+    }
+
+    private sealed class CriticalQuestionListItemDto
+    {
+        [JsonPropertyName("id")]
+        public long Id { get; set; }
+    }
+
+    private sealed class CriticalQuestionDto
+    {
+        [JsonPropertyName("id")]
+        public long Id { get; set; }
     }
 
     private sealed class StartCriticalPracticeRequestDto
@@ -616,9 +1152,16 @@ public sealed class ApiPracticeService : IPracticeService
         public List<long> QuestionIds { get; set; } = new();
     }
 
+    private sealed class StartWrongPracticeRequestDto
+    {
+        [JsonPropertyName("size")]
+        public int Size { get; set; } = 10;
+    }
+
     private sealed class TopicV1Dto
     {
         public long Id { get; set; }
+        public string Code { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public int QuestionCount { get; set; }
@@ -677,8 +1220,41 @@ public sealed class ApiPracticeService : IPracticeService
         [JsonPropertyName("la_cau_diem_liet")]
         public bool IsCritical { get; set; }
 
+        [JsonPropertyName("imageUrl")]
+        public string? ImageUrl { get; set; }
+
+        [JsonPropertyName("image_url")]
+        public string? ImageUrlSnake
+        {
+            get => ImageUrl;
+            set => ImageUrl = value;
+        }
+
         [JsonPropertyName("answers")]
         public List<PracticeAnswerDto> Answers { get; set; } = new();
+    }
+
+    private sealed class QuestionWithAnswersDto
+    {
+        public long Id { get; set; }
+        public long TopicId { get; set; }
+        public string TopicCode { get; set; } = string.Empty;
+        public string TopicName { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public string QuestionType { get; set; } = string.Empty;
+        public string? Level { get; set; }
+        public bool IsCritical { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; }
+        public List<QuestionWithAnswerOptionDto> Answers { get; set; } = new();
+    }
+
+    private sealed class QuestionWithAnswerOptionDto
+    {
+        public long AnswerId { get; set; }
+        public string Content { get; set; } = string.Empty;
+        public int Order { get; set; }
+        public bool? IsCorrect { get; set; }
     }
 
     private sealed class PracticeAnswerDto

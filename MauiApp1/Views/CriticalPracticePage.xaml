@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MauiApp1.Models"
+             xmlns:vm="clr-namespace:MauiApp1.ViewModels"
+             x:Class="MauiApp1.Views.CriticalPracticePage"
+             x:DataType="vm:CriticalPracticeViewModel"
+             Style="{StaticResource AppPageStyle}">
+
+    <Grid RowDefinitions="Auto,*,Auto,Auto" Padding="20,16,20,20" RowSpacing="14">
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+            <Border BackgroundColor="{StaticResource AppSurface}" StrokeThickness="0" Padding="10" StrokeShape="RoundRectangle 12">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                </Border.GestureRecognizers>
+                <Label Text="←" FontSize="18" />
+            </Border>
+
+            <VerticalStackLayout Grid.Column="1" Spacing="2" HorizontalOptions="Center">
+                <Label Text="ÔN TẬP ĐIỂM LIỆT" FontFamily="OpenSans-Semibold" FontSize="18" TextColor="{StaticResource AppPrimaryText}" />
+                <Label Text="{Binding ProgressText}" FontSize="12" TextColor="{StaticResource AppBrand}" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <ActivityIndicator Grid.Column="2" IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" Color="{StaticResource AppBrand}" />
+        </Grid>
+
+        <Border Grid.Row="1" BackgroundColor="White" StrokeThickness="0" StrokeShape="RoundRectangle 20" Padding="18" Shadow="0,8,20,#12000000">
+            <VerticalStackLayout Spacing="14">
+                <Label Text="{Binding StatusText}" FontSize="12" TextColor="#6B7280" />
+                <Label Text="{Binding ResultSummaryText}" FontFamily="OpenSans-Semibold" FontSize="13" TextColor="#7C5800" IsVisible="{Binding IsSubmitted}" />
+
+                <Label Text="{Binding CurrentQuestion.Content}" FontFamily="OpenSans-Semibold" FontSize="20" LineHeight="1.3" TextColor="{StaticResource AppPrimaryText}" />
+
+                <Image Source="{Binding CurrentQuestion.ImageUrl}"
+                       IsVisible="{Binding CurrentQuestion.HasImage}"
+                       Aspect="AspectFit"
+                       HeightRequest="180"
+                       BackgroundColor="#F8FAFC" />
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding CurrentQuestion.Answers}" Spacing="10">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:CriticalPracticeAnswer">
+                            <Border Padding="14" StrokeShape="RoundRectangle 14" StrokeThickness="2">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BackgroundColor" Value="#F8FAFC" />
+                                        <Setter Property="Stroke" Value="#E5E7EB" />
+                                        <Style.Triggers>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsCorrect}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="#ECFDF3" />
+                                                <Setter Property="Stroke" Value="#16A34A" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsWrong}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="#FEF2F2" />
+                                                <Setter Property="Stroke" Value="#DC2626" />
+                                            </DataTrigger>
+                                            <MultiTrigger TargetType="Border">
+                                                <MultiTrigger.Conditions>
+                                                    <BindingCondition Binding="{Binding IsSelected}" Value="True" />
+                                                    <BindingCondition Binding="{Binding IsCorrect}" Value="False" />
+                                                    <BindingCondition Binding="{Binding IsWrong}" Value="False" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Stroke" Value="{StaticResource AppBrand}" />
+                                            </MultiTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                    <Label Text="{Binding Label}" FontFamily="OpenSans-Semibold" FontSize="16" VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Text="{Binding Content}" FontSize="15" VerticalOptions="Center" />
+                                </Grid>
+
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectAnswerCommand}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <Border BackgroundColor="#FFF7ED" StrokeThickness="0" Padding="12" StrokeShape="RoundRectangle 12" IsVisible="{Binding CurrentQuestion.IsAnswered}">
+                    <Label Text="{Binding CurrentQuestion.Explanation}" FontSize="13" TextColor="#7C2D12" />
+                </Border>
+            </VerticalStackLayout>
+        </Border>
+
+        <Border Grid.Row="2" BackgroundColor="#FFFFFF" Padding="12" StrokeThickness="0" StrokeShape="RoundRectangle 14" IsVisible="{Binding IsSubmitted}">
+            <ScrollView Orientation="Horizontal">
+                <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Questions}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:CriticalPracticeQuestion">
+                            <Border Padding="10,6" StrokeShape="RoundRectangle 10" StrokeThickness="1">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BackgroundColor" Value="#F8FAFC" />
+                                        <Setter Property="Stroke" Value="#E5E7EB" />
+                                        <Style.Triggers>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsCorrectlyAnswered}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="#ECFDF3" />
+                                                <Setter Property="Stroke" Value="#16A34A" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsWronglyAnswered}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="#FEF2F2" />
+                                                <Setter Property="Stroke" Value="#DC2626" />
+                                            </DataTrigger>
+                                            <MultiTrigger TargetType="Border">
+                                                <MultiTrigger.Conditions>
+                                                    <BindingCondition Binding="{Binding IsAnswered}" Value="True" />
+                                                    <BindingCondition Binding="{Binding IsCorrectlyAnswered}" Value="False" />
+                                                    <BindingCondition Binding="{Binding IsWronglyAnswered}" Value="False" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="BackgroundColor" Value="#FEF2F2" />
+                                                <Setter Property="Stroke" Value="#DC2626" />
+                                            </MultiTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Label Text="{Binding Number}" FontSize="12" />
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectQuestionCommand}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </ScrollView>
+        </Border>
+
+        <Grid Grid.Row="3" ColumnDefinitions="*,*,*" ColumnSpacing="12">
+            <Button Grid.Column="0" Text="CÂU TRƯỚC" Command="{Binding PreviousCommand}" BackgroundColor="#E5E7EB" TextColor="#111827" CornerRadius="14" HeightRequest="48" />
+            <Button Grid.Column="1" Text="NỘP BÀI" Command="{Binding SubmitCommand}" BackgroundColor="#D97706" TextColor="White" CornerRadius="14" HeightRequest="48" />
+            <Button Grid.Column="2" Text="CÂU TIẾP" Command="{Binding NextCommand}" BackgroundColor="{StaticResource AppBrand}" TextColor="White" CornerRadius="14" HeightRequest="48" />
+        </Grid>
+    </Grid>
+</ContentPage>

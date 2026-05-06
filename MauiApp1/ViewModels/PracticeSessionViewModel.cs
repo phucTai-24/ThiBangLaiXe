@@ -25,7 +25,7 @@ public class PracticeSessionViewModel : BaseViewModel
         SelectQuestionCommand = new Command<int>(OnSelectQuestion);
         SubmitPracticeCommand = new Command(async () => await OnSubmitPracticeAsync(), () => CurrentSession != null);
         GoHomeCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.DashboardPage)));
-        GoPracticeHomeCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.TrafficSignsPage)));
+        GoPracticeHomeCommand = new Command(async () => await OnGoPracticeHomeAsync());
         GoMockExamCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.MockExamPage)));
     }
 
@@ -167,5 +167,28 @@ public class PracticeSessionViewModel : BaseViewModel
 
         await _practiceService.SubmitPracticeSessionAsync(CurrentSession.Id);
         await Shell.Current.GoToAsync($"{nameof(Views.PracticeResultPage)}?sessionId={CurrentSession.Id}");
+    }
+
+    private async Task OnGoPracticeHomeAsync()
+    {
+        var page = Shell.Current?.CurrentPage;
+        if (page == null)
+        {
+            await Shell.Current.GoToAsync(nameof(Views.TrafficSignsPage));
+            return;
+        }
+
+        var confirm = await page.DisplayAlert(
+            "Kết thúc ôn tập",
+            "Bạn có chắc muốn kết thúc phiên ôn tập và quay lại màn hình ôn tập không?",
+            "Xác nhận",
+            "Tiếp tục ôn");
+
+        if (!confirm)
+        {
+            return;
+        }
+
+        await Shell.Current.GoToAsync(nameof(Views.TrafficSignsPage));
     }
 }

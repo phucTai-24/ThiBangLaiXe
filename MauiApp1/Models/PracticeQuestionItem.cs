@@ -9,6 +9,8 @@ public class PracticeQuestionItem : INotifyPropertyChanged
     private bool _isAnswered;
     private bool _isCorrectlyAnswered;
     private bool _isCurrent;
+    private string? _imageUrl;
+    private bool _imageLoadFailed;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -17,6 +19,78 @@ public class PracticeQuestionItem : INotifyPropertyChanged
     public string Text { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty;
     public bool IsCritical { get; set; }
+    public string? ImageUrl
+    {
+        get => _imageUrl;
+        set
+        {
+            var normalized = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+            if (_imageUrl == normalized)
+            {
+                return;
+            }
+
+            _imageUrl = normalized;
+            _imageLoadFailed = false;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(QuestionImageSource));
+            OnPropertyChanged(nameof(HasImage));
+            OnPropertyChanged(nameof(IsImageFormatUnsupported));
+            OnPropertyChanged(nameof(HasDisplayImage));
+            OnPropertyChanged(nameof(ShowImagePlaceholder));
+        }
+    }
+
+    public bool HasImage => !string.IsNullOrWhiteSpace(ImageUrl);
+    public bool IsImageFormatUnsupported => HasImage && IsUnsupportedImageExtension(ImageUrl);
+    public bool HasDisplayImage => HasImage && !ImageLoadFailed && !IsImageFormatUnsupported;
+    public bool ShowImagePlaceholder => HasImage && (ImageLoadFailed || IsImageFormatUnsupported);
+    public ImageSource? QuestionImageSource
+    {
+        get
+        {
+            if (!HasDisplayImage)
+            {
+                return null;
+            }
+
+            return Uri.TryCreate(ImageUrl, UriKind.Absolute, out var uri)
+                ? ImageSource.FromUri(uri)
+                : null;
+        }
+    }
+
+    private static bool IsUnsupportedImageExtension(string? imageUrl)
+    {
+        if (string.IsNullOrWhiteSpace(imageUrl)
+            || imageUrl.StartsWith("data:image", StringComparison.OrdinalIgnoreCase)
+            || !Uri.TryCreate(imageUrl, UriKind.Absolute, out var uri))
+        {
+            return false;
+        }
+
+        var extension = Path.GetExtension(uri.AbsolutePath)?.ToLowerInvariant();
+        return extension is ".svg";
+    }
+
+    public bool ImageLoadFailed
+    {
+        get => _imageLoadFailed;
+        set
+        {
+            if (_imageLoadFailed == value)
+            {
+                return;
+            }
+
+            _imageLoadFailed = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(QuestionImageSource));
+            OnPropertyChanged(nameof(HasDisplayImage));
+            OnPropertyChanged(nameof(ShowImagePlaceholder));
+        }
+    }
+
     public string Explanation { get; set; } = string.Empty;
     public List<PracticeAnswerOption> Answers { get; set; } = new();
 

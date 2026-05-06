@@ -7,129 +7,220 @@
              x:DataType="vm:PracticeResultViewModel"
              Style="{StaticResource AppPageStyle}">
 
-    <Grid RowDefinitions="*,Auto">
-    <ScrollView Grid.Row="0">
-        <VerticalStackLayout Padding="24,24,24,140"
-                             Spacing="18">
-            <Border Style="{StaticResource AppHeaderContainer}">
-                <Grid ColumnDefinitions="Auto,*">
-                    <Border Style="{StaticResource AppIconButtonCard}">
-                        <Label Text="←"
-                               FontSize="18"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center" />
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoPracticeHomeCommand}" />
-                        </Border.GestureRecognizers>
-                    </Border>
-                    <VerticalStackLayout Grid.Column="1"
-                                         Margin="14,0,0,0"
-                                         Spacing="2">
-                        <Label Text="ONTHIBANGLAI"
-                               Style="{StaticResource AppHeaderBrandLabel}" />
-                        <Label Text="Kết quả ôn tập"
-                               Style="{StaticResource AppHeaderTitleLabel}" />
-                    </VerticalStackLayout>
-                </Grid>
-            </Border>
+    <ContentPage.Resources>
+        <Style x:Key="ResultMetricCardStyle" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="{StaticResource AppSurface}" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 24" />
+            <Setter Property="Shadow" Value="0,14,32,#14000000" />
+        </Style>
 
-            <Border BackgroundColor="#FFF8E8"
-                    Padding="22"
-                    StrokeThickness="0"
-                    StrokeShape="RoundRectangle 28">
-                <VerticalStackLayout Spacing="14">
-                    <Label Text="{Binding Result.TopicName}"
-                           FontFamily="OpenSans-Semibold"
-                           FontSize="24"
-                           TextColor="{StaticResource AppPrimaryText}" />
-                    <Label Text="{Binding Result.ResultText}"
-                           FontFamily="OpenSans-Semibold"
-                           FontSize="16"
-                           TextColor="{StaticResource AppBrand}" />
-                    <Grid ColumnDefinitions="*,*"
-                          RowDefinitions="Auto,Auto"
-                          ColumnSpacing="12"
-                          RowSpacing="12">
-                        <Border Grid.Row="0"
-                                Grid.Column="0"
-                                Style="{StaticResource AppCard}">
-                            <VerticalStackLayout Spacing="6">
-                                <Label Text="Điểm"
-                                       Style="{StaticResource AppCaptionLabel}" />
-                                <Label Text="{Binding Result.Score, StringFormat='{0}%'}"
+        <Style x:Key="ResultCaptionStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSans-Semibold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextColor" Value="{StaticResource AppTertiaryText}" />
+        </Style>
+
+        <Style x:Key="ResultButtonStyle" TargetType="Button">
+            <Setter Property="FontFamily" Value="OpenSans-Semibold" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="CornerRadius" Value="18" />
+            <Setter Property="HeightRequest" Value="52" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16,12,16,128"
+                                 Spacing="16">
+                <Border BackgroundColor="#FFFFFF"
+                        Padding="20,14"
+                        StrokeThickness="0"
+                        Shadow="0,8,24,#0D000000">
+                    <Grid ColumnDefinitions="Auto,*"
+                          ColumnSpacing="12">
+                        <Border WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="#F2F3F5"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 20"
+                                VerticalOptions="Center">
+                            <Label Text="‹"
+                                   FontSize="28"
+                                    TextColor="{StaticResource AppPrimaryText}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TranslationY="-2" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoPracticeHomeCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="1"
+                                             VerticalOptions="Center">
+                            <Label Text="ONTHIBANGLAI"
+                                   Style="{StaticResource AppHeaderBrandLabel}" />
+                            <Label Text="Kết quả ôn tập"
+                                   FontFamily="OpenSans-Semibold"
+                                    FontSize="26"
+                                    TextColor="{StaticResource AppPrimaryText}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border BackgroundColor="#FFF8E8"
+                        Padding="20"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24"
+                        Shadow="0,10,28,#0F000000">
+                    <VerticalStackLayout Spacing="16">
+                        <Grid ColumnDefinitions="*,Auto"
+                              ColumnSpacing="14">
+                            <VerticalStackLayout Spacing="5"
+                                                 VerticalOptions="Center">
+                                <Label Text="{Binding Result.TopicName}"
                                        FontFamily="OpenSans-Semibold"
-                                       FontSize="24"
+                                       FontSize="22"
+                                       TextColor="{StaticResource AppPrimaryText}"
+                                       LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding Result.ResultText}"
+                                       FontFamily="OpenSans-Semibold"
+                                       FontSize="15"
                                        TextColor="{StaticResource AppBrand}" />
                             </VerticalStackLayout>
+
+                            <Border Grid.Column="1"
+                                    WidthRequest="58"
+                                    HeightRequest="58"
+                                    BackgroundColor="#FFFFFF"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 29"
+                                    VerticalOptions="Center">
+                                <Label Text="🏁"
+                                       FontSize="28"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+                        </Grid>
+
+                        <Border BackgroundColor="#FFFFFF"
+                                Padding="18"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 22">
+                            <Grid ColumnDefinitions="Auto,*"
+                                  ColumnSpacing="18">
+                                <Border WidthRequest="78"
+                                        HeightRequest="78"
+                                        BackgroundColor="#FFF1D6"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 39"
+                                        VerticalOptions="Center">
+                                    <Label Text="{Binding Result.Score, StringFormat='{0}%'}"
+                                           FontFamily="OpenSans-Semibold"
+                                           FontSize="22"
+                                           TextColor="{StaticResource AppBrand}"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Spacing="6"
+                                                     VerticalOptions="Center">
+                                    <Label Text="Điểm tổng kết"
+                                           Style="{StaticResource ResultCaptionStyle}" />
+                                    <Label Text="Hoàn thành phiên ôn tập"
+                                           FontFamily="OpenSans-Semibold"
+                                           FontSize="18"
+                                           TextColor="{StaticResource AppPrimaryText}" />
+                                    <Label Text="{Binding Result.DurationText, StringFormat='Thời gian làm bài: {0}'}"
+                                           FontSize="13"
+                                           TextColor="#5F564B" />
+                                </VerticalStackLayout>
+                            </Grid>
                         </Border>
-                        <Border Grid.Row="0"
-                                Grid.Column="1"
-                                Style="{StaticResource AppCard}">
-                            <VerticalStackLayout Spacing="6">
-                                <Label Text="Thời gian"
-                                       Style="{StaticResource AppCaptionLabel}" />
-                                <Label Text="{Binding Result.DurationText}"
-                                       FontFamily="OpenSans-Semibold"
-                                       FontSize="24"
-                                       TextColor="{StaticResource AppPrimaryText}" />
-                            </VerticalStackLayout>
-                        </Border>
-                        <Border Grid.Row="1"
-                                Grid.Column="0"
-                                Style="{StaticResource AppCard}">
-                            <VerticalStackLayout Spacing="6">
-                                <Label Text="Câu đúng"
-                                       Style="{StaticResource AppCaptionLabel}" />
-                                <Label Text="{Binding Result.CorrectAnswers}"
-                                       FontFamily="OpenSans-Semibold"
-                                       FontSize="24"
-                                       TextColor="{StaticResource AppSuccess}" />
-                            </VerticalStackLayout>
-                        </Border>
-                        <Border Grid.Row="1"
-                                Grid.Column="1"
-                                Style="{StaticResource AppCard}">
-                            <VerticalStackLayout Spacing="6">
-                                <Label Text="Câu sai"
-                                       Style="{StaticResource AppCaptionLabel}" />
-                                <Label Text="{Binding Result.WrongAnswers}"
-                                       FontFamily="OpenSans-Semibold"
-                                       FontSize="24"
-                                       TextColor="#D32F2F" />
-                            </VerticalStackLayout>
-                        </Border>
-                    </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid ColumnDefinitions="*,*"
+                      RowDefinitions="Auto,Auto"
+                      ColumnSpacing="12"
+                      RowSpacing="12">
+                    <Border Style="{StaticResource ResultMetricCardStyle}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Điểm"
+                                   Style="{StaticResource ResultCaptionStyle}" />
+                            <Label Text="{Binding Result.Score, StringFormat='{0}%'}"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="24"
+                                   TextColor="{StaticResource AppBrand}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Grid.Column="1"
+                            Style="{StaticResource ResultMetricCardStyle}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Thời gian"
+                                   Style="{StaticResource ResultCaptionStyle}" />
+                            <Label Text="{Binding Result.DurationText}"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="24"
+                                   TextColor="{StaticResource AppPrimaryText}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Grid.Row="1"
+                            Style="{StaticResource ResultMetricCardStyle}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Câu đúng"
+                                   Style="{StaticResource ResultCaptionStyle}" />
+                            <Label Text="{Binding Result.CorrectAnswers}"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="24"
+                                   TextColor="{StaticResource AppSuccess}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Grid.Row="1"
+                            Grid.Column="1"
+                            Style="{StaticResource ResultMetricCardStyle}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Câu sai"
+                                   Style="{StaticResource ResultCaptionStyle}" />
+                            <Label Text="{Binding Result.WrongAnswers}"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="24"
+                                   TextColor="#D32F2F" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <VerticalStackLayout Spacing="10">
+                    <Button Text="LÀM LẠI CHỦ ĐỀ"
+                            Style="{StaticResource ResultButtonStyle}"
+                            BackgroundColor="{StaticResource AppBrandAccent}"
+                            TextColor="{StaticResource AppPrimaryText}"
+                            Command="{Binding RetakeCommand}" />
+
+                    <Button Text="VỀ MÀN ÔN TẬP"
+                            Style="{StaticResource ResultButtonStyle}"
+                            BackgroundColor="{StaticResource AppSurfaceMuted}"
+                            TextColor="{StaticResource AppBrand}"
+                            Command="{Binding GoPracticeHomeCommand}" />
+
+                    <Button Text="VỀ TRANG CHỦ"
+                            Style="{StaticResource ResultButtonStyle}"
+                            BackgroundColor="{StaticResource AppPrimaryText}"
+                            TextColor="{StaticResource AppPageBackground}"
+                            Command="{Binding GoHomeCommand}" />
                 </VerticalStackLayout>
-            </Border>
+            </VerticalStackLayout>
+        </ScrollView>
 
-            <Button Text="LÀM LẠI CHỦ ĐỀ"
-                    BackgroundColor="{StaticResource AppBrandAccent}"
-                    TextColor="{StaticResource AppPrimaryText}"
-                    FontFamily="OpenSans-Semibold"
-                    CornerRadius="18"
-                    HeightRequest="54"
-                    Command="{Binding RetakeCommand}" />
+        <controls:AppBottomNavView Grid.Row="1"
+                                   CurrentTab="practice" />
 
-            <Button Text="VỀ MÀN ÔN TẬP"
-                    BackgroundColor="{StaticResource AppSurfaceMuted}"
-                    TextColor="{StaticResource AppBrand}"
-                    FontFamily="OpenSans-Semibold"
-                    CornerRadius="18"
-                    HeightRequest="54"
-                    Command="{Binding GoPracticeHomeCommand}" />
-
-            <Button Text="VỀ TRANG CHỦ"
-                    BackgroundColor="{StaticResource AppPrimaryText}"
-                    TextColor="{StaticResource AppPageBackground}"
-                    FontFamily="OpenSans-Semibold"
-                    CornerRadius="18"
-                    HeightRequest="54"
-                    Command="{Binding GoHomeCommand}" />
-        </VerticalStackLayout>
-    </ScrollView>
-
-    <controls:AppBottomNavView Grid.Row="1"
-                               CurrentTab="practice" />
+        <controls:ChatOverlayView Grid.RowSpan="2" />
     </Grid>
-
 </ContentPage>

@@ -301,11 +301,23 @@
                         </Border>
                     </FlexLayout>
                 </VerticalStackLayout>
+
+                <Button x:Name="LogoutButton"
+                        Text="Đăng xuất"
+                        HeightRequest="54"
+                        CornerRadius="27"
+                        BackgroundColor="#2E2A25"
+                        TextColor="White"
+                        FontFamily="OpenSans-Semibold"
+                        FontSize="16"
+                        Clicked="OnLogoutClicked" />
             </VerticalStackLayout>
         </ScrollView>
 
         <controls:AppBottomNavView Grid.Row="2"
                                    CurrentTab="profile" />
+
+        <controls:ChatOverlayView Grid.RowSpan="3" />
     </Grid>
 
 </ContentPage>

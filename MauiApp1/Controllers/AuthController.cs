@@ -30,6 +30,17 @@ public sealed class AuthController : BaseController
         return result;
     }
 
+    public Task<RegisterResult> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
+    {
+        return _authService.RegisterAsync(request, cancellationToken);
+    }
+
+    public async Task LogoutAsync(CancellationToken cancellationToken = default)
+    {
+        await _authService.LogoutAsync(cancellationToken);
+        await OpenLoginAsync();
+    }
+
     public Task<MeResponse?> GetCurrentUserProfileAsync(CancellationToken cancellationToken = default)
     {
         return _authService.GetCurrentUserProfileAsync(cancellationToken);

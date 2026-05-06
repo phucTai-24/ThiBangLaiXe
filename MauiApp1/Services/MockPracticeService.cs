@@ -10,7 +10,8 @@ public class MockPracticeService : IPracticeService
         new PracticeTopic
         {
             Id = 1,
-            Name = "Luật giao thông",
+            Code = "CD_QTGT",
+            Name = "Quy tắc giao thông đường bộ",
             Description = "Ôn các câu nền tảng về tốc độ, làn đường, nhường đường và xử phạt.",
             QuestionCount = 120,
             AccentEmoji = "📘",
@@ -20,6 +21,7 @@ public class MockPracticeService : IPracticeService
         new PracticeTopic
         {
             Id = 2,
+            Code = "CD_BH",
             Name = "Biển báo giao thông",
             Description = "Nhận diện nhanh biển cấm, biển nguy hiểm, chỉ dẫn và hiệu lệnh.",
             QuestionCount = 86,
@@ -30,6 +32,7 @@ public class MockPracticeService : IPracticeService
         new PracticeTopic
         {
             Id = 3,
+            Code = "CD_SH",
             Name = "Sa hình và kỹ năng lái",
             Description = "Ôn mẹo xử lý tình huống, khoảng cách và thao tác thực tế.",
             QuestionCount = 54,
@@ -39,11 +42,32 @@ public class MockPracticeService : IPracticeService
         new PracticeTopic
         {
             Id = 4,
+            Code = "CD_LIET",
             Name = "Câu điểm liệt",
             Description = "Tập trung nhóm câu bắt buộc không được sai trong bài thi.",
             QuestionCount = 20,
             AccentEmoji = "⚠️",
             AccentColor = "#8E24AA"
+        },
+        new PracticeTopic
+        {
+            Id = 5,
+            Code = "CD_VH",
+            Name = "Văn hóa và đạo đức lái xe",
+            Description = "Ứng xử văn minh, trách nhiệm khi tham gia giao thông.",
+            QuestionCount = 35,
+            AccentEmoji = "🤝",
+            AccentColor = "#9333EA"
+        },
+        new PracticeTopic
+        {
+            Id = 6,
+            Code = "CD_KT",
+            Name = "Kỹ thuật lái xe",
+            Description = "Kiến thức kỹ thuật cơ bản đối với xe mô tô.",
+            QuestionCount = 25,
+            AccentEmoji = "🛠️",
+            AccentColor = "#0F766E"
         }
     ];
 
@@ -93,6 +117,40 @@ public class MockPracticeService : IPracticeService
         _sessions[session.Id] = session;
 
         return Task.FromResult(session);
+    }
+
+    public Task<PracticeQuestionGroupCounts> GetPracticeQuestionGroupCountsAsync(string? topicCode = null)
+    {
+        return Task.FromResult(new PracticeQuestionGroupCounts
+        {
+            Theory = string.IsNullOrWhiteSpace(topicCode)
+                ? _topics.Where(x => x.Code is "CD_QTGT" or "CD_VH" or "CD_KT").Sum(x => x.QuestionCount)
+                : _topics.FirstOrDefault(x => string.Equals(x.Code, topicCode, StringComparison.OrdinalIgnoreCase))?.QuestionCount ?? 0,
+            TrafficSigns = string.IsNullOrWhiteSpace(topicCode) || string.Equals(topicCode, "CD_BH", StringComparison.OrdinalIgnoreCase)
+                ? _topics.FirstOrDefault(x => x.Code == "CD_BH")?.QuestionCount ?? 0
+                : 0,
+            Situational = string.IsNullOrWhiteSpace(topicCode) || string.Equals(topicCode, "CD_SH", StringComparison.OrdinalIgnoreCase)
+                ? _topics.FirstOrDefault(x => x.Code == "CD_SH")?.QuestionCount ?? 0
+                : 0
+        });
+    }
+
+    public Task<PracticeSession> StartFilteredPracticeSessionAsync(string groupCode, int questionCount, string? topicCode = null, string note = "")
+    {
+        if (!string.IsNullOrWhiteSpace(topicCode))
+        {
+            var topic = _topics.FirstOrDefault(x => string.Equals(x.Code, topicCode, StringComparison.OrdinalIgnoreCase)) ?? _topics[0];
+            return StartPracticeSessionAsync(topic.Id, questionCount, note);
+        }
+
+        var topicId = groupCode.Trim().ToLowerInvariant() switch
+        {
+            "critical" => 4,
+            "traffic-signs" => 2,
+            "situational" => 3,
+            _ => 1
+        };
+        return StartPracticeSessionAsync(topicId, questionCount, note);
     }
 
     public Task<int> GetCriticalSummaryAsync()

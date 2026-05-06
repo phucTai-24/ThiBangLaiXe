@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.Views.HistoryPage"
-             BackgroundColor="#FCF9F2">
+             Style="{StaticResource AppPageStyle}">
 
     <Grid RowDefinitions="Auto,*,Auto">
         <Border
@@ -21,6 +21,9 @@
                     StrokeShape="RoundRectangle 16"
                     VerticalOptions="Center">
                     <Label Text="←" FontSize="18" TextColor="#271900" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackTapped" />
+                    </Border.GestureRecognizers>
                 </Border>
 
                 <Label

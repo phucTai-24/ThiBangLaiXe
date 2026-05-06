@@ -2,25 +2,67 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:MauiApp1.ViewModels"
-             xmlns:models="clr-namespace:MauiApp1.Models"
              xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.Views.TrafficSignsPage"
              x:DataType="vm:PracticeViewModel"
-             BackgroundColor="#FCF9F2">
+             Style="{StaticResource AppPageStyle}">
+
+    <ContentPage.Resources>
+        <Style x:Key="PracticeCardStyle" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="#FFFFFF" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="StrokeThickness" Value="0" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 24" />
+            <Setter Property="Shadow" Value="0,14,32,#14000000" />
+        </Style>
+
+        <Style x:Key="CardTitleStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSans-Semibold" />
+            <Setter Property="FontSize" Value="19" />
+            <Setter Property="TextColor" Value="#151515" />
+            <Setter Property="LineBreakMode" Value="TailTruncation" />
+        </Style>
+
+        <Style x:Key="CardDescriptionStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="LineHeight" Value="1.35" />
+            <Setter Property="TextColor" Value="#6F6F6F" />
+        </Style>
+
+        <Style x:Key="BadgeTextStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSans-Semibold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="StartButtonTextStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSans-Semibold" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="#FFFFFF" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+    </ContentPage.Resources>
 
     <Grid RowDefinitions="Auto,*,Auto">
         <Border Grid.Row="0"
-                Style="{StaticResource AppHeaderContainer}"
-                Shadow="0,8,20,#12000000">
+                BackgroundColor="#FFFFFF"
+                Padding="20,14"
+                StrokeThickness="0"
+                Shadow="0,8,24,#0D000000">
             <Grid ColumnDefinitions="Auto,*,Auto"
-                  Style="{StaticResource AppHeaderGrid}">
-                <Border Style="{StaticResource AppIconButtonCard}"
-                        VerticalOptions="Center">
-                    <Label Text="←"
-                           FontSize="18"
-                           TextColor="{StaticResource AppPrimaryText}"
+                  ColumnSpacing="14"
+                  VerticalOptions="Center">
+                <Border WidthRequest="44"
+                        HeightRequest="44"
+                        BackgroundColor="#F2F3F5"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 22">
+                    <Label Text="‹"
+                           FontSize="30"
+                           TextColor="#242424"
                            HorizontalOptions="Center"
-                           VerticalOptions="Center" />
+                           VerticalOptions="Center"
+                           TranslationY="-2" />
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                     </Border.GestureRecognizers>
@@ -30,325 +72,509 @@
                                      Spacing="2"
                                      VerticalOptions="Center">
                     <Label Text="ONTHIBANGLAI"
-                           Style="{StaticResource AppHeaderBrandLabel}" />
-                    <Label Text="Ôn tập lý thuyết"
-                           Style="{StaticResource AppHeaderTitleLabel}"
-                           FontSize="22"
-                           TextColor="{StaticResource AppBrand}" />
+                           FontFamily="OpenSans-Semibold"
+                           FontSize="11"
+                           TextColor="#9A9A9A"
+                           CharacterSpacing="1.4" />
+                    <Label Text="Ôn tập"
+                           FontFamily="OpenSans-Semibold"
+                           FontSize="26"
+                           TextColor="#151515" />
                 </VerticalStackLayout>
 
-                <Label Grid.Column="2"
-                       Text="LIVE API"
-                       Style="{StaticResource AppHeaderTrailingLabel}"
-                       FontSize="12" />
+                <Border Grid.Column="2"
+                        BackgroundColor="#EAF7EF"
+                        Padding="10,6"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 999"
+                        VerticalOptions="Center">
+                    <Label Text="LIVE API"
+                           FontFamily="OpenSans-Semibold"
+                           FontSize="11"
+                           TextColor="#1B8F4A" />
+                </Border>
             </Grid>
         </Border>
 
         <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="24,20,24,140" Spacing="18">
-                <Border BackgroundColor="#FFF8E8"
-                        Padding="20"
-                        StrokeThickness="0"
-                        StrokeShape="RoundRectangle 24">
-                    <VerticalStackLayout Spacing="12">
-                        <Label Text="Phiên ôn tập"
-                               FontFamily="OpenSans-Semibold"
-                               FontSize="22"
-                               TextColor="#271900" />
-                        <Label Text="{Binding PracticeSummaryText}"
-                               FontSize="13"
-                               LineHeight="1.35"
-                               TextColor="#5F564B" />
-                        <Label Text="{Binding LastSessionText}"
-                               FontFamily="OpenSans-Semibold"
-                               FontSize="13"
-                               TextColor="{StaticResource AppBrand}" />
-
-                        <Grid ColumnDefinitions="Auto,*"
-                              ColumnSpacing="10"
-                              Margin="0,6,0,0">
-                            <Label Text="Số câu mỗi phiên"
-                                   FontFamily="OpenSans-Semibold"
-                                   FontSize="12"
-                                   TextColor="#5F564B"
-                                   VerticalOptions="Center" />
-                            <Picker Grid.Column="1"
-                                    Title="Chọn số câu"
-                                    ItemsSource="{Binding QuestionCountOptions}"
-                                    SelectedItem="{Binding SelectedQuestionCount}"
-                                    BackgroundColor="#FFFFFF"
-                                    TextColor="#271900"
-                                    HeightRequest="44" />
-                        </Grid>
-                    </VerticalStackLayout>
-                </Border>
-
+            <VerticalStackLayout Padding="20,22,20,128"
+                                 Spacing="18">
                 <ActivityIndicator IsRunning="{Binding IsLoading}"
                                    IsVisible="{Binding IsLoading}"
-                                   Color="#7C5800"
+                                   Color="#2563EB"
                                    HorizontalOptions="Center" />
 
-                <Border BackgroundColor="{StaticResource AppBrand}"
-                        Padding="22"
+                <Border Background="#EAF1FF"
+                        Padding="18"
                         StrokeThickness="0"
                         StrokeShape="RoundRectangle 24">
-                    <VerticalStackLayout Spacing="14">
-                        <Label Text="Phiên ôn tập đề xuất"
-                               FontFamily="OpenSans-Semibold"
-                               FontSize="22"
-                               TextColor="#FFF8E8" />
-                        <Label Text="{Binding RecommendedTopic.Description}"
-                               FontSize="13"
-                               LineHeight="1.35"
-                               TextColor="#F5E4B7" />
+                    <Grid ColumnDefinitions="*,Auto"
+                          ColumnSpacing="16">
+                        <VerticalStackLayout Spacing="5"
+                                             VerticalOptions="Center">
+                            <Label Text="Chọn nội dung cần luyện"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="20"
+                                   TextColor="#123D6B" />
+                            <Label Text="Tập trung ôn theo từng nhóm câu hỏi để cải thiện kết quả nhanh hơn."
+                                   FontSize="13"
+                                   LineHeight="1.35"
+                                   TextColor="#507093" />
+                        </VerticalStackLayout>
 
-                        <Grid ColumnDefinitions="Auto,*"
-                              ColumnSpacing="10">
-                            <Border BackgroundColor="#19FFFFFF"
+                        <Border Grid.Column="1"
+                                WidthRequest="52"
+                                HeightRequest="52"
+                                BackgroundColor="#FFFFFF"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 26"
+                                VerticalOptions="Center">
+                            <Label Text="📚"
+                                   FontSize="26"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource PracticeCardStyle}">
+                    <Grid RowDefinitions="Auto,Auto,Auto"
+                          ColumnDefinitions="Auto,*"
+                          ColumnSpacing="16"
+                          RowSpacing="14">
+                        <Border WidthRequest="56"
+                                HeightRequest="56"
+                                BackgroundColor="#FFF3E8"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 28">
+                            <Label Text="⚠️"
+                                   FontSize="28"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="5"
+                                             VerticalOptions="Center">
+                            <Label Text="Ôn điểm liệt"
+                                   Style="{StaticResource CardTitleStyle}" />
+                            <Label Text="Tập trung nhóm câu hỏi bắt buộc không được sai trong bài thi."
+                                   Style="{StaticResource CardDescriptionStyle}" />
+                        </VerticalStackLayout>
+
+                        <Grid Grid.Row="1"
+                              Grid.ColumnSpan="2"
+                              ColumnDefinitions="*,Auto"
+                              ColumnSpacing="12">
+                            <Border BackgroundColor="#FFF3E8"
                                     Padding="12,8"
-                                    Stroke="#26FFFFFF"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 999">
-                                <Label Text="{Binding RecommendedTopic.AccentEmoji}"
-                                       FontSize="18" />
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center">
+                                <Label Text="{Binding CriticalQuestionCount, StringFormat='Hiện có {0} câu điểm liệt'}"
+                                       Style="{StaticResource BadgeTextStyle}"
+                                       TextColor="#C2410C" />
                             </Border>
-                            <VerticalStackLayout Grid.Column="1"
-                                                 Spacing="4"
-                                                 VerticalOptions="Center">
-                                <Label Text="{Binding RecommendedTopic.Name}"
-                                       FontFamily="OpenSans-Semibold"
-                                       FontSize="16"
-                                       TextColor="#FFF8E8" />
-                                <Label Text="{Binding RecommendedTopic.QuestionCount, StringFormat='Bộ chủ đề có {0} câu hỏi'}"
-                                       FontSize="12"
-                                       TextColor="#F5E4B7" />
-                            </VerticalStackLayout>
+
+                            <Border Grid.Column="1"
+                                    Padding="18,10"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    VerticalOptions="Center">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#F97316" Offset="0.0" />
+                                        <GradientStop Color="#EA580C" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Label Text="Bắt đầu"
+                                       Style="{StaticResource StartButtonTextStyle}" />
+                            </Border>
                         </Grid>
-
-                        <Border BackgroundColor="{StaticResource AppBrandAccent}"
-                                Padding="14,10"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 999"
-                                HorizontalOptions="Start">
-                            <Label Text="Bắt đầu ôn tập"
-                                   FontFamily="OpenSans-Semibold"
-                                   FontSize="13"
-                                   TextColor="{StaticResource AppBrandStrong}" />
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding StartRecommendedPracticeCommand}" />
-                            </Border.GestureRecognizers>
-                        </Border>
-                    </VerticalStackLayout>
+                    </Grid>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal" />
+                            <VisualState Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="0.98" />
+                                    <Setter Property="Opacity" Value="0.92" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding StartCriticalPracticeCommand}" />
+                    </Border.GestureRecognizers>
                 </Border>
 
-                <Border BackgroundColor="#FFFFFF"
-                        Padding="20"
-                        StrokeThickness="0"
-                        StrokeShape="RoundRectangle 24"
-                        Shadow="0,12,24,#081C1C18">
-                    <VerticalStackLayout Spacing="12">
-                        <Label Text="Ôn điểm liệt"
-                               FontFamily="OpenSans-Semibold"
-                               FontSize="20"
-                               TextColor="#271900" />
-
-                        <Label Text="Tập trung nhóm câu hỏi bắt buộc không được sai trong bài thi."
-                               FontSize="13"
-                               LineHeight="1.35"
-                               TextColor="#5F564B" />
-
-                        <Border BackgroundColor="#FFF1D6"
-                                Padding="12,8"
+                <Border Style="{StaticResource PracticeCardStyle}">
+                    <Grid RowDefinitions="Auto,Auto,Auto"
+                          ColumnDefinitions="Auto,*"
+                          ColumnSpacing="16"
+                          RowSpacing="14">
+                        <Border WidthRequest="56"
+                                HeightRequest="56"
+                                BackgroundColor="#EEF5FF"
                                 StrokeThickness="0"
-                                StrokeShape="RoundRectangle 999"
-                                HorizontalOptions="Start">
-                            <Label Text="{Binding CriticalQuestionCount, StringFormat='Hiện có {0} câu điểm liệt'}"
-                                   FontFamily="OpenSans-Semibold"
-                                   FontSize="12"
-                                   TextColor="#7C5800" />
+                                StrokeShape="RoundRectangle 28">
+                            <Label Text="📘"
+                                   FontSize="28"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
                         </Border>
 
-                        <Border BackgroundColor="{StaticResource AppBrandAccent}"
-                                Padding="14,10"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 999"
-                                HorizontalOptions="Start">
-                            <Label Text="Bắt đầu"
-                                   FontFamily="OpenSans-Semibold"
-                                   FontSize="13"
-                                   TextColor="{StaticResource AppBrandStrong}" />
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding StartCriticalPracticeCommand}" />
-                            </Border.GestureRecognizers>
-                        </Border>
-                    </VerticalStackLayout>
-                </Border>
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="5"
+                                             VerticalOptions="Center">
+                            <Label Text="Quy tắc giao thông đường bộ"
+                                   Style="{StaticResource CardTitleStyle}" />
+                            <Label Text="Ôn nhóm quy tắc chung và hành vi khi tham gia giao thông."
+                                   Style="{StaticResource CardDescriptionStyle}" />
+                        </VerticalStackLayout>
 
-                <Border BackgroundColor="#FFFFFF"
-                        Padding="20"
-                        StrokeThickness="0"
-                        StrokeShape="RoundRectangle 24"
-                        Shadow="0,12,24,#081C1C18">
-                    <VerticalStackLayout Spacing="12">
-                        <Label Text="Ôn tập biển báo"
-                               FontFamily="OpenSans-Semibold"
-                               FontSize="20"
-                               TextColor="#271900" />
-
-                        <Label Text="Luyện nhanh nhóm câu biển báo giao thông từ dữ liệu chủ đề API hiện có."
-                               FontSize="13"
-                               LineHeight="1.35"
-                               TextColor="#5F564B" />
-
-                        <Border BackgroundColor="#FFF1D6"
-                                Padding="12,8"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 999"
-                                HorizontalOptions="Start">
-                            <Label Text="{Binding TrafficSignsQuestionCount, StringFormat='Hiện có {0} câu biển báo'}"
-                                   FontFamily="OpenSans-Semibold"
-                                   FontSize="12"
-                                   TextColor="#7C5800" />
-                        </Border>
-
-                        <Border BackgroundColor="{StaticResource AppBrandAccent}"
-                                Padding="14,10"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 999"
-                                HorizontalOptions="Start">
-                            <Label Text="Bắt đầu"
-                                   FontFamily="OpenSans-Semibold"
-                                   FontSize="13"
-                                   TextColor="{StaticResource AppBrandStrong}" />
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding StartTrafficSignsPracticeCommand}" />
-                            </Border.GestureRecognizers>
-                        </Border>
-                    </VerticalStackLayout>
-                </Border>
-
-                <VerticalStackLayout Spacing="12"
-                                     BindableLayout.ItemsSource="{Binding Topics}">
-                    <Label Text="Chủ đề ôn tập"
-                           FontFamily="OpenSans-Semibold"
-                           FontSize="20"
-                           TextColor="#271900" />
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="models:PracticeTopic">
-                            <Border Padding="18"
-                                    Margin="0,0,0,14"
-                                    BackgroundColor="#FFFFFF"
+                        <Grid Grid.Row="1"
+                              Grid.ColumnSpan="2"
+                              ColumnDefinitions="*,Auto"
+                              ColumnSpacing="12">
+                            <Border BackgroundColor="#EEF5FF"
+                                    Padding="12,8"
                                     StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 24"
-                                    Shadow="0,16,32,#0A1C1C18">
-                                <Grid ColumnDefinitions="Auto,*"
-                                      ColumnSpacing="16">
-                                    <Border WidthRequest="72"
-                                            HeightRequest="72"
-                                            BackgroundColor="#F6F3EC"
-                                            StrokeThickness="0"
-                                            StrokeShape="RoundRectangle 18">
-                                        <Label Text="{Binding AccentEmoji}"
-                                               FontSize="34"
-                                               HorizontalOptions="Center"
-                                               VerticalOptions="Center" />
-                                    </Border>
-
-                                    <VerticalStackLayout Grid.Column="1"
-                                                         Spacing="6">
-                                        <HorizontalStackLayout Spacing="8">
-                                            <Label Text="{Binding Name}"
-                                                   FontFamily="OpenSans-Semibold"
-                                                   FontSize="18"
-                                                   TextColor="#271900" />
-                                            <Border Padding="8,4"
-                                                    BackgroundColor="#FFF1D6"
-                                                    StrokeThickness="0"
-                                                    StrokeShape="RoundRectangle 10"
-                                                    IsVisible="{Binding IsRecommended}">
-                                                <Label Text="Gợi ý"
-                                                       FontFamily="OpenSans-Semibold"
-                                                       FontSize="10"
-                                                       TextColor="#7C5800" />
-                                            </Border>
-                                        </HorizontalStackLayout>
-
-                                        <Label Text="{Binding Description}"
-                                               FontSize="13"
-                                               LineHeight="1.35"
-                                               TextColor="#5F564B" />
-                                        <Label Text="{Binding QuestionCount, StringFormat='Sẵn sàng {0} câu hỏi theo API'}"
-                                               FontFamily="OpenSans-Semibold"
-                                               FontSize="12"
-                                               TextColor="{StaticResource AppBrand}" />
-                                    </VerticalStackLayout>
-                                </Grid>
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.StartTopicPracticeCommand}"
-                                                          CommandParameter="{Binding .}" />
-                                </Border.GestureRecognizers>
+                                    StrokeShape="RoundRectangle 999"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center">
+                                <Label Text="{Binding TrafficRulesQuestionCount, StringFormat='Hiện có {0} câu quy tắc'}"
+                                       Style="{StaticResource BadgeTextStyle}"
+                                       TextColor="#2563EB" />
                             </Border>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </VerticalStackLayout>
 
-                <VerticalStackLayout Spacing="12"
-                                     BindableLayout.ItemsSource="{Binding PracticeHistory}">
-                    <Label Text="Lịch sử ôn tập"
-                           FontFamily="OpenSans-Semibold"
-                           FontSize="20"
-                           TextColor="#271900" />
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="models:PracticeHistoryItem">
-                            <Border BackgroundColor="#FFFFFF"
-                                    Padding="18"
-                                    Margin="0,0,0,12"
+                            <Border Grid.Column="1"
+                                    Padding="18,10"
                                     StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 20"
-                                    Shadow="0,12,24,#081C1C18">
-                                <Grid ColumnDefinitions="*,Auto"
-                                      RowDefinitions="Auto,Auto,Auto"
-                                      ColumnSpacing="10"
-                                      RowSpacing="6">
-                                    <Label Text="{Binding Topic}"
-                                           FontFamily="OpenSans-Semibold"
-                                           FontSize="16"
-                                           TextColor="#271900" />
-                                    <Border Grid.Column="1"
-                                            Padding="10,6"
-                                            BackgroundColor="#FFF1D6"
-                                            StrokeThickness="0"
-                                            StrokeShape="RoundRectangle 999">
-                                        <Label Text="{Binding Score, StringFormat='Điểm {0}'}"
-                                               FontFamily="OpenSans-Semibold"
-                                               FontSize="11"
-                                               TextColor="#7C5800" />
-                                    </Border>
-                                    <Label Grid.Row="1"
-                                           Text="{Binding CorrectAnswers, StringFormat='Đúng {0} câu'}"
-                                           FontSize="13"
-                                           TextColor="#5F564B" />
-                                    <Label Grid.Row="1"
-                                           Grid.Column="1"
-                                           Text="{Binding TotalQuestions, StringFormat='/ {0} câu'}"
-                                           FontSize="13"
-                                           TextColor="#5F564B"
-                                           HorizontalTextAlignment="End" />
-                                    <Label Grid.Row="2"
-                                           Grid.ColumnSpan="2"
-                                           Text="{Binding PracticedAtText}"
-                                           FontSize="12"
-                                           TextColor="#9B8F7C" />
-                                </Grid>
+                                    StrokeShape="RoundRectangle 999"
+                                    VerticalOptions="Center">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#3B82F6" Offset="0.0" />
+                                        <GradientStop Color="#2563EB" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Label Text="Bắt đầu"
+                                       Style="{StaticResource StartButtonTextStyle}" />
                             </Border>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </VerticalStackLayout>
+                        </Grid>
+                    </Grid>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal" />
+                            <VisualState Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="0.98" />
+                                    <Setter Property="Opacity" Value="0.92" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding StartTrafficRulesPracticeCommand}" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border Style="{StaticResource PracticeCardStyle}">
+                    <Grid RowDefinitions="Auto,Auto,Auto"
+                          ColumnDefinitions="Auto,*"
+                          ColumnSpacing="16"
+                          RowSpacing="14">
+                        <Border WidthRequest="56"
+                                HeightRequest="56"
+                                BackgroundColor="#F3E8FF"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 28">
+                            <Label Text="🤝"
+                                   FontSize="28"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="5"
+                                             VerticalOptions="Center">
+                            <Label Text="Văn hóa và đạo đức lái xe"
+                                   Style="{StaticResource CardTitleStyle}" />
+                            <Label Text="Ôn cách ứng xử văn minh, trách nhiệm và an toàn khi tham gia giao thông."
+                                   Style="{StaticResource CardDescriptionStyle}" />
+                        </VerticalStackLayout>
+
+                        <Grid Grid.Row="1"
+                              Grid.ColumnSpan="2"
+                              ColumnDefinitions="*,Auto"
+                              ColumnSpacing="12">
+                            <Border BackgroundColor="#F3E8FF"
+                                    Padding="12,8"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center">
+                                <Label Text="{Binding DrivingCultureQuestionCount, StringFormat='Hiện có {0} câu văn hóa'}"
+                                       Style="{StaticResource BadgeTextStyle}"
+                                       TextColor="#7E22CE" />
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    Padding="18,10"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    VerticalOptions="Center">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#A855F7" Offset="0.0" />
+                                        <GradientStop Color="#7E22CE" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Label Text="Bắt đầu"
+                                       Style="{StaticResource StartButtonTextStyle}" />
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal" />
+                            <VisualState Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="0.98" />
+                                    <Setter Property="Opacity" Value="0.92" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding StartDrivingCulturePracticeCommand}" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border Style="{StaticResource PracticeCardStyle}">
+                    <Grid RowDefinitions="Auto,Auto,Auto"
+                          ColumnDefinitions="Auto,*"
+                          ColumnSpacing="16"
+                          RowSpacing="14">
+                        <Border WidthRequest="56"
+                                HeightRequest="56"
+                                BackgroundColor="#ECFDF5"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 28">
+                            <Label Text="🛠️"
+                                   FontSize="28"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="5"
+                                             VerticalOptions="Center">
+                            <Label Text="Kỹ thuật lái xe"
+                                   Style="{StaticResource CardTitleStyle}" />
+                            <Label Text="Ôn kiến thức kỹ thuật cơ bản đối với xe mô tô và cách vận hành an toàn."
+                                   Style="{StaticResource CardDescriptionStyle}" />
+                        </VerticalStackLayout>
+
+                        <Grid Grid.Row="1"
+                              Grid.ColumnSpan="2"
+                              ColumnDefinitions="*,Auto"
+                              ColumnSpacing="12">
+                            <Border BackgroundColor="#ECFDF5"
+                                    Padding="12,8"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center">
+                                <Label Text="{Binding DrivingTechniqueQuestionCount, StringFormat='Hiện có {0} câu kỹ thuật'}"
+                                       Style="{StaticResource BadgeTextStyle}"
+                                       TextColor="#047857" />
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    Padding="18,10"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    VerticalOptions="Center">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#10B981" Offset="0.0" />
+                                        <GradientStop Color="#047857" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Label Text="Bắt đầu"
+                                       Style="{StaticResource StartButtonTextStyle}" />
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal" />
+                            <VisualState Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="0.98" />
+                                    <Setter Property="Opacity" Value="0.92" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding StartDrivingTechniquePracticeCommand}" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border Style="{StaticResource PracticeCardStyle}">
+                    <Grid RowDefinitions="Auto,Auto,Auto"
+                          ColumnDefinitions="Auto,*"
+                          ColumnSpacing="16"
+                          RowSpacing="14">
+                        <Border WidthRequest="56"
+                                HeightRequest="56"
+                                BackgroundColor="#EAF7EF"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 28">
+                            <Label Text="🚦"
+                                   FontSize="28"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="5"
+                                             VerticalOptions="Center">
+                            <Label Text="Ôn tập biển báo"
+                                   Style="{StaticResource CardTitleStyle}" />
+                            <Label Text="Luyện nhóm câu có hình ảnh và nội dung liên quan đến biển báo giao thông."
+                                   Style="{StaticResource CardDescriptionStyle}" />
+                        </VerticalStackLayout>
+
+                        <Grid Grid.Row="1"
+                              Grid.ColumnSpan="2"
+                              ColumnDefinitions="*,Auto"
+                              ColumnSpacing="12">
+                            <Border BackgroundColor="#EAF7EF"
+                                    Padding="12,8"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center">
+                                <Label Text="{Binding TrafficSignsQuestionCount, StringFormat='Hiện có {0} câu biển báo'}"
+                                       Style="{StaticResource BadgeTextStyle}"
+                                       TextColor="#15803D" />
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    Padding="18,10"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    VerticalOptions="Center">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#22C55E" Offset="0.0" />
+                                        <GradientStop Color="#16A34A" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Label Text="Bắt đầu"
+                                       Style="{StaticResource StartButtonTextStyle}" />
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal" />
+                            <VisualState Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="0.98" />
+                                    <Setter Property="Opacity" Value="0.92" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding StartTrafficSignsPracticeCommand}" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border Style="{StaticResource PracticeCardStyle}">
+                    <Grid RowDefinitions="Auto,Auto,Auto"
+                          ColumnDefinitions="Auto,*"
+                          ColumnSpacing="16"
+                          RowSpacing="14">
+                        <Border WidthRequest="56"
+                                HeightRequest="56"
+                                BackgroundColor="#EAF1FF"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 28">
+                            <Label Text="🛣️"
+                                   FontSize="28"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="5"
+                                             VerticalOptions="Center">
+                            <Label Text="Ôn tập sa hình"
+                                   Style="{StaticResource CardTitleStyle}" />
+                            <Label Text="Luyện nhóm câu có hình ảnh về xử lý tình huống và thứ tự xe đi đúng luật."
+                                   Style="{StaticResource CardDescriptionStyle}" />
+                        </VerticalStackLayout>
+
+                        <Grid Grid.Row="1"
+                              Grid.ColumnSpan="2"
+                              ColumnDefinitions="*,Auto"
+                              ColumnSpacing="12">
+                            <Border BackgroundColor="#EAF1FF"
+                                    Padding="12,8"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center">
+                                <Label Text="{Binding SituationalQuestionCount, StringFormat='Hiện có {0} câu sa hình'}"
+                                       Style="{StaticResource BadgeTextStyle}"
+                                       TextColor="#2563EB" />
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    Padding="18,10"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 999"
+                                    VerticalOptions="Center">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#3B82F6" Offset="0.0" />
+                                        <GradientStop Color="#2563EB" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Label Text="Bắt đầu"
+                                       Style="{StaticResource StartButtonTextStyle}" />
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal" />
+                            <VisualState Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="0.98" />
+                                    <Setter Property="Opacity" Value="0.92" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding StartSituationalPracticeCommand}" />
+                    </Border.GestureRecognizers>
+                </Border>
             </VerticalStackLayout>
         </ScrollView>
 
         <controls:AppBottomNavView Grid.Row="2"
                                    CurrentTab="practice" />
+
+        <controls:ChatOverlayView Grid.RowSpan="3" />
     </Grid>
 
 </ContentPage>

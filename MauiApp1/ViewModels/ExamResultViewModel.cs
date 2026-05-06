@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using MauiApp1.Helpers;
 using MauiApp1.Models;
 using MauiApp1.Services;
 
@@ -17,7 +18,7 @@ public class ExamResultViewModel : BaseViewModel
     public ExamResultViewModel(IExamService examService)
     {
         _examService = examService;
-        
+        GoBackCommand = new Command(async () => await NavigationHelper.GoBackAsync());
         GoHomeCommand = new Command(async () => await OnGoHome());
         ReviewAnswersCommand = new Command(async () => await OnReviewAnswers());
         RetakeExamCommand = new Command(async () => await OnRetakeExam());
@@ -107,6 +108,7 @@ public class ExamResultViewModel : BaseViewModel
         set => SetProperty(ref _isWrongAnswerPopupOpen, value);
     }
 
+    public ICommand GoBackCommand { get; }
     public ICommand GoHomeCommand { get; }
     public ICommand ReviewAnswersCommand { get; }
     public ICommand RetakeExamCommand { get; }

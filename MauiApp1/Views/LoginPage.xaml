@@ -305,9 +305,13 @@
                            TextColor="#5D5143" />
 
                     <Label Text="Đăng ký ngay"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="#8A5C00" />
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            TextColor="#8A5C00">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnOpenRegisterTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
                 </HorizontalStackLayout>
 
             </VerticalStackLayout>

@@ -56,4 +56,9 @@ public partial class LoginPage : ContentPage
             LoginButton.Text = "Đăng nhập";
         }
     }
+
+    private async void OnOpenRegisterTapped(object? sender, TappedEventArgs e)
+    {
+        await _authController.OpenRegisterAsync();
+    }
 }

@@ -261,5 +261,7 @@
 
         <controls:AppBottomNavView Grid.Row="2"
                                    CurrentTab="schedule" />
+
+        <controls:ChatOverlayView Grid.RowSpan="3" />
     </Grid>
 </ContentPage>

@@ -218,9 +218,9 @@
     </Style>
 
     <Style x:Key="AppHeaderContainer" TargetType="Border">
-        <Setter Property="BackgroundColor" Value="{StaticResource AppSurfaceMuted}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource AppSurface}" />
         <Setter Property="StrokeThickness" Value="0" />
-        <Setter Property="Padding" Value="{StaticResource HeaderPadding}" />
+        <Setter Property="Padding" Value="20,14" />
     </Style>
 
     <Style x:Key="AppHeaderGrid" TargetType="Grid">
@@ -229,14 +229,14 @@
 
     <Style x:Key="AppHeaderBrandLabel" TargetType="Label">
         <Setter Property="FontFamily" Value="OpenSans-Semibold" />
-        <Setter Property="FontSize" Value="10" />
-        <Setter Property="CharacterSpacing" Value="2" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="CharacterSpacing" Value="1.4" />
         <Setter Property="TextColor" Value="{StaticResource AppTertiaryText}" />
     </Style>
 
     <Style x:Key="AppHeaderTitleLabel" TargetType="Label">
         <Setter Property="FontFamily" Value="OpenSans-Semibold" />
-        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontSize" Value="26" />
         <Setter Property="TextColor" Value="{StaticResource AppPrimaryText}" />
         <Setter Property="LineBreakMode" Value="TailTruncation" />
     </Style>
@@ -251,12 +251,12 @@
 
     <Style x:Key="AppCard" TargetType="Border">
         <Setter Property="BackgroundColor" Value="{StaticResource AppSurface}" />
-        <Setter Property="Stroke" Value="{StaticResource AppBorder}" />
-        <Setter Property="StrokeThickness" Value="1" />
-        <Setter Property="Padding" Value="{StaticResource CardPadding}" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="Shadow" Value="0,14,32,#14000000" />
         <Setter Property="StrokeShape">
             <Setter.Value>
-                <RoundRectangle CornerRadius="22" />
+                <RoundRectangle CornerRadius="24" />
             </Setter.Value>
         </Setter>
     </Style>
@@ -285,9 +285,8 @@
     </Style>
 
     <Style x:Key="AppBottomBar" TargetType="Border">
-        <Setter Property="BackgroundColor" Value="#CCFCF9F2" />
-        <Setter Property="Stroke" Value="{StaticResource AppBorder}" />
-        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="BackgroundColor" Value="#F5F5F5" />
+        <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="Padding" Value="10,10,10,18" />
         <Setter Property="Margin" Value="12,0,12,12" />
         <Setter Property="StrokeShape">

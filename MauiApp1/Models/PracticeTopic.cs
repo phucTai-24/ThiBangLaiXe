@@ -3,6 +3,7 @@ namespace MauiApp1.Models;
 public class PracticeTopic
 {
     public int Id { get; set; }
+    public string Code { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public int QuestionCount { get; set; }

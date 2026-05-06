@@ -22,6 +22,7 @@ namespace MauiApp1
             Routing.RegisterRoute(nameof(ExamListPage), typeof(ExamListPage));
             Routing.RegisterRoute(nameof(TrafficSignsPage), typeof(TrafficSignsPage));
             Routing.RegisterRoute(nameof(PracticeSessionPage), typeof(PracticeSessionPage));
+            Routing.RegisterRoute(nameof(CriticalPracticePage), typeof(CriticalPracticePage));
             Routing.RegisterRoute(nameof(PracticeResultPage), typeof(PracticeResultPage));
             Routing.RegisterRoute(nameof(MockExamPage), typeof(MockExamPage));
             Routing.RegisterRoute(nameof(WrongAnswersPage), typeof(WrongAnswersPage));
@@ -31,6 +32,7 @@ namespace MauiApp1
             Routing.RegisterRoute(nameof(NotificationPage), typeof(NotificationPage));
             Routing.RegisterRoute(nameof(StudySchedulePage), typeof(StudySchedulePage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+            Routing.RegisterRoute(nameof(CourseRegistrationPage), typeof(CourseRegistrationPage));
         }
     }
 }

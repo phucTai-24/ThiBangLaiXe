@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using MauiApp1.Helpers;
 using MauiApp1.Models;
 using MauiApp1.Services;
 
@@ -9,12 +10,16 @@ public class PracticeViewModel : BaseViewModel
 {
     private readonly IPracticeService _practiceService;
     private PracticeTopic? _recommendedTopic;
-    private PracticeTopic? _trafficSignsTopic;
     private string _practiceSummaryText = "Chưa có dữ liệu ôn tập";
     private string _lastSessionText = "Hãy bắt đầu một phiên ôn tập mới";
     private int _selectedQuestionCount = 20;
     private int _criticalQuestionCount;
+    private int _trafficRulesQuestionCount;
+    private int _theoryQuestionCount;
+    private int _drivingCultureQuestionCount;
+    private int _drivingTechniqueQuestionCount;
     private int _trafficSignsQuestionCount;
+    private int _situationalQuestionCount;
     private bool _isLoading;
 
     public PracticeViewModel(IPracticeService practiceService)
@@ -25,13 +30,18 @@ public class PracticeViewModel : BaseViewModel
         PracticeHistory = new ObservableCollection<PracticeHistoryItem>();
         QuestionCountOptions = new ObservableCollection<int> { 10, 15, 20, 25, 30 };
 
-        GoBackCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
+        GoBackCommand = new Command(async () => await NavigationHelper.GoBackAsync());
         GoHomeCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.DashboardPage)));
         GoMockExamCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.MockExamPage)));
         StartRecommendedPracticeCommand = new Command(async () => await StartRecommendedPracticeAsync());
         StartTopicPracticeCommand = new Command<PracticeTopic>(async topic => await StartTopicPracticeAsync(topic));
-        StartCriticalPracticeCommand = new Command(async () => await StartCriticalPracticeAsync());
-        StartTrafficSignsPracticeCommand = new Command(async () => await StartTrafficSignsPracticeAsync());
+        StartCriticalPracticeCommand = new Command(async () => await StartFilteredPracticeAsync("critical", CriticalQuestionCount, "Điểm liệt"));
+        StartTrafficRulesPracticeCommand = new Command(async () => await StartFilteredPracticeAsync("theory", TrafficRulesQuestionCount, "Quy tắc giao thông", "CD_QTGT"));
+        StartTheoryPracticeCommand = new Command(async () => await StartFilteredPracticeAsync("theory", TheoryQuestionCount, "Lý thuyết"));
+        StartDrivingCulturePracticeCommand = new Command(async () => await StartFilteredPracticeAsync("theory", DrivingCultureQuestionCount, "Văn hóa và đạo đức lái xe", "CD_VH"));
+        StartDrivingTechniquePracticeCommand = new Command(async () => await StartFilteredPracticeAsync("theory", DrivingTechniqueQuestionCount, "Kỹ thuật lái xe", "CD_KT"));
+        StartTrafficSignsPracticeCommand = new Command(async () => await StartFilteredPracticeAsync("traffic-signs", TrafficSignsQuestionCount, "Biển báo"));
+        StartSituationalPracticeCommand = new Command(async () => await StartFilteredPracticeAsync("situational", SituationalQuestionCount, "Sa hình"));
 
         _ = LoadAsync();
     }
@@ -76,10 +86,40 @@ public class PracticeViewModel : BaseViewModel
         set => SetProperty(ref _criticalQuestionCount, value);
     }
 
+    public int TheoryQuestionCount
+    {
+        get => _theoryQuestionCount;
+        set => SetProperty(ref _theoryQuestionCount, value);
+    }
+
+    public int TrafficRulesQuestionCount
+    {
+        get => _trafficRulesQuestionCount;
+        set => SetProperty(ref _trafficRulesQuestionCount, value);
+    }
+
+    public int DrivingCultureQuestionCount
+    {
+        get => _drivingCultureQuestionCount;
+        set => SetProperty(ref _drivingCultureQuestionCount, value);
+    }
+
+    public int DrivingTechniqueQuestionCount
+    {
+        get => _drivingTechniqueQuestionCount;
+        set => SetProperty(ref _drivingTechniqueQuestionCount, value);
+    }
+
     public int TrafficSignsQuestionCount
     {
         get => _trafficSignsQuestionCount;
         set => SetProperty(ref _trafficSignsQuestionCount, value);
+    }
+
+    public int SituationalQuestionCount
+    {
+        get => _situationalQuestionCount;
+        set => SetProperty(ref _situationalQuestionCount, value);
     }
 
     public ICommand GoBackCommand { get; }
@@ -88,7 +128,12 @@ public class PracticeViewModel : BaseViewModel
     public ICommand StartRecommendedPracticeCommand { get; }
     public ICommand StartTopicPracticeCommand { get; }
     public ICommand StartCriticalPracticeCommand { get; }
+    public ICommand StartTrafficRulesPracticeCommand { get; }
+    public ICommand StartTheoryPracticeCommand { get; }
+    public ICommand StartDrivingCulturePracticeCommand { get; }
+    public ICommand StartDrivingTechniquePracticeCommand { get; }
     public ICommand StartTrafficSignsPracticeCommand { get; }
+    public ICommand StartSituationalPracticeCommand { get; }
 
     private async Task LoadAsync()
     {
@@ -104,6 +149,10 @@ public class PracticeViewModel : BaseViewModel
             var topics = await _practiceService.GetTopicsAsync();
             var history = await _practiceService.GetPracticeHistoryAsync();
             CriticalQuestionCount = await _practiceService.GetCriticalSummaryAsync();
+            var groupCounts = await _practiceService.GetPracticeQuestionGroupCountsAsync();
+            var trafficRulesCounts = await _practiceService.GetPracticeQuestionGroupCountsAsync("CD_QTGT");
+            var drivingCultureCounts = await _practiceService.GetPracticeQuestionGroupCountsAsync("CD_VH");
+            var drivingTechniqueCounts = await _practiceService.GetPracticeQuestionGroupCountsAsync("CD_KT");
 
             Topics.Clear();
             foreach (var topic in topics)
@@ -118,23 +167,12 @@ public class PracticeViewModel : BaseViewModel
             }
 
             RecommendedTopic = topics.FirstOrDefault(x => x.IsRecommended) ?? topics.FirstOrDefault();
-            var trafficSignKeywords = new[]
-            {
-                "biển báo",
-                "bien bao",
-                "báo hiệu",
-                "bao hieu",
-                "hệ thống báo hiệu",
-                "he thong bao hieu"
-            };
-
-            _trafficSignsTopic = topics
-                .Where(x => trafficSignKeywords.Any(k =>
-                    x.Name.Contains(k, StringComparison.OrdinalIgnoreCase)
-                    || x.Description.Contains(k, StringComparison.OrdinalIgnoreCase)))
-                .OrderByDescending(x => x.QuestionCount)
-                .FirstOrDefault();
-            TrafficSignsQuestionCount = _trafficSignsTopic?.QuestionCount ?? 0;
+            TheoryQuestionCount = groupCounts.Theory;
+            TrafficRulesQuestionCount = trafficRulesCounts.Theory;
+            DrivingCultureQuestionCount = drivingCultureCounts.Theory;
+            DrivingTechniqueQuestionCount = drivingTechniqueCounts.Theory;
+            TrafficSignsQuestionCount = groupCounts.TrafficSigns;
+            SituationalQuestionCount = groupCounts.Situational;
 
             var totalQuestions = history.Sum(x => x.TotalQuestions);
             var totalCorrect = history.Sum(x => x.CorrectAnswers);
@@ -166,49 +204,21 @@ public class PracticeViewModel : BaseViewModel
         }
     }
 
-    private async Task StartCriticalPracticeAsync()
+    private async Task StartFilteredPracticeAsync(string groupCode, int availableCount, string displayName, string? topicCode = null)
     {
-        if (IsLoading)
+        if (availableCount <= 0)
         {
+            await Application.Current?.MainPage?.DisplayAlert("Thông báo", $"Chưa có dữ liệu {displayName.ToLowerInvariant()} từ API.", "OK")!;
             return;
         }
 
-        try
-        {
-            IsLoading = true;
+        var session = await _practiceService.StartFilteredPracticeSessionAsync(
+            groupCode,
+            availableCount,
+            topicCode,
+            note: $"Phiên ôn tập {displayName.ToLowerInvariant()} từ danh sách câu hỏi API");
 
-            var sessionId = await _practiceService.StartCriticalPracticeAsync();
-            if (string.IsNullOrWhiteSpace(sessionId))
-                throw new InvalidOperationException("SessionId không hợp lệ.");
-
-            await Shell.Current.GoToAsync($"{nameof(Views.PracticeSessionPage)}?sessionId={sessionId}");
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            Console.WriteLine($"[Practice][Critical][Unauthorized] {ex.Message}");
-            await Application.Current?.MainPage?.DisplayAlert("Phiên đăng nhập", "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.", "OK")!;
-            await Shell.Current.GoToAsync($"//{nameof(Views.LoginPage)}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[Practice][Critical][Start][Error] {ex.Message}");
-            await Application.Current?.MainPage?.DisplayAlert("Lỗi", "Không thể bắt đầu phiên ôn tập", "OK")!;
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    private async Task StartTrafficSignsPracticeAsync()
-    {
-        if (_trafficSignsTopic == null)
-        {
-            await Application.Current?.MainPage?.DisplayAlert("Thông báo", "Chưa có dữ liệu chủ đề biển báo từ API.", "OK")!;
-            return;
-        }
-
-        await StartTopicPracticeAsync(_trafficSignsTopic);
+        await Shell.Current.GoToAsync($"{nameof(Views.PracticeSessionPage)}?sessionId={session.Id}");
     }
 
     private async Task StartRecommendedPracticeAsync()
@@ -230,7 +240,7 @@ public class PracticeViewModel : BaseViewModel
 
         var session = await _practiceService.StartPracticeSessionAsync(
             topic.Id,
-            Math.Min(topic.QuestionCount, SelectedQuestionCount),
+            topic.QuestionCount,
             $"Phiên ôn tập chủ đề {topic.Name}");
 
         await Shell.Current.GoToAsync($"{nameof(Views.PracticeSessionPage)}?sessionId={session.Id}");

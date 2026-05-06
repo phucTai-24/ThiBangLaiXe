@@ -350,6 +350,8 @@
 
         <controls:AppBottomNavView Grid.Row="2"
                                    CurrentTab="exam" />
+
+        <controls:ChatOverlayView Grid.RowSpan="3" />
     </Grid>
 
 </ContentPage>

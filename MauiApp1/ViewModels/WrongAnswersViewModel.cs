@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using MauiApp1.Helpers;
 using MauiApp1.Models;
 using MauiApp1.Services;
 
@@ -21,7 +22,7 @@ public sealed class WrongAnswersViewModel : BaseViewModel
     public WrongAnswersViewModel(IExamService examService)
     {
         _examService = examService;
-        GoBackCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
+        GoBackCommand = new Command(async () => await NavigationHelper.GoBackAsync());
         GoHomeCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.DashboardPage)));
         RetakeExamCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.ExamListPage)));
         PreviousQuestionCommand = new Command(OnPreviousQuestion, CanGoPrevious);

@@ -5,7 +5,7 @@
              xmlns:models="clr-namespace:MauiApp1.Models"
              x:Class="MauiApp1.Views.ExamResultPage"
              x:DataType="viewmodels:ExamResultViewModel"
-             BackgroundColor="#FCF9F2">
+             Style="{StaticResource AppPageStyle}">
 
     <Grid RowDefinitions="Auto,*,Auto">
         <Border Grid.Row="0"
@@ -21,7 +21,7 @@
                            HorizontalOptions="Center"
                            VerticalOptions="Center" />
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
+                        <TapGestureRecognizer Command="{Binding GoBackCommand}" />
                     </Border.GestureRecognizers>
                 </Border>
 

@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using MauiApp1.Helpers;
 using MauiApp1.Models;
 using MauiApp1.Services;
 
@@ -15,7 +16,7 @@ public class PracticeResultViewModel : BaseViewModel
     {
         _practiceService = practiceService;
         GoHomeCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.DashboardPage)));
-        GoPracticeHomeCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.TrafficSignsPage)));
+        GoPracticeHomeCommand = new Command(async () => await NavigationHelper.GoBackAsync());
         GoMockExamCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.MockExamPage)));
         RetakeCommand = new Command(async () => await RetakeAsync());
     }
@@ -51,7 +52,26 @@ public class PracticeResultViewModel : BaseViewModel
     private async Task RetakeAsync()
     {
         var session = await _practiceService.GetPracticeSessionAsync(SessionId);
+        if (session.TopicId == 0)
+        {
+            var groupCode = ResolveFilteredGroupCode(session.TopicName);
+            var retakeFilteredSession = await _practiceService.StartFilteredPracticeSessionAsync(groupCode, session.TotalQuestions, note: $"Làm lại {session.TopicName}");
+            await Shell.Current.GoToAsync($"{nameof(Views.PracticeSessionPage)}?sessionId={retakeFilteredSession.Id}");
+            return;
+        }
+
         var newSession = await _practiceService.StartPracticeSessionAsync(session.TopicId, session.TotalQuestions, $"Làm lại chủ đề {session.TopicName}");
         await Shell.Current.GoToAsync($"{nameof(Views.PracticeSessionPage)}?sessionId={newSession.Id}");
+    }
+
+    private static string ResolveFilteredGroupCode(string topicName)
+    {
+        if (topicName.Contains("biển báo", StringComparison.OrdinalIgnoreCase))
+            return "traffic-signs";
+
+        if (topicName.Contains("sa hình", StringComparison.OrdinalIgnoreCase))
+            return "situational";
+
+        return "theory";
     }
 }

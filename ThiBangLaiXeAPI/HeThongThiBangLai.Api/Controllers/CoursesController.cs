@@ -48,6 +48,15 @@ public sealed class CoursesController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, result);
     }
 
+    [HttpPatch("course-registrations/{registrationId:long}/approve")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResponse<CourseRegistrationDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ApproveCourseRegistration(long registrationId, [FromBody] ApproveCourseRegistrationRequestDto request)
+    {
+        var result = await _courseService.ApproveRegistrationAsync(registrationId, request, GetCurrentUserId());
+        return Ok(result);
+    }
+
     [HttpGet("my/course-registrations")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<PagedList<MyCourseRegistrationDto>>), StatusCodes.Status200OK)]

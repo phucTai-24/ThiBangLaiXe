@@ -56,13 +56,13 @@ public class QuestionService : IQuestionService
         return ApiResponseFactory.SuccessPaged(pagedDtos, "Questions retrieved successfully");
     }
 
-    public async Task<ApiResponse<PagedList<QuestionWithAnswersDto>>> GetListWithAnswersAsync(int page = 1, int pageSize = 20, string? search = null, long? topicId = null, string? topicCode = null, string? status = null, bool? isCritical = null, bool includeCorrectAnswer = false)
+    public async Task<ApiResponse<PagedList<QuestionWithAnswersDto>>> GetListWithAnswersAsync(int page = 1, int pageSize = 20, string? search = null, long? topicId = null, string? topicCode = null, string? status = null, bool? isCritical = null, bool includeCorrectAnswer = false, bool includeExplanation = false)
     {
         page = Math.Max(page, 1);
         pageSize = Math.Max(pageSize, 1);
 
         var pagedQuestions = await _repository.GetPagedWithAnswersAsync(page, pageSize, search, topicId, topicCode, status, isCritical, includeCorrectAnswer);
-        var dtos = pagedQuestions.Items.Select(question => MapWithAnswers(question, includeCorrectAnswer, _assetsBaseUrl, _availableAssetFiles)).ToList();
+        var dtos = pagedQuestions.Items.Select(question => MapWithAnswers(question, includeCorrectAnswer, includeExplanation, _assetsBaseUrl, _availableAssetFiles)).ToList();
         var pagedDtos = new PagedList<QuestionWithAnswersDto>(dtos, pagedQuestions.TotalCount, page, pageSize);
 
         return ApiResponseFactory.SuccessPaged(pagedDtos, "Questions with answers retrieved successfully");
@@ -139,7 +139,7 @@ public class QuestionService : IQuestionService
         _repository.Remove(question);
         await _repository.SaveChangesAsync();
     }
-    private static QuestionWithAnswersDto MapWithAnswers(cau_hoi question, bool includeCorrectAnswer, string? assetsBaseUrl, HashSet<string> availableAssetFiles)
+    private static QuestionWithAnswersDto MapWithAnswers(cau_hoi question, bool includeCorrectAnswer, bool includeExplanation, string? assetsBaseUrl, HashSet<string> availableAssetFiles)
     {
         var imageUrl = BuildQuestionImageUrl(question.id, assetsBaseUrl, availableAssetFiles);
 
@@ -154,6 +154,7 @@ public class QuestionService : IQuestionService
             Level = question.muc_do,
             IsCritical = question.la_cau_diem_liet,
             Status = question.trang_thai,
+            Explanation = includeExplanation ? question.giai_thich_dap_an : null,
             ImageUrl = imageUrl,
             Answers = question.dap_ans
                 .OrderBy(answer => answer.thu_tu)

@@ -41,9 +41,10 @@ public class QuestionController : ControllerBase
         [FromQuery] string? topicCode = null,
         [FromQuery] string? status = null,
         [FromQuery] bool? isCritical = null,
-        [FromQuery] bool includeCorrectAnswer = false)
+        [FromQuery] bool includeCorrectAnswer = false,
+        [FromQuery] bool includeExplanation = false)
     {
-        var result = await _questionService.GetListWithAnswersAsync(page, pageSize, search, topicId, topicCode, status, isCritical, includeCorrectAnswer);
+        var result = await _questionService.GetListWithAnswersAsync(page, pageSize, search, topicId, topicCode, status, isCritical, includeCorrectAnswer, includeExplanation);
         return Ok(result);
     }
 

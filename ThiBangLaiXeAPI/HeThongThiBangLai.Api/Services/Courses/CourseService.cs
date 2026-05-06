@@ -194,10 +194,45 @@ public sealed class CourseService : ICourseService
             throw new NotFoundAppException("Không tìm thấy khóa học");
         }
 
+        if (!string.Equals(course.trang_thai, "dang_mo", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new BusinessRuleAppException("Khóa học hiện không mở đăng ký", "COURSE_NOT_OPEN_FOR_REGISTRATION");
+        }
+
+        var classroom = await _dbContext.lop_hocs
+            .Include(item => item.lop_hoc_hoc_viens)
+            .FirstOrDefaultAsync(item => item.id == request.ClassId);
+        if (classroom is null)
+        {
+            throw new NotFoundAppException("Không tìm thấy lớp học");
+        }
+
+        if (classroom.khoa_hoc_id != course.id)
+        {
+            throw new BusinessRuleAppException("Lớp học không thuộc khóa học đã chọn", "CLASS_NOT_BELONG_TO_COURSE");
+        }
+
+        if (!string.Equals(classroom.trang_thai, "dang_mo", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new BusinessRuleAppException("Lớp học hiện không mở đăng ký", "CLASS_NOT_OPEN_FOR_REGISTRATION");
+        }
+
+        var currentStudents = classroom.lop_hoc_hoc_viens.Count(member => string.Equals(member.trang_thai, "dang_hoc", StringComparison.OrdinalIgnoreCase));
+        if (classroom.si_so_toi_da > 0 && currentStudents >= classroom.si_so_toi_da)
+        {
+            throw new BusinessRuleAppException("Lớp học đã đủ sĩ số", "CLASS_IS_FULL");
+        }
+
         var hasRegistered = await _dbContext.dang_ky_khoa_hocs.AnyAsync(item => item.hoc_vien_id == student.id && item.khoa_hoc_id == request.CourseId);
         if (hasRegistered)
         {
             throw new ConflictAppException("Học viên đã đăng ký khóa học này", "COURSE_ALREADY_REGISTERED");
+        }
+
+        var isAlreadyInClass = await _dbContext.lop_hoc_hoc_viens.AnyAsync(item => item.hoc_vien_id == student.id && item.lop_hoc_id == request.ClassId);
+        if (isAlreadyInClass)
+        {
+            throw new ConflictAppException("Học viên đã có trong lớp học này", "STUDENT_ALREADY_IN_CLASS");
         }
 
         var registration = new dang_ky_khoa_hoc
@@ -216,13 +251,92 @@ public sealed class CourseService : ICourseService
             RegistrationId = registration.id,
             StudentId = student.id,
             CourseId = course.id,
+            ClassId = classroom.id,
             TenKhoaHoc = course.ten_khoa_hoc,
+            TenLop = classroom.ten_lop,
             NgayDangKy = registration.ngay_dang_ky,
             TrangThai = ToApiRegistrationStatus(registration.trang_thai),
             GhiChu = request.GhiChu
         };
 
-        return ApiResponseFactory.Created(dto, "Đăng ký khóa học thành công");
+        return ApiResponseFactory.Created(dto, "Đăng ký lớp học thành công, vui lòng chờ duyệt");
+    }
+
+    public async Task<ApiResponse<CourseRegistrationDto>> ApproveRegistrationAsync(long registrationId, ApproveCourseRegistrationRequestDto request, long approverUserId)
+    {
+        var registration = await _dbContext.dang_ky_khoa_hocs
+            .Include(item => item.khoa_hoc)
+            .FirstOrDefaultAsync(item => item.id == registrationId);
+        if (registration is null)
+        {
+            throw new NotFoundAppException("Không tìm thấy đăng ký khóa học");
+        }
+
+        if (!string.Equals(registration.trang_thai, "cho_duyet", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new BusinessRuleAppException("Chỉ có thể duyệt đăng ký đang chờ duyệt", "REGISTRATION_NOT_PENDING");
+        }
+
+        var classroom = await _dbContext.lop_hocs
+            .Include(item => item.lop_hoc_hoc_viens)
+            .FirstOrDefaultAsync(item => item.id == request.ClassId);
+        if (classroom is null)
+        {
+            throw new NotFoundAppException("Không tìm thấy lớp học");
+        }
+
+        if (classroom.khoa_hoc_id != registration.khoa_hoc_id)
+        {
+            throw new BusinessRuleAppException("Lớp học không thuộc khóa học của đăng ký", "CLASS_NOT_BELONG_TO_COURSE");
+        }
+
+        if (!string.Equals(classroom.trang_thai, "dang_mo", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new BusinessRuleAppException("Lớp học hiện không mở", "CLASS_NOT_OPEN");
+        }
+
+        var currentStudents = classroom.lop_hoc_hoc_viens.Count(member => string.Equals(member.trang_thai, "dang_hoc", StringComparison.OrdinalIgnoreCase));
+        if (classroom.si_so_toi_da > 0 && currentStudents >= classroom.si_so_toi_da)
+        {
+            throw new BusinessRuleAppException("Lớp học đã đủ sĩ số", "CLASS_IS_FULL");
+        }
+
+        var isAlreadyInClass = await _dbContext.lop_hoc_hoc_viens.AnyAsync(item =>
+            item.lop_hoc_id == classroom.id && item.hoc_vien_id == registration.hoc_vien_id);
+        if (isAlreadyInClass)
+        {
+            throw new ConflictAppException("Học viên đã có trong lớp học này", "STUDENT_ALREADY_IN_CLASS");
+        }
+
+        registration.trang_thai = "da_duyet";
+        registration.nguoi_duyet_id = approverUserId;
+        registration.ngay_duyet = DateTime.UtcNow;
+
+        var classMember = new lop_hoc_hoc_vien
+        {
+            lop_hoc_id = classroom.id,
+            hoc_vien_id = registration.hoc_vien_id,
+            ngay_vao_lop = DateOnly.FromDateTime(DateTime.UtcNow),
+            trang_thai = "dang_hoc"
+        };
+
+        _dbContext.lop_hoc_hoc_viens.Add(classMember);
+        await _dbContext.SaveChangesAsync();
+
+        var dto = new CourseRegistrationDto
+        {
+            RegistrationId = registration.id,
+            StudentId = registration.hoc_vien_id,
+            CourseId = registration.khoa_hoc_id,
+            ClassId = classroom.id,
+            TenKhoaHoc = registration.khoa_hoc.ten_khoa_hoc,
+            TenLop = classroom.ten_lop,
+            NgayDangKy = registration.ngay_dang_ky,
+            TrangThai = ToApiRegistrationStatus(registration.trang_thai),
+            GhiChu = null
+        };
+
+        return ApiResponseFactory.Success(dto, "Duyệt đăng ký lớp học thành công");
     }
 
     public async Task<ApiResponse<PagedList<MyCourseRegistrationDto>>> GetMyRegistrationsAsync(long currentUserId, int page = 1, int pageSize = 10)

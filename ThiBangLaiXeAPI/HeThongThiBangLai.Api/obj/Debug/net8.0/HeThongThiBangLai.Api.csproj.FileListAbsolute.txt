@@ -442,8 +442,6 @@ D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\runtim
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.csproj.AssemblyReference.cache
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\rpswa.dswa.cache.json
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.GeneratedMSBuildEditorConfig.editorconfig
-D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.AssemblyInfoInputs.cache
-D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.AssemblyInfo.cs
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.csproj.CoreCompileInputs.cache
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.MvcApplicationPartsAssemblyInfo.cs
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.MvcApplicationPartsAssemblyInfo.cache
@@ -461,7 +459,6 @@ D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThon
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\refint\HeThongThiBangLai.Api.dll
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.pdb
 D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.genruntimeconfig.cache
-D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\ref\HeThongThiBangLai.Api.dll
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\appsettings.Development.json
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\appsettings.json
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\global.json
@@ -596,5 +593,7 @@ d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\runtim
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\HeThongThiBangLai.Api.staticwebassets.runtime.json
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.staticwebassets.runtime.json
-D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.exe
+d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.AssemblyInfoInputs.cache
+d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\HeThongThiBangLai.Api.AssemblyInfo.cs
+d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\ref\HeThongThiBangLai.Api.dll
 d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\swae.build.ex.cache

@@ -223,6 +223,7 @@ public class ExamSessionService : IExamSessionService
                 QuestionId = x.cau_hoi_id,
                 QuestionContent = x.cau_hoi.noi_dung,
                 IsCritical = x.cau_hoi.la_cau_diem_liet,
+                Explanation = x.cau_hoi.giai_thich_dap_an,
                 SelectedAnswerId = x.dap_an_chon_id,
                 CorrectAnswerId = x.cau_hoi.dap_ans.FirstOrDefault(a => a.la_dap_an_dung)?.id,
                 IsCorrect = x.la_dung
@@ -309,6 +310,7 @@ public class ExamSessionService : IExamSessionService
             Content = detail.cau_hoi.noi_dung,
             TopicId = detail.cau_hoi.chu_de_id,
             IsCritical = detail.cau_hoi.la_cau_diem_liet,
+            Explanation = detail.cau_hoi.giai_thich_dap_an,
             SelectedAnswerId = detail.dap_an_chon_id,
             ImageUrl = imageUrl,
             Answers = detail.cau_hoi.dap_ans

@@ -11,6 +11,7 @@ public sealed class QuestionWithAnswersDto
     public string? Level { get; set; }
     public bool IsCritical { get; set; }
     public string Status { get; set; } = string.Empty;
+    public string? Explanation { get; set; }
     public string? ImageUrl { get; set; }
     public List<QuestionAnswerOptionDto> Answers { get; set; } = [];
 }

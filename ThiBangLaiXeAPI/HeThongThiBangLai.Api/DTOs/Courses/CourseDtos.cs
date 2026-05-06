@@ -56,6 +56,7 @@ public sealed class CourseScheduleDto
 public sealed class CreateCourseRegistrationRequestDto
 {
     public long CourseId { get; set; }
+    public long ClassId { get; set; }
     public string? GhiChu { get; set; }
 }
 
@@ -64,10 +65,17 @@ public sealed class CourseRegistrationDto
     public long RegistrationId { get; set; }
     public long StudentId { get; set; }
     public long CourseId { get; set; }
+    public long ClassId { get; set; }
     public string TenKhoaHoc { get; set; } = string.Empty;
+    public string TenLop { get; set; } = string.Empty;
     public DateTime NgayDangKy { get; set; }
     public string TrangThai { get; set; } = string.Empty;
     public string? GhiChu { get; set; }
+}
+
+public sealed class ApproveCourseRegistrationRequestDto
+{
+    public long ClassId { get; set; }
 }
 
 public sealed class MyCourseRegistrationDto

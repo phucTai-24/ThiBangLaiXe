@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using HeThongThiBangLai.Api.Common.Exceptions;
 using HeThongThiBangLai.Api.Common.Responses;
 using HeThongThiBangLai.Api.Data;
@@ -322,11 +323,22 @@ public sealed class ZaloPayPaymentService : IZaloPayPaymentService
 
     private sealed class ZaloPayCreateOrderResponse
     {
+        [JsonPropertyName("return_code")]
         public int ReturnCode { get; set; }
+
+        [JsonPropertyName("return_message")]
         public string ReturnMessage { get; set; } = string.Empty;
+
+        [JsonPropertyName("sub_return_code")]
         public int SubReturnCode { get; set; }
+
+        [JsonPropertyName("sub_return_message")]
         public string SubReturnMessage { get; set; } = string.Empty;
+
+        [JsonPropertyName("order_url")]
         public string OrderUrl { get; set; } = string.Empty;
+
+        [JsonPropertyName("order_token")]
         public string OrderToken { get; set; } = string.Empty;
     }
 

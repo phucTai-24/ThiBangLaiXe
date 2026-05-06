@@ -79,12 +79,14 @@ public sealed class ZaloPayPaymentService : IZaloPayPaymentService
         var appTransId = receipt.ma_phieu_thu;
         var appTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         var appUser = $"hoc_vien_{student.id}";
-        var embedData = JsonSerializer.Serialize(new
+        var paymentChannel = ResolvePaymentChannel(request.PaymentMethod);
+        var embedData = JsonSerializer.Serialize(new Dictionary<string, object?>
         {
-            redirecturl = _options.RedirectUrl,
-            registrationId = registration.id,
-            receiptId = receipt.id
-        }, JsonOptions);
+            ["redirecturl"] = _options.RedirectUrl,
+            ["registrationId"] = registration.id,
+            ["receiptId"] = receipt.id,
+            ["bankgroup"] = paymentChannel.BankGroup
+        }.Where(item => item.Value is not null).ToDictionary(item => item.Key, item => item.Value), JsonOptions);
         var item = JsonSerializer.Serialize(new[]
         {
             new
@@ -96,7 +98,7 @@ public sealed class ZaloPayPaymentService : IZaloPayPaymentService
             }
         }, JsonOptions);
         var description = $"Thanh toán học phí {registration.khoa_hoc.ten_khoa_hoc}";
-        var bankCode = ResolveBankCode(request.PaymentMethod);
+        var bankCode = paymentChannel.BankCode;
         var macData = $"{_options.AppId}|{appTransId}|{appUser}|{amount}|{appTime}|{embedData}|{item}";
         var mac = ComputeHmacSha256(macData, _options.Key1);
 
@@ -269,24 +271,27 @@ public sealed class ZaloPayPaymentService : IZaloPayPaymentService
         return $"{DateTime.UtcNow:yyMMdd}_{Guid.NewGuid():N}"[..30];
     }
 
-    private static string ResolveBankCode(string? paymentMethod)
+    private static ZaloPayPaymentChannel ResolvePaymentChannel(string? paymentMethod)
     {
         if (string.IsNullOrWhiteSpace(paymentMethod))
         {
-            return string.Empty;
+            return new ZaloPayPaymentChannel(string.Empty, null);
         }
 
         return paymentMethod.Trim().ToUpperInvariant() switch
         {
-            "DEFAULT" or "AUTO" => string.Empty,
-            "QR" or "ZALO_PAY" or "ZALOPAY" or "ZALOPAYAPP" => "zalopayapp",
-            "ATM" or "NAPAS" or "BANK" or "BANK_CARD" => "ATM",
-            "CC" or "CREDIT" or "CREDIT_CARD" or "VISA" or "MASTERCARD" => "CC",
+            "DEFAULT" or "AUTO" => new ZaloPayPaymentChannel(string.Empty, null),
+            "QR" or "ZALO_PAY" or "ZALOPAY" or "ZALOPAYAPP" => new ZaloPayPaymentChannel("zalopayapp", null),
+            // Theo tài liệu Gateway v1: nếu muốn hiện nhóm ATM thì để bankcode rỗng và truyền bankgroup=ATM trong embeddata.
+            "ATM" or "NAPAS" or "BANK" or "BANK_CARD" => new ZaloPayPaymentChannel(string.Empty, "ATM"),
+            "CC" or "CREDIT" or "CREDIT_CARD" or "VISA" or "MASTERCARD" => new ZaloPayPaymentChannel("CC", null),
             _ => throw new BusinessRuleAppException(
                 "Phương thức thanh toán ZaloPay không được hỗ trợ. Chỉ hỗ trợ: QR, ZALOPAYAPP, ATM, CC.",
                 "ZALOPAY_PAYMENT_METHOD_NOT_SUPPORTED")
         };
     }
+
+    private sealed record ZaloPayPaymentChannel(string BankCode, string? BankGroup);
 
     private static string ComputeHmacSha256(string data, string key)
     {

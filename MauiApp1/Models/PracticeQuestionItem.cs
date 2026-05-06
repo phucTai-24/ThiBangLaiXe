@@ -11,6 +11,7 @@ public class PracticeQuestionItem : INotifyPropertyChanged
     private bool _isCurrent;
     private string? _imageUrl;
     private bool _imageLoadFailed;
+    private string _explanation = string.Empty;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -91,7 +92,25 @@ public class PracticeQuestionItem : INotifyPropertyChanged
         }
     }
 
-    public string Explanation { get; set; } = string.Empty;
+    public string Explanation
+    {
+        get => _explanation;
+        set
+        {
+            if (_explanation == value)
+            {
+                return;
+            }
+
+            _explanation = value ?? string.Empty;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(HasExplanation));
+            OnPropertyChanged(nameof(ShowExplanation));
+        }
+    }
+
+    public bool HasExplanation => !string.IsNullOrWhiteSpace(Explanation);
+    public bool ShowExplanation => IsAnswered && HasExplanation;
     public List<PracticeAnswerOption> Answers { get; set; } = new();
 
     public string? SelectedAnswerId
@@ -121,6 +140,7 @@ public class PracticeQuestionItem : INotifyPropertyChanged
 
             _isAnswered = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(ShowExplanation));
         }
     }
 

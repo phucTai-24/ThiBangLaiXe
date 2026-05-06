@@ -17,7 +17,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ONTHIBANGLAI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+6a7d6423b4e12535a3ddbfbe14ff0d49b203bb55")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+aebb09ac0deaf1ed6c3fd6f967491cd02bbd1ad8")]
 [assembly: System.Reflection.AssemblyProductAttribute("ONTHIBANGLAI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ONTHIBANGLAI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

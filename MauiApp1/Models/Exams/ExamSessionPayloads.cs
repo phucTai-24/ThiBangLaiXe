@@ -1,5 +1,7 @@
 namespace MauiApp1.Models.Exams;
 
+using System.Text.Json.Serialization;
+
 public sealed class StartExamSessionResponse
 {
     public long SessionId { get; set; }
@@ -34,7 +36,25 @@ public sealed class ExamSessionQuestionDto
     public string Content { get; set; } = string.Empty;
     public long TopicId { get; set; }
     public bool IsCritical { get; set; }
+    public string? Explanation { get; set; }
     public long? SelectedAnswerId { get; set; }
+    [JsonPropertyName("imageUrl")]
+    public string? ImageUrl { get; set; }
+
+    [JsonPropertyName("image_url")]
+    public string? ImageUrlSnake
+    {
+        get => ImageUrl;
+        set => ImageUrl = value;
+    }
+
+    [JsonPropertyName("image")]
+    public string? Image
+    {
+        get => ImageUrl;
+        set => ImageUrl = value;
+    }
+
     public List<ExamSessionAnswerOptionDto> Answers { get; set; } = new();
 }
 
@@ -77,6 +97,23 @@ public sealed class ExamSessionReviewItemDto
     public long QuestionId { get; set; }
     public string QuestionContent { get; set; } = string.Empty;
     public bool IsCritical { get; set; }
+    [JsonPropertyName("imageUrl")]
+    public string? ImageUrl { get; set; }
+
+    [JsonPropertyName("image_url")]
+    public string? ImageUrlSnake
+    {
+        get => ImageUrl;
+        set => ImageUrl = value;
+    }
+
+    [JsonPropertyName("image")]
+    public string? Image
+    {
+        get => ImageUrl;
+        set => ImageUrl = value;
+    }
+
     public long? SelectedAnswerId { get; set; }
     public long? CorrectAnswerId { get; set; }
     public bool? IsCorrect { get; set; }

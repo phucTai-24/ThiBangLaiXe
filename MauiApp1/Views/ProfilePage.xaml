@@ -302,6 +302,42 @@
                     </FlexLayout>
                 </VerticalStackLayout>
 
+                <VerticalStackLayout Spacing="14">
+                    <Label Text="Tiện ích"
+                           Style="{StaticResource AppSectionTitle}" />
+
+                    <Border Style="{StaticResource AppCard}">
+                        <Grid ColumnDefinitions="Auto,*,Auto"
+                              ColumnSpacing="14">
+                            <Border WidthRequest="50"
+                                    HeightRequest="50"
+                                    BackgroundColor="#FFF3DC"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 18">
+                                <Label Text="⚙️"
+                                       FontSize="22"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1"
+                                                 Spacing="4">
+                                <Label Text="Cài đặt"
+                                       Style="{StaticResource AppCardTitle}" />
+                                <Label Text="Mở phần cài đặt ứng dụng và cấu hình Gemini API key"
+                                       Style="{StaticResource AppCaptionLabel}" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2"
+                                   Text="›"
+                                   FontSize="24"
+                                   TextColor="#837560"
+                                   VerticalOptions="Center" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSettingsTapped" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
                 <Button x:Name="LogoutButton"
                         Text="Đăng xuất"
                         HeightRequest="54"

@@ -78,11 +78,11 @@ public class MockExamViewModel : BaseViewModel
     }
 
     public string CurrentQuestionText => CurrentQuestion != null 
-        ? $"CÂU {CurrentQuestion.Number:D2}/{CurrentExam?.TotalQuestions:D2}" 
+        ? $"Câu {CurrentQuestion.Number:D2}/{CurrentExam?.TotalQuestions:D2}" 
         : "CÂU 00/00";
 
     public string AnsweredQuestionsText => CurrentExam != null 
-        ? $"ĐÃ TRẢ LỜI: {CurrentExam.AnsweredQuestions}/{CurrentExam.TotalQuestions}" 
+        ? $"Đã trả lời {CurrentExam.AnsweredQuestions}/{CurrentExam.TotalQuestions}" 
         : "ĐÃ TRẢ LỜI: 0/0";
 
     public ICommand PreviousQuestionCommand { get; }

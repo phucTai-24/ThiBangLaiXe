@@ -9,7 +9,6 @@ namespace MauiApp1
     public static class MauiProgram
     {
         private const string GeminiApiKeyPreferenceKey = "Gemini.ApiKey";
-        private const string DefaultGeminiApiKey = "AIzaSyBPkF0q8hWxQofcAj_VbyDhtSp7affSwFU";
 
         public static MauiApp CreateMauiApp()
         {
@@ -105,8 +104,14 @@ namespace MauiApp1
 
         private static void ConfigureGeminiApiKey()
         {
-            if (string.IsNullOrWhiteSpace(Preferences.Get(GeminiApiKeyPreferenceKey, string.Empty)))
-                Preferences.Set(GeminiApiKeyPreferenceKey, DefaultGeminiApiKey);
+            // Ưu tiên key đã lưu từ màn hình Cài đặt.
+            // Nếu chưa có thì mới lấy từ biến môi trường (dev/test).
+            if (!string.IsNullOrWhiteSpace(Preferences.Get(GeminiApiKeyPreferenceKey, string.Empty)))
+                return;
+
+            var envKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
+            if (!string.IsNullOrWhiteSpace(envKey))
+                Preferences.Set(GeminiApiKeyPreferenceKey, envKey.Trim());
         }
     }
 }

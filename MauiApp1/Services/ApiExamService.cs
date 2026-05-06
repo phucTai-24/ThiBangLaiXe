@@ -122,6 +122,7 @@ public sealed class ApiExamService : IExamService
             if (questionResponse?.Data is null)
                 continue;
 
+            await EnsureQuestionImageAsync(questionResponse.Data);
             exam.Questions.Add(MapQuestion(questionResponse.Data));
         }
 
@@ -158,6 +159,28 @@ public sealed class ApiExamService : IExamService
 
         _sampleExamCache[sampleExam.Id.ToString()] = sampleExam;
         return sampleExam;
+    }
+
+    private async Task EnsureQuestionImageAsync(ExamSessionQuestionDto question)
+    {
+        if (!string.IsNullOrWhiteSpace(question.ImageUrl))
+            return;
+
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/v1/questions/{question.QuestionId}");
+            await EnsureAuthorizedAsync(response);
+
+            if (!response.IsSuccessStatusCode)
+                return;
+
+            var questionDetail = await response.Content.ReadFromJsonAsync<ApiResponse<QuestionImageFallbackDto>>();
+            question.ImageUrl = FirstNonEmpty(questionDetail?.Data?.ImageUrl, questionDetail?.Data?.ImageUrlSnake, questionDetail?.Data?.Image);
+        }
+        catch
+        {
+            // Mock exam still works without image if the fallback endpoint is unavailable.
+        }
     }
 
     public async Task<bool> SaveAnswerAsync(string sessionId, long questionId, long answerId, CancellationToken cancellationToken = default)
@@ -284,11 +307,143 @@ public sealed class ApiExamService : IExamService
             Id = dto.QuestionId.ToString(),
             Number = dto.Number,
             Text = dto.Content,
+            ImageUrl = NormalizeAssetUrl(dto.ImageUrl),
             IsCritical = dto.IsCritical,
             Category = dto.TopicId.ToString(),
             SelectedAnswerId = dto.SelectedAnswerId?.ToString(),
             Answers = answers
         };
+    }
+
+    private static string? NormalizeAssetUrl(string? assetUrl)
+    {
+        if (string.IsNullOrWhiteSpace(assetUrl))
+        {
+            Console.WriteLine("[MockExam][Image] original=<empty> normalized=<null> extension=<none>");
+            return null;
+        }
+
+        var trimmed = assetUrl.Trim();
+        if (trimmed.StartsWith("data:image", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("[MockExam][Image] original=data-image normalized=data-image extension=data");
+            return trimmed;
+        }
+
+        var candidate = trimmed.Replace('\\', '/');
+
+        if (candidate.StartsWith("//", StringComparison.Ordinal))
+        {
+            candidate = $"http:{candidate}";
+        }
+        else if (IsRelativeAssetPath(candidate))
+        {
+            if (!Uri.TryCreate(ApiEndpoints.GetBaseUrl(), UriKind.Absolute, out var baseUri))
+            {
+                Console.WriteLine($"[MockExam][Image] original={trimmed} normalized=<null> extension=<unknown> reason=invalid-base-url");
+                return null;
+            }
+
+            candidate = new Uri(baseUri, NormalizeRelativeAssetPath(candidate)).ToString();
+        }
+        else if (IsMissingSchemeAbsoluteUrl(candidate))
+        {
+            candidate = $"http://{candidate}";
+        }
+        else if (!Uri.TryCreate(candidate, UriKind.Absolute, out _))
+        {
+            if (!Uri.TryCreate(ApiEndpoints.GetBaseUrl(), UriKind.Absolute, out var baseUri))
+            {
+                Console.WriteLine($"[MockExam][Image] original={trimmed} normalized=<null> extension=<unknown> reason=invalid-base-url");
+                return null;
+            }
+
+            candidate = new Uri(baseUri, NormalizeRelativeAssetPath(candidate)).ToString();
+        }
+
+        var escapedCandidate = Uri.EscapeUriString(candidate);
+        var normalizedUrl = NormalizeLoopbackUrlForDevice(escapedCandidate);
+        return ValidateAndLogAssetUrl(trimmed, normalizedUrl);
+    }
+
+    private static string? ValidateAndLogAssetUrl(string originalUrl, string normalizedUrl)
+    {
+        if (!Uri.TryCreate(normalizedUrl, UriKind.Absolute, out var uri)
+            || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
+        {
+            Console.WriteLine($"[MockExam][Image] original={originalUrl} normalized=<null> extension=<unknown> reason=invalid-absolute-uri");
+            return null;
+        }
+
+        var extension = Path.GetExtension(uri.AbsolutePath);
+        var normalizedExtension = string.IsNullOrWhiteSpace(extension) ? null : extension.ToLowerInvariant();
+        Console.WriteLine($"[MockExam][Image] original={originalUrl} normalized={uri.AbsoluteUri} extension={normalizedExtension ?? "<none>"}");
+        return uri.AbsoluteUri;
+    }
+
+    private static bool IsRelativeAssetPath(string value)
+    {
+        var normalized = value.TrimStart();
+        return normalized.StartsWith("/assets", StringComparison.OrdinalIgnoreCase)
+            || normalized.StartsWith("assets", StringComparison.OrdinalIgnoreCase)
+            || normalized.StartsWith("./assets", StringComparison.OrdinalIgnoreCase)
+            || normalized.StartsWith("../assets", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string NormalizeRelativeAssetPath(string value)
+    {
+        var normalized = value.Trim();
+        while (normalized.StartsWith("../", StringComparison.Ordinal))
+            normalized = normalized[3..];
+
+        if (normalized.StartsWith("./", StringComparison.Ordinal))
+            normalized = normalized[2..];
+
+        return normalized.TrimStart('/');
+    }
+
+    private static bool IsMissingSchemeAbsoluteUrl(string value)
+    {
+        var firstSlashIndex = value.IndexOf('/');
+        var hostPart = firstSlashIndex >= 0 ? value[..firstSlashIndex] : value;
+
+        return hostPart.Contains('.', StringComparison.Ordinal)
+            || hostPart.Contains(':', StringComparison.Ordinal)
+            || hostPart.Equals("localhost", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string NormalizeLoopbackUrlForDevice(string url)
+    {
+        if (DeviceInfo.Platform != DevicePlatform.Android)
+            return url;
+
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            return url;
+
+        var isLoopbackHost = string.Equals(uri.Host, "localhost", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(uri.Host, "127.0.0.1", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(uri.Host, "::1", StringComparison.OrdinalIgnoreCase);
+
+        if (!isLoopbackHost)
+            return url;
+
+        var builder = new UriBuilder(uri)
+        {
+            Host = "10.0.2.2"
+        };
+
+        return builder.Uri.ToString();
+    }
+
+    private static string? FirstNonEmpty(params string?[] values)
+    {
+        foreach (var value in values)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+                return value;
+        }
+
+        return null;
     }
 
     private static void ApplyReview(Exam exam, ExamSessionReviewDto? review)
@@ -307,6 +462,7 @@ public sealed class ApiExamService : IExamService
 
                 question.Number = item.Number;
                 question.Text = item.QuestionContent;
+                question.ImageUrl = NormalizeAssetUrl(item.ImageUrl) ?? question.ImageUrl;
                 question.IsCritical = item.IsCritical;
                 question.SelectedAnswerId = item.SelectedAnswerId?.ToString();
 
@@ -355,6 +511,7 @@ public sealed class ApiExamService : IExamService
                     Id = item.QuestionId.ToString(),
                     Number = item.Number,
                     Text = item.QuestionContent,
+                    ImageUrl = NormalizeAssetUrl(item.ImageUrl),
                     IsCritical = item.IsCritical,
                     SelectedAnswerId = item.SelectedAnswerId?.ToString(),
                     Answers = answers
@@ -411,5 +568,16 @@ public sealed class ApiExamService : IExamService
         {
             return fallbackMessage;
         }
+    }
+
+    private sealed class QuestionImageFallbackDto
+    {
+        public string? ImageUrl { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("image_url")]
+        public string? ImageUrlSnake { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("image")]
+        public string? Image { get; set; }
     }
 }

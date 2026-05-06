@@ -169,6 +169,7 @@ public sealed class ChatOverlayViewModel : BaseViewModel
 
             var session = await _practiceService.CreateSessionAsync(aiResponse.Practice);
             _practiceSessionStore.SetCurrentSession(session);
+            await _practiceSessionStore.SaveAsync(session);
 
             Messages.Add(new ChatMessageViewModel(
                 "AI",

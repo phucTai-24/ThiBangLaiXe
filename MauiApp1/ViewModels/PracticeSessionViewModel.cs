@@ -94,6 +94,11 @@ public class PracticeSessionViewModel : BaseViewModel
 
     private async Task LoadSessionAsync()
     {
+        if (_practiceSessionStore.CurrentSession == null)
+        {
+            await _practiceSessionStore.LoadAsync();
+        }
+
         CurrentSession = _practiceSessionStore.TryGetSession(SessionId, out var storedSession)
             ? storedSession
             : await _practiceService.GetPracticeSessionAsync(SessionId);
@@ -148,7 +153,12 @@ public class PracticeSessionViewModel : BaseViewModel
             return;
         }
 
-        await _practiceService.SubmitAnswerAsync(CurrentSession.Id, CurrentQuestion.Id, answer.Id);
+        var result = await _practiceService.SubmitAnswerAsync(CurrentSession.Id, CurrentQuestion.Id, answer.Id);
+        if (!string.IsNullOrWhiteSpace(result.Explanation))
+        {
+            CurrentQuestion.Explanation = result.Explanation;
+        }
+
         OnPropertyChanged(nameof(AnsweredQuestionsText));
         OnPropertyChanged(nameof(CorrectQuestionsText));
     }
@@ -170,6 +180,7 @@ public class PracticeSessionViewModel : BaseViewModel
         }
 
         await _practiceService.SubmitPracticeSessionAsync(CurrentSession.Id);
+        await _practiceSessionStore.ClearAsync();
         await Shell.Current.GoToAsync($"{nameof(Views.PracticeResultPage)}?sessionId={CurrentSession.Id}");
     }
 
@@ -193,6 +204,7 @@ public class PracticeSessionViewModel : BaseViewModel
             return;
         }
 
+        await _practiceSessionStore.ClearAsync();
         await Shell.Current.GoToAsync(nameof(Views.TrafficSignsPage));
     }
 }

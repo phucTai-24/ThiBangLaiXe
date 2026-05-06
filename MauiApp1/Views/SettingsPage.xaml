@@ -122,7 +122,7 @@
                     </Border>
 
                     <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 22">
-                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
                             <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24">
                                 <Label Text="🌐" FontSize="22" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
                             </Border>
@@ -130,8 +130,48 @@
                                 <Label Text="Ngôn ngữ" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#271900" />
                                 <Label Text="Tiếng Việt" FontSize="13" TextColor="#5F564B" />
                             </VerticalStackLayout>
-                            <Label Grid.Column="2" Text="›" FontSize="24" TextColor="#837560" VerticalOptions="Center" />
                         </Grid>
+                    </Border>
+
+                    <Border Padding="18" BackgroundColor="#F6F3EC" StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                                <Border WidthRequest="48" HeightRequest="48" BackgroundColor="#FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 24">
+                                    <Label Text="🤖" FontSize="22" TextColor="#7C5800" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label Text="Gemini API Key" FontFamily="OpenSans-Semibold" FontSize="17" TextColor="#271900" />
+                                    <Label Text="Dán API key từ Google AI Studio để dùng chat AI" FontSize="13" TextColor="#5F564B" />
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Entry x:Name="GeminiApiKeyEntry"
+                                   Placeholder="AIza..."
+                                   IsPassword="True"
+                                   BackgroundColor="#FFFFFF"
+                                   TextColor="#271900"
+                                   PlaceholderColor="#A59A8A"
+                                   ClearButtonVisibility="WhileEditing"
+                                   HeightRequest="44" />
+
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Button Text="Lưu key"
+                                        Clicked="OnSaveGeminiApiKeyClicked"
+                                        BackgroundColor="#FFB800"
+                                        TextColor="#271900"
+                                        CornerRadius="12"
+                                        HeightRequest="42" />
+                                <Button Grid.Column="1"
+                                        Text="Xóa key"
+                                        Clicked="OnClearGeminiApiKeyClicked"
+                                        BackgroundColor="#FFFFFF"
+                                        TextColor="#7C5800"
+                                        BorderColor="#E2D7C6"
+                                        BorderWidth="1"
+                                        CornerRadius="12"
+                                        HeightRequest="42" />
+                            </Grid>
+                        </VerticalStackLayout>
                     </Border>
                 </VerticalStackLayout>
 

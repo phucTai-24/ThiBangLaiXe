@@ -74,6 +74,11 @@ public partial class ProfilePage : ContentPage
         await DisplayAlert("Chỉnh sửa hồ sơ", "Điểm gắn API cập nhật hồ sơ sẽ được nối ở bước sau.", "Đã hiểu");
     }
 
+    private async void OnSettingsTapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(SettingsPage));
+    }
+
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
         var confirm = await DisplayAlert("Đăng xuất", "Bạn có chắc muốn đăng xuất?", "Đăng xuất", "Hủy");

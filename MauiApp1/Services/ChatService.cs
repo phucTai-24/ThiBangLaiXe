@@ -67,11 +67,8 @@ public sealed class ChatService : IChatService
 
     private static readonly string[] GeminiModels =
     {
-        "gemini-2.5-flash",
-        "gemini-2.5-flash-lite",
-        "gemini-2.5-pro",
-        "gemini-2.0-flash",
-        "gemini-2.0-flash-lite"
+        // Theo yêu cầu hiện tại: thử model gemini-2.0-flash-001.
+        "gemini-2.0-flash-001"
     };
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -155,13 +152,6 @@ public sealed class ChatService : IChatService
                         return parsed;
 
                     attemptedErrors.Add(parsed.ErrorMessage ?? $"{apiVersion}/{model}: response rỗng.");
-
-                    // Giống survival game: nếu model trả rỗng/parse lỗi nhẹ thì retry 1 lần với cùng payload trước khi qua model fallback.
-                    parsed = await CallGeminiModelAsync(apiVersion, model, apiKey, payload, cancellationToken);
-                    if (parsed.IsSuccess && !string.IsNullOrWhiteSpace(parsed.Content))
-                        return parsed;
-
-                    attemptedErrors.Add(parsed.ErrorMessage ?? $"{apiVersion}/{model}: retry response rỗng.");
                 }
             }
 
@@ -176,12 +166,26 @@ public sealed class ChatService : IChatService
     private async Task<GeminiCallResult> CallGeminiModelAsync(string apiVersion, string model, string apiKey, object payload, CancellationToken cancellationToken)
     {
         var endpoint = $"https://generativelanguage.googleapis.com/{apiVersion}/models/{model}:generateContent?key={Uri.EscapeDataString(apiKey)}";
-        using var response = await _httpClient.PostAsJsonAsync(endpoint, payload, cancellationToken);
+        using var response = await SendWithRateLimitBackoffAsync(endpoint, payload, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
             var errorBody = await response.Content.ReadAsStringAsync(cancellationToken);
             var statusCode = (int)response.StatusCode;
+
+            if (errorBody.Contains("API_KEY_INVALID", StringComparison.OrdinalIgnoreCase)
+                || errorBody.Contains("API key expired", StringComparison.OrdinalIgnoreCase)
+                || errorBody.Contains("invalid API key", StringComparison.OrdinalIgnoreCase))
+            {
+                return GeminiCallResult.Fail($"{apiVersion}/{model}: API key không hợp lệ hoặc đã hết hạn. Vào Cài đặt -> Gemini API Key để dán key mới từ AI Studio.");
+            }
+
+            if (statusCode == 403
+                || errorBody.Contains("PERMISSION_DENIED", StringComparison.OrdinalIgnoreCase)
+                || errorBody.Contains("permission", StringComparison.OrdinalIgnoreCase))
+            {
+                return GeminiCallResult.Fail($"{apiVersion}/{model}: Key hợp lệ nhưng chưa có quyền dùng model này (hoặc project chưa bật Generative Language API / billing). Thử model khác hoặc kiểm tra quyền project trên Google Cloud.");
+            }
 
             if (statusCode == 429 || errorBody.Contains("rate", StringComparison.OrdinalIgnoreCase))
                 return GeminiCallResult.Fail($"{apiVersion}/{model}: Bạn hỏi hơi nhanh rồi. Chờ vài giây rồi hỏi tiếp giúp mình nhé.");
@@ -200,24 +204,49 @@ public sealed class ChatService : IChatService
         return ParseGeminiResponse(document, apiVersion, model);
     }
 
+    private async Task<HttpResponseMessage> SendWithRateLimitBackoffAsync(string endpoint, object payload, CancellationToken cancellationToken)
+    {
+        var delays = new[] { 0, 1200, 2500, 5000 }; // ms
+        HttpResponseMessage? lastResponse = null;
+
+        for (var attempt = 0; attempt < delays.Length; attempt++)
+        {
+            if (attempt > 0)
+                await Task.Delay(delays[attempt], cancellationToken);
+
+            lastResponse?.Dispose();
+            lastResponse = await _httpClient.PostAsJsonAsync(endpoint, payload, cancellationToken);
+
+            if ((int)lastResponse.StatusCode != 429)
+                return lastResponse;
+        }
+
+        return lastResponse!;
+    }
+
     private static object BuildGeminiRequestPayload(string userMessage, IReadOnlyList<ChatHistoryMessage> history, bool wantsPracticeSession)
     {
+        var systemPrompt = BuildSystemPrompt(wantsPracticeSession);
+        var contents = BuildGeminiContents(userMessage, history);
+
+        // Đưa system prompt vào đầu hội thoại như user text để tương thích rộng với nhiều model/version.
+        contents.Insert(0, new
+        {
+            role = "user",
+            parts = new[]
+            {
+                new { text = systemPrompt }
+            }
+        });
+
         return new
         {
-            systemInstruction = new
-            {
-                parts = new[]
-                {
-                    new { text = BuildSystemPrompt(wantsPracticeSession) }
-                }
-            },
             generationConfig = new
             {
                 temperature = 0.2,
-                maxOutputTokens = 360,
-                responseMimeType = "application/json"
+                maxOutputTokens = 360
             },
-            contents = BuildGeminiContents(userMessage, history)
+            contents
         };
     }
 
@@ -324,8 +353,12 @@ Bạn là trợ lý AI tiếng Việt trong app ôn thi bằng lái xe.
 Nhiệm vụ:
 - Hiểu tiếng Việt tự nhiên, kể cả không dấu, viết tắt, sai chính tả nhẹ.
 - Chỉ hỗ trợ học lý thuyết lái xe: biển báo, câu điểm liệt, sa hình/tình huống, mẹo học và luật giao thông cơ bản.
-- Trả lời ngắn gọn, rõ ràng, ưu tiên gạch đầu dòng khi cần.
+- Trả lời tự nhiên như gia sư, bám sát đúng câu người dùng vừa hỏi.
+- Nếu là câu hỏi đúng/sai hoặc được/không được (ví dụ: "biển cấm rẽ trái có được quay đầu không"), phải trả lời trực tiếp ngay ở câu đầu: "Được" hoặc "Không được", rồi mới giải thích ngắn.
+- Ưu tiên nêu căn cứ theo nhóm biển báo hoặc nguyên tắc giao thông cốt lõi, không trả lời chung chung.
+- Trả lời ngắn gọn 2-5 câu, rõ ràng, ưu tiên gạch đầu dòng khi cần.
 - Nếu câu hỏi lạc đề, lịch sự kéo về chủ đề ôn thi bằng lái.
+- Nếu thiếu dữ kiện (không thấy hình biển cụ thể), nói rõ giả định hợp lý trước khi trả lời.
 
 App đã phân loại tin nhắn này là CHAT thường, không phải tạo phiên luyện tập.
 Luôn trả về JSON hợp lệ, không giải thích ngoài JSON, không markdown.
@@ -469,7 +502,121 @@ JSON format:
         else
             reply = "Bạn có thể hỏi mình về mẹo học lý thuyết, biển báo, câu điểm liệt hoặc nhập như: 'luyện 20 câu biển báo' để tạo phiên ôn tập.";
 
-        return string.IsNullOrWhiteSpace(debugReason) ? reply : $"{reply}\n\n[Debug] {debugReason}";
+        return string.IsNullOrWhiteSpace(debugReason) ? reply : $"{reply}\n\n[Debug] {BuildCompactDebugMessage(debugReason)}";
+    }
+
+    private static string BuildCompactDebugMessage(string debugReason)
+    {
+        if (string.IsNullOrWhiteSpace(debugReason))
+            return "unknown";
+
+        var normalized = debugReason.Replace("\r", " ").Replace("\n", " ");
+
+        // Nếu là lỗi tổng hợp sau khi fallback nhiều model, lấy lỗi đầu tiên để phản ánh đúng nguyên nhân gốc.
+        const string attemptedMarker = "Đã thử:";
+        var attemptedIndex = normalized.IndexOf(attemptedMarker, StringComparison.OrdinalIgnoreCase);
+        if (attemptedIndex >= 0)
+        {
+            var attempted = normalized[(attemptedIndex + attemptedMarker.Length)..].Trim();
+            var firstError = attempted.Split("|", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(firstError))
+                normalized = firstError;
+        }
+
+        if (normalized.Contains("API_KEY_INVALID", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("API key expired", StringComparison.OrdinalIgnoreCase))
+            return "API_KEY_INVALID";
+
+        if (normalized.Contains("không hợp lệ", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("het han", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("hết hạn", StringComparison.OrdinalIgnoreCase))
+            return "API_KEY_INVALID";
+
+        if (normalized.Contains("INVALID_ARGUMENT", StringComparison.OrdinalIgnoreCase))
+        {
+            var message = ExtractGoogleErrorMessage(normalized);
+            return string.IsNullOrWhiteSpace(message)
+                ? "INVALID_ARGUMENT"
+                : $"INVALID_ARGUMENT: {message}";
+        }
+
+        if (normalized.Contains("không có candidates", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("thiếu content.parts", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("content text rỗng", StringComparison.OrdinalIgnoreCase))
+            return "INVALID_RESPONSE_FORMAT";
+
+        if (normalized.Contains("PERMISSION_DENIED", StringComparison.OrdinalIgnoreCase))
+            return "PERMISSION_DENIED";
+
+        if (normalized.Contains("chưa có quyền", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("billing", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("Generative Language API", StringComparison.OrdinalIgnoreCase))
+            return "PERMISSION_DENIED";
+
+        if (normalized.Contains("MODEL_NOT_FOUND", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("not found", StringComparison.OrdinalIgnoreCase))
+            return "MODEL_NOT_FOUND";
+
+        if (normalized.Contains("model không khả dụng", StringComparison.OrdinalIgnoreCase))
+            return "MODEL_NOT_AVAILABLE";
+
+        if (normalized.Contains("UNAVAILABLE", StringComparison.OrdinalIgnoreCase))
+            return "UNAVAILABLE";
+
+        if (normalized.Contains("rate", StringComparison.OrdinalIgnoreCase))
+            return "RATE_LIMIT";
+
+        if (normalized.Contains("hỏi hơi nhanh", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("cho vai giay", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("chờ vài giây", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("hoi nhanh", StringComparison.OrdinalIgnoreCase))
+            return "RATE_LIMIT";
+
+        if (normalized.Contains("Exception khi gọi Gemini", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("Exception", StringComparison.OrdinalIgnoreCase))
+        {
+            var compactException = normalized;
+            if (compactException.Length > 120)
+                compactException = compactException[..120] + "...";
+            return $"EXCEPTION: {compactException}";
+        }
+
+        var reasonMatch = System.Text.RegularExpressions.Regex.Match(
+            normalized,
+            "\"reason\"\\s*:\\s*\"([A-Z0-9_]+)\"",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        if (reasonMatch.Success)
+            return reasonMatch.Groups[1].Value.ToUpperInvariant();
+
+        var httpMatch = System.Text.RegularExpressions.Regex.Match(normalized, @"\bHTTP\s+(\d{3})\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        if (httpMatch.Success)
+            return $"HTTP {httpMatch.Groups[1].Value}";
+
+        // Fallback cuối: luôn trả về mẩu lỗi gốc rút gọn để không bị mù thông tin.
+        var compact = normalized.Trim();
+        if (compact.Length > 120)
+            compact = compact[..120] + "...";
+        return string.IsNullOrWhiteSpace(compact) ? "UNKNOWN_ERROR" : $"UNKNOWN_ERROR: {compact}";
+    }
+
+    private static string? ExtractGoogleErrorMessage(string normalized)
+    {
+        if (string.IsNullOrWhiteSpace(normalized))
+            return null;
+
+        var msgMatch = System.Text.RegularExpressions.Regex.Match(
+            normalized,
+            "\"message\"\\s*:\\s*\"([^\"]+)\"",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+        if (!msgMatch.Success)
+            return null;
+
+        var message = msgMatch.Groups[1].Value.Trim();
+        if (message.Length > 90)
+            message = message[..90] + "...";
+
+        return message;
     }
 
     private static int ExtractRequestedQuestionCount(string normalizedMessage)
@@ -528,9 +675,70 @@ JSON format:
         if (string.IsNullOrWhiteSpace(value))
             return SerializeAiResponse(AiResponse.CreateBusyFallback("AI response rỗng trước khi parse."));
 
-        var start = value.IndexOf('{');
-        var end = value.LastIndexOf('}');
-        return start >= 0 && end > start ? value[start..(end + 1)] : value;
+        var raw = value.Trim();
+
+        // Bóc code fence nếu model trả về ```json ... ```
+        if (raw.StartsWith("```", StringComparison.Ordinal))
+        {
+            var firstLineEnd = raw.IndexOf('\n');
+            if (firstLineEnd > 0)
+                raw = raw[(firstLineEnd + 1)..];
+
+            var fenceEnd = raw.LastIndexOf("```", StringComparison.Ordinal);
+            if (fenceEnd > 0)
+                raw = raw[..fenceEnd];
+        }
+
+        // Tìm object JSON cân bằng dấu ngoặc nhọn đầu tiên.
+        var start = raw.IndexOf('{');
+        if (start < 0)
+            return raw;
+
+        var depth = 0;
+        var inString = false;
+        var escaped = false;
+
+        for (var i = start; i < raw.Length; i++)
+        {
+            var ch = raw[i];
+
+            if (inString)
+            {
+                if (escaped)
+                {
+                    escaped = false;
+                    continue;
+                }
+
+                if (ch == '\\')
+                {
+                    escaped = true;
+                    continue;
+                }
+
+                if (ch == '"')
+                    inString = false;
+
+                continue;
+            }
+
+            if (ch == '"')
+            {
+                inString = true;
+                continue;
+            }
+
+            if (ch == '{')
+                depth++;
+            else if (ch == '}')
+                depth--;
+
+            if (depth == 0)
+                return raw[start..(i + 1)];
+        }
+
+        // Nếu JSON bị cắt cụt, trả nguyên để nhánh catch xử lý fallback an toàn.
+        return raw;
     }
 
     private static string SerializeAiResponse(AiResponse response)

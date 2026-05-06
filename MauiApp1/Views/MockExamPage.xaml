@@ -4,231 +4,236 @@
              xmlns:vm="clr-namespace:MauiApp1.ViewModels"
              xmlns:models="clr-namespace:MauiApp1.Models"
              xmlns:controls="clr-namespace:MauiApp1.Controls"
+             xmlns:converters="clr-namespace:MauiApp1.Converters"
              x:Class="MauiApp1.Views.MockExamPage"
              x:DataType="vm:MockExamViewModel"
-             Style="{StaticResource AppPageStyle}">
+             Style="{StaticResource AppPageStyle}"
+             Padding="16,12,16,12">
 
-    <Grid RowDefinitions="Auto,*,Auto">
+    <ContentPage.Resources>
+        <converters:IsFalseConverter x:Key="IsFalseConverter" />
+
+        <Style x:Key="MetaLabelStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="OpenSans-Semibold" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="TextColor" Value="#6B7280" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="ExamAnswerCardStyle" TargetType="Border">
+            <Setter Property="Padding" Value="12,10" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+            <Setter Property="BackgroundColor" Value="#FFFFFF" />
+            <Setter Property="Stroke" Value="#E7EAF0" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+            <Setter Property="Shadow" Value="0,6,16,#0A000000" />
+            <Style.Triggers>
+                <DataTrigger TargetType="Border"
+                             Binding="{Binding IsSelected}"
+                             Value="True">
+                    <Setter Property="BackgroundColor" Value="#EEF5FF" />
+                    <Setter Property="Stroke" Value="#2563EB" />
+                    <Setter Property="StrokeThickness" Value="2" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*">
         <!-- Header -->
+        <ScrollView>
+            <VerticalStackLayout Spacing="16">
+                <Grid x:Name="QuestionViewport"
+                      RowDefinitions="Auto,Auto,Auto"
+                      RowSpacing="12">
+
         <Border Grid.Row="0"
-                Style="{StaticResource AppHeaderContainer}"
-                Shadow="0,8,20,#12000000">
+                BackgroundColor="#FFFFFF"
+                Padding="14"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 18"
+                Shadow="0,8,22,#10000000">
             <Grid ColumnDefinitions="Auto,*,Auto"
-                  ColumnSpacing="14">
-                <Border WidthRequest="42"
-                        HeightRequest="42"
-                        BackgroundColor="{StaticResource AppSurface}"
-                        Stroke="{StaticResource AppBorder}"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 16"
+                  RowDefinitions="Auto,Auto"
+                  ColumnSpacing="12"
+                  RowSpacing="10">
+                <Border WidthRequest="40"
+                        HeightRequest="40"
+                        BackgroundColor="#F2F3F5"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 20"
                         VerticalOptions="Center">
-                    <Label Text="←"
-                           FontSize="18"
-                           TextColor="{StaticResource AppPrimaryText}"
+                    <Label Text="‹"
+                           FontSize="28"
+                           TextColor="#111827"
                            HorizontalOptions="Center"
-                           VerticalOptions="Center" />
+                           VerticalOptions="Center"
+                           TranslationY="-2" />
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBackTapped" />
                     </Border.GestureRecognizers>
                 </Border>
 
                 <VerticalStackLayout Grid.Column="1"
-                                     Spacing="2"
+                                     Spacing="1"
                                      VerticalOptions="Center">
-                    <Label Text="ONTHIBANGLAI"
-                           FontFamily="OpenSans-Semibold"
-                           FontSize="10"
-                           CharacterSpacing="2"
-                           TextColor="{StaticResource AppTertiaryText}" />
-                    <Label Text="Thi thử trắc nghiệm"
+                    <Label Text="{Binding CurrentQuestionText}"
                            FontFamily="OpenSans-Semibold"
                            FontSize="20"
-                           TextColor="{StaticResource AppPrimaryText}" />
+                           TextColor="#111827" />
+                    <Label Text="Thi thử trắc nghiệm"
+                           FontSize="12"
+                           TextColor="#9CA3AF" />
                 </VerticalStackLayout>
 
                 <Border Grid.Column="2"
-                        Padding="12,6"
-                        BackgroundColor="{StaticResource AppSurfaceAccent}"
+                        Padding="10,7"
+                        BackgroundColor="#EEF5FF"
                         StrokeThickness="0"
                         StrokeShape="RoundRectangle 999"
                         VerticalOptions="Center">
                     <HorizontalStackLayout Spacing="6">
                         <Label Text="⏱"
                                FontSize="14"
-                               TextColor="{StaticResource AppBrand}"
+                               TextColor="#2563EB"
                                VerticalTextAlignment="Center" />
                         <Label Text="{Binding TimeRemainingText}"
                                FontFamily="OpenSans-Semibold"
-                               FontSize="14"
-                               TextColor="{StaticResource AppBrand}"
+                               FontSize="12"
+                               TextColor="#2563EB"
                                VerticalTextAlignment="Center" />
                     </HorizontalStackLayout>
+                </Border>
+
+                <Border Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        BackgroundColor="#F5F7FA"
+                        Padding="10,8"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 12">
+                    <Grid ColumnDefinitions="*,Auto"
+                          ColumnSpacing="10">
+                        <Label Text="{Binding AnsweredQuestionsText}"
+                               Style="{StaticResource MetaLabelStyle}" />
+                        <Label Grid.Column="1"
+                               Text="{Binding CurrentExam.Title}"
+                               Style="{StaticResource MetaLabelStyle}"
+                               TextColor="#2563EB" />
+                    </Grid>
                 </Border>
             </Grid>
         </Border>
 
         <!-- Content -->
-        <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="24,18,24,140"
-                                 Spacing="20">
-                <!-- Progress -->
-                <VerticalStackLayout Spacing="10">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="{Binding CurrentQuestionText}"
-                               FontFamily="OpenSans-Semibold"
-                               FontSize="28"
-                               FontAttributes="Italic"
-                               TextColor="{StaticResource AppPrimaryText}" />
-                        <Label Grid.Column="1"
-                               Text="{Binding CurrentExam.Title}"
-                               FontFamily="OpenSans-Semibold"
-                               FontSize="11"
-                               CharacterSpacing="2"
-                               TextColor="{StaticResource AppBrand}"
-                               VerticalOptions="End" />
-                    </Grid>
-                    <Grid HeightRequest="10">
-                        <Border BackgroundColor="#E5E2DB"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 999" />
-                        <Border WidthRequest="{Binding CurrentExam.AnsweredQuestions, Converter={StaticResource ProgressConverter}}"
-                                HorizontalOptions="Start"
-                                BackgroundColor="{StaticResource AppBrand}"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 999" />
-                    </Grid>
-                </VerticalStackLayout>
-
                 <!-- Question Card -->
-                <VerticalStackLayout Spacing="18"
-                                     IsVisible="{Binding CurrentQuestion, Converter={StaticResource IsNotNullConverter}}">
-                    <Border Style="{StaticResource AppMutedCard}"
-                            Padding="22">
-                        <VerticalStackLayout Spacing="20">
-                            <Border Padding="12,8"
-                                    BackgroundColor="#FFF8EA"
-                                    Stroke="#1AD5C4AB"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 14"
-                                    HorizontalOptions="Start">
-                                <Label Text="Tập trung đọc kỹ câu hỏi rồi chọn 1 đáp án phù hợp nhất"
-                                       FontFamily="OpenSans-Semibold"
-                                       FontSize="12"
-                                       TextColor="#7C5800" />
-                            </Border>
+        <Border Grid.Row="1"
+                BackgroundColor="#FFFFFF"
+                Padding="14"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 20"
+                Shadow="0,8,22,#0D000000"
+                IsVisible="{Binding CurrentQuestion, Converter={StaticResource IsNotNullConverter}}">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                  RowSpacing="10">
+                <HorizontalStackLayout Spacing="8">
+                    <Border Padding="8,4"
+                            BackgroundColor="#EEF5FF"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 999">
+                        <Label Text="{Binding CurrentQuestion.Category}"
+                               FontFamily="OpenSans-Semibold"
+                               FontSize="10"
+                               TextColor="#2563EB" />
+                    </Border>
+                    <Border Padding="8,4"
+                            BackgroundColor="#FFF3E8"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 999"
+                            IsVisible="{Binding CurrentQuestion.IsCritical}">
+                        <Label Text="Điểm liệt"
+                               FontFamily="OpenSans-Semibold"
+                               FontSize="10"
+                               TextColor="#C2410C" />
+                    </Border>
+                </HorizontalStackLayout>
 
-                            <Label Text="{Binding CurrentQuestion.Text}"
-                                    FontFamily="OpenSans-Semibold"
-                                    FontSize="24"
-                                    LineHeight="1.3"
-                                    TextColor="{StaticResource AppPrimaryText}"
-                                    LineBreakMode="WordWrap" />
+                <Label Grid.Row="1"
+                       Text="{Binding CurrentQuestion.Text}"
+                       FontFamily="OpenSans-Semibold"
+                       FontSize="18"
+                       LineHeight="1.2"
+                       MaxLines="4"
+                       TextColor="#111827" />
 
-                            <!-- Image (if exists) -->
-                            <Border Padding="10"
-                                    BackgroundColor="{StaticResource AppSurface}"
-                                    Stroke="{StaticResource AppBorder}"
-                                    StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 20"
-                                    HorizontalOptions="Center"
-                                    IsVisible="{Binding CurrentQuestion.ImageUrl, Converter={StaticResource IsNotNullConverter}}">
-                                <Border WidthRequest="220"
-                                        HeightRequest="160"
-                                        BackgroundColor="{StaticResource AppSurfaceAccent}"
-                                        StrokeThickness="0"
-                                        StrokeShape="RoundRectangle 16">
-                                    <Label Text="⚠"
-                                           FontSize="72"
-                                           TextColor="{StaticResource AppBrandAccent}"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center" />
-                                </Border>
-                            </Border>
+                <!-- Image (if exists) -->
+                <Border Grid.Row="2"
+                        BackgroundColor="#F8FAFC"
+                        Padding="8"
+                        Stroke="#E5E7EB"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 16"
+                        IsVisible="{Binding CurrentQuestion.HasImage}">
+                    <Grid HeightRequest="260">
+                        <Image Source="{Binding CurrentQuestion.QuestionImageSource}"
+                               Aspect="AspectFit"
+                               IsVisible="{Binding CurrentQuestion.HasDisplayImage}"
+                               HandlerChanged="OnQuestionImageHandlerChanged" />
 
-                            <!-- Answers -->
-                            <VerticalStackLayout Spacing="12"
-                                                 BindableLayout.ItemsSource="{Binding CurrentQuestion.Answers}">
+                        <VerticalStackLayout Spacing="6"
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center"
+                                             IsVisible="{Binding CurrentQuestion.ShowImagePlaceholder}">
+                            <Label Text="🖼️"
+                                   FontSize="28"
+                                   HorizontalTextAlignment="Center" />
+                            <Label Text="Không tải được hình ảnh"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="12"
+                                   TextColor="#9CA3AF"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Answers for questions without image -->
+                <Border Grid.Row="2"
+                        BackgroundColor="#FFFFFF"
+                        Padding="0"
+                        StrokeThickness="0"
+                        IsVisible="{Binding CurrentQuestion.HasImage, Converter={StaticResource IsFalseConverter}}">
+                    <VerticalStackLayout Spacing="0"
+                                         BindableLayout.ItemsSource="{Binding CurrentQuestion.Answers}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="models:Answer">
-                                        <Border Padding="16"
-                                                 StrokeShape="RoundRectangle 18"
-                                                 HorizontalOptions="Fill">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="BackgroundColor" Value="{StaticResource AppSurface}" />
-                                                    <Setter Property="StrokeThickness" Value="0" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger TargetType="Border"
-                                                                     Binding="{Binding IsSelected}"
-                                                                     Value="True">
-                                                            <Setter Property="BackgroundColor" Value="{StaticResource AppSelectedAnswerLight}" />
-                                                            <Setter Property="Stroke" Value="{StaticResource AppSelectedAnswer}" />
-                                                            <Setter Property="StrokeThickness" Value="3" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <Grid ColumnDefinitions="Auto,*"
-                                                  ColumnSpacing="14">
-                                                <Border WidthRequest="40"
-                                                        HeightRequest="40"
+                                        <Border Style="{StaticResource ExamAnswerCardStyle}">
+                                            <Grid ColumnDefinitions="36,*"
+                                                  ColumnSpacing="10"
+                                                  VerticalOptions="Center">
+                                                <Border WidthRequest="32"
+                                                        HeightRequest="32"
+                                                        BackgroundColor="#F3F4F6"
                                                         StrokeThickness="0"
-                                                        StrokeShape="RoundRectangle 20"
-                                                        VerticalOptions="Start">
-                                                    <Border.Style>
-                                                        <Style TargetType="Border">
-                                                            <Setter Property="BackgroundColor" Value="{StaticResource AppSurfaceMuted}" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger TargetType="Border"
-                                                                             Binding="{Binding IsSelected}"
-                                                                             Value="True">
-                                                                    <Setter Property="BackgroundColor" Value="{StaticResource AppSelectedAnswer}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Border.Style>
+                                                        StrokeShape="RoundRectangle 16"
+                                                        VerticalOptions="Center">
                                                     <Label Text="{Binding Label}"
                                                            FontFamily="OpenSans-Semibold"
-                                                           FontSize="16"
+                                                           FontSize="14"
+                                                           TextColor="#374151"
                                                            HorizontalOptions="Center"
-                                                           VerticalOptions="Center">
-                                                        <Label.Style>
-                                                            <Style TargetType="Label">
-                                                                <Setter Property="TextColor" Value="{StaticResource AppSecondaryText}" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger TargetType="Label"
-                                                                                 Binding="{Binding IsSelected}"
-                                                                                 Value="True">
-                                                                        <Setter Property="TextColor" Value="{StaticResource AppSurface}" />
-                                                                        <Setter Property="FontFamily" Value="OpenSans-Semibold" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Label.Style>
-                                                    </Label>
+                                                           VerticalOptions="Center" />
                                                 </Border>
+
                                                 <Label Grid.Column="1"
                                                        Text="{Binding Text}"
-                                                       FontSize="16"
-                                                       TextColor="{StaticResource AppPrimaryText}"
+                                                       FontSize="14"
+                                                       MaxLines="2"
+                                                       LineBreakMode="TailTruncation"
+                                                       TextColor="#111827"
                                                        VerticalTextAlignment="Center"
-                                                       HorizontalOptions="Fill"
-                                                       LineBreakMode="WordWrap" >
-                                                    <Label.Style>
-                                                        <Style TargetType="Label">
-                                                            <Setter Property="FontFamily" Value="OpenSansRegular" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger TargetType="Label"
-                                                                             Binding="{Binding IsSelected}"
-                                                                             Value="True">
-                                                                    <Setter Property="FontFamily" Value="OpenSans-Semibold" />
-                                                                    <Setter Property="TextColor" Value="{StaticResource AppSelectedAnswer}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Label.Style>
-                                                </Label>
+                                                       HorizontalOptions="Fill" />
                                             </Grid>
+
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectAnswerCommand}"
                                                                       CommandParameter="{Binding .}" />
@@ -236,122 +241,182 @@
                                         </Border>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
-                            </VerticalStackLayout>
-                        </VerticalStackLayout>
-                    </Border>
+                    </VerticalStackLayout>
+                </Border>
 
                     <!-- Navigation Buttons -->
-                    <Grid ColumnDefinitions="*,*"
-                          ColumnSpacing="14">
+                <Grid Grid.Row="3"
+                      ColumnDefinitions="*,*"
+                      ColumnSpacing="10">
                         <Button Text="QUAY LẠI"
                                 Grid.Column="0"
-                                BackgroundColor="{StaticResource AppSurfaceMuted}"
-                                TextColor="{StaticResource AppBrand}"
+                                BackgroundColor="#EEF2F7"
+                                TextColor="#374151"
                                 FontFamily="OpenSans-Semibold"
-                                CornerRadius="28"
-                                HeightRequest="56"
+                                FontSize="12"
+                                CornerRadius="18"
+                                HeightRequest="40"
                                 Command="{Binding PreviousQuestionCommand}" />
                         <Button Text="TIẾP THEO"
                                 Grid.Column="1"
-                                BackgroundColor="{StaticResource AppBrandAccent}"
-                                TextColor="{StaticResource AppPrimaryText}"
+                                BackgroundColor="#2563EB"
+                                TextColor="#FFFFFF"
                                 FontFamily="OpenSans-Semibold"
-                                CornerRadius="28"
-                                HeightRequest="56"
+                                FontSize="12"
+                                CornerRadius="18"
+                                HeightRequest="40"
                                 Command="{Binding NextQuestionCommand}" />
                     </Grid>
-                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <!-- Answers for questions with image -->
+        <Border Grid.Row="2"
+                BackgroundColor="#FFFFFF"
+                Padding="12,12,12,4"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 20"
+                Shadow="0,-4,22,#10000000"
+                IsEnabled="{Binding CurrentQuestion.HasImage}"
+                IsVisible="{Binding CurrentQuestion, Converter={StaticResource IsNotNullConverter}}">
+            <Border.Triggers>
+                <DataTrigger TargetType="Border"
+                             Binding="{Binding CurrentQuestion.HasImage}"
+                             Value="False">
+                    <Setter Property="IsVisible" Value="False" />
+                </DataTrigger>
+            </Border.Triggers>
+            <VerticalStackLayout Spacing="0"
+                                 BindableLayout.ItemsSource="{Binding CurrentQuestion.Answers}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:Answer">
+                        <Border Style="{StaticResource ExamAnswerCardStyle}">
+                            <Grid ColumnDefinitions="36,*"
+                                  ColumnSpacing="10"
+                                  VerticalOptions="Center">
+                                <Border WidthRequest="32"
+                                        HeightRequest="32"
+                                        BackgroundColor="#F3F4F6"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 16"
+                                        VerticalOptions="Center">
+                                    <Label Text="{Binding Label}"
+                                           FontFamily="OpenSans-Semibold"
+                                           FontSize="14"
+                                           TextColor="#374151"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                </Border>
+
+                                <Label Grid.Column="1"
+                                       Text="{Binding Text}"
+                                       FontSize="14"
+                                       MaxLines="2"
+                                       LineBreakMode="TailTruncation"
+                                       TextColor="#111827"
+                                       VerticalTextAlignment="Center" />
+                            </Grid>
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectAnswerCommand}"
+                                                      CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </Border>
+                </Grid>
 
                 <!-- Question List -->
-                <Border Style="{StaticResource AppMutedCard}"
-                        Padding="20">
-                    <VerticalStackLayout Spacing="16">
-                        <Grid ColumnDefinitions="*,Auto">
+                <Border BackgroundColor="#FFFFFF"
+                        Padding="18"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 24"
+                        Shadow="0,12,30,#12000000">
+                    <VerticalStackLayout Spacing="18">
+                        <Grid ColumnDefinitions="*,Auto"
+                              ColumnSpacing="14">
+                            <VerticalStackLayout Spacing="4"
+                                                 VerticalOptions="Center">
                             <Label Text="Danh sách câu"
                                    FontFamily="OpenSans-Semibold"
-                                   FontSize="18"
-                                   TextColor="{StaticResource AppPrimaryText}" />
+                                   FontSize="20"
+                                   TextColor="#111827" />
+                                <Label Text="Trắng: chưa làm • Xanh: đã chọn"
+                                       FontSize="12"
+                                       TextColor="#6B7280" />
+                            </VerticalStackLayout>
+
                             <Border Grid.Column="1"
-                                    Padding="10,6"
-                                    BackgroundColor="#DAE1E3"
+                                    BackgroundColor="#111827"
+                                    Padding="16,10"
                                     StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 999">
-                                <Label Text="{Binding AnsweredQuestionsText}"
+                                    StrokeShape="RoundRectangle 999"
+                                    VerticalOptions="Center">
+                                <Label Text="Nộp bài"
                                        FontFamily="OpenSans-Semibold"
-                                       FontSize="10"
-                                       TextColor="#5D6466" />
+                                       FontSize="13"
+                                       TextColor="#FFFFFF" />
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SubmitExamCommand}" />
+                                </Border.GestureRecognizers>
                             </Border>
                         </Grid>
 
                         <!-- Question Grid -->
-                        <FlexLayout BindableLayout.ItemsSource="{Binding CurrentExam.Questions}"
-                                    Wrap="Wrap"
-                                    Direction="Row"
-                                    JustifyContent="SpaceBetween">
-                            <BindableLayout.ItemTemplate>
+                        <CollectionView ItemsSource="{Binding CurrentExam.Questions}"
+                                        SelectionMode="None">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical"
+                                                 Span="5"
+                                                 HorizontalItemSpacing="10"
+                                                 VerticalItemSpacing="10" />
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Question">
-                                    <Border Padding="0"
-                                            Margin="0,0,10,10"
-                                            StrokeShape="RoundRectangle 14"
-                                            HeightRequest="44"
-                                            WidthRequest="60">
+                                    <Border WidthRequest="46"
+                                            HeightRequest="46"
+                                            HorizontalOptions="Center"
+                                            BackgroundColor="#F2F2F2"
+                                            Stroke="#E5E7EB"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 23">
                                         <Border.Style>
                                             <Style TargetType="Border">
-                                                <Setter Property="BackgroundColor" Value="#E5E2DB" />
-                                                <Setter Property="StrokeThickness" Value="0" />
+                                                <Setter Property="BackgroundColor" Value="#F2F2F2" />
+                                                <Setter Property="Stroke" Value="#E5E7EB" />
+                                                <Setter Property="StrokeThickness" Value="1" />
+                                                <Setter Property="Shadow" Value="0,0,0,#00000000" />
                                                 <Style.Triggers>
                                                     <DataTrigger TargetType="Border"
                                                                  Binding="{Binding IsAnswered}"
                                                                  Value="True">
-                                                        <Setter Property="BackgroundColor" Value="{StaticResource AppSelectedAnswerLight}" />
-                                                        <Setter Property="Stroke" Value="{StaticResource AppSelectedAnswer}" />
-                                                        <Setter Property="StrokeThickness" Value="1.5" />
+                                                        <Setter Property="BackgroundColor" Value="#E8F5E9" />
+                                                        <Setter Property="Stroke" Value="#A5D6A7" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Border.Style>
                                         <Label Text="{Binding Number}"
                                                FontFamily="OpenSans-Semibold"
+                                               FontSize="14"
+                                               TextColor="#111827"
                                                HorizontalOptions="Center"
-                                               VerticalOptions="Center">
-                                            <Label.Style>
-                                                <Style TargetType="Label">
-                                                    <Setter Property="TextColor" Value="#7A6C56" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger TargetType="Label"
-                                                                     Binding="{Binding IsAnswered}"
-                                                                     Value="True">
-                                                            <Setter Property="TextColor" Value="{StaticResource AppSelectedAnswer}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Label.Style>
-                                        </Label>
+                                               VerticalOptions="Center" />
                                         <Border.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectQuestionCommand}"
                                                                   CommandParameter="{Binding Number}" />
                                         </Border.GestureRecognizers>
                                     </Border>
                                 </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </FlexLayout>
-
-                        <Button Text="NỘP BÀI THI"
-                                BackgroundColor="{StaticResource AppPrimaryText}"
-                                TextColor="{StaticResource AppPageBackground}"
-                                FontFamily="OpenSans-Semibold"
-                                CornerRadius="18"
-                                HeightRequest="54"
-                                Command="{Binding SubmitExamCommand}" />
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>
         </ScrollView>
-
-        <controls:AppBottomNavView Grid.Row="2"
-                                   CurrentTab="exam" />
-
-        <controls:ChatOverlayView Grid.RowSpan="3" />
     </Grid>
 
 </ContentPage>

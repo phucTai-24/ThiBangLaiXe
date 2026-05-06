@@ -558,12 +558,12 @@ public sealed class ApiPracticeService : IPracticeService
             : $"&topicCode={Uri.EscapeDataString(topicCode)}";
 
         var firstPage = await GetWithFallbackAsync<PagedResponse<QuestionWithAnswersDto>>(
-            $"api/v1/questions/with-answers?page=1&pageSize=1&status=approved&includeCorrectAnswer={includeCorrectAnswer.ToString().ToLowerInvariant()}{topicFilter}");
+            $"api/v1/questions/with-answers?page=1&pageSize=1&status=approved&includeCorrectAnswer={includeCorrectAnswer.ToString().ToLowerInvariant()}&includeExplanation=true{topicFilter}");
 
         var total = Math.Max(firstPage?.TotalCount ?? 0, 1);
         var pageSize = Math.Min(Math.Max(total, 100), 500);
         var paged = await GetWithFallbackAsync<PagedResponse<QuestionWithAnswersDto>>(
-            $"api/v1/questions/with-answers?page=1&pageSize={pageSize}&status=approved&includeCorrectAnswer={includeCorrectAnswer.ToString().ToLowerInvariant()}{topicFilter}");
+            $"api/v1/questions/with-answers?page=1&pageSize={pageSize}&status=approved&includeCorrectAnswer={includeCorrectAnswer.ToString().ToLowerInvariant()}&includeExplanation=true{topicFilter}");
 
         if (paged?.Items is { Count: > 0 })
             return paged.Items;
@@ -712,6 +712,7 @@ public sealed class ApiPracticeService : IPracticeService
             Category = "Ôn tập lý thuyết",
             IsCritical = question.IsCritical,
             ImageUrl = NormalizeAssetUrl(question.ImageUrl),
+            Explanation = question.Explanation,
             Answers = question.Answers.Select((a, idx) => new PracticeAnswerOption
             {
                 Id = a.AnswerId.ToString(),
@@ -734,6 +735,7 @@ public sealed class ApiPracticeService : IPracticeService
             Category = question.TopicName,
             IsCritical = question.IsCritical,
             ImageUrl = NormalizeAssetUrl(question.ImageUrl),
+            Explanation = question.Explanation,
             Answers = question.Answers.OrderBy(x => x.Order).Select((a, idx) => new PracticeAnswerOption
             {
                 Id = a.AnswerId.ToString(),
@@ -1239,6 +1241,9 @@ public sealed class ApiPracticeService : IPracticeService
         [JsonPropertyName("la_cau_diem_liet")]
         public bool IsCritical { get; set; }
 
+        [JsonPropertyName("giai_thich")]
+        public string Explanation { get; set; } = string.Empty;
+
         [JsonPropertyName("imageUrl")]
         public string? ImageUrl { get; set; }
 
@@ -1264,6 +1269,23 @@ public sealed class ApiPracticeService : IPracticeService
         public string? Level { get; set; }
         public bool IsCritical { get; set; }
         public string Status { get; set; } = string.Empty;
+        [JsonPropertyName("giai_thich")]
+        public string Explanation { get; set; } = string.Empty;
+
+        [JsonPropertyName("explanation")]
+        public string ExplanationCamel
+        {
+            get => Explanation;
+            set => Explanation = value;
+        }
+
+        [JsonPropertyName("giai_thich_dap_an")]
+        public string ExplanationSnake
+        {
+            get => Explanation;
+            set => Explanation = value;
+        }
+
         public string? ImageUrl { get; set; }
         public List<QuestionWithAnswerOptionDto> Answers { get; set; } = new();
     }

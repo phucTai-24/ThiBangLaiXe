@@ -133,7 +133,7 @@
                 StrokeShape="RoundRectangle 20"
                 Shadow="0,8,22,#0D000000"
                 IsVisible="{Binding CurrentQuestion, Converter={StaticResource IsNotNullConverter}}">
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
                   RowSpacing="10">
                 <Grid ColumnDefinitions="*,Auto"
                       ColumnSpacing="8">
@@ -255,7 +255,33 @@
                     </VerticalStackLayout>
                 </Border>
 
-                <Grid Grid.Row="3"
+                <Border Grid.Row="3"
+                        BackgroundColor="#F0FDF4"
+                        Padding="12"
+                        Stroke="#BBF7D0"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 16"
+                        IsVisible="{Binding CurrentQuestion.ShowExplanation}">
+                    <VerticalStackLayout Spacing="6">
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="💡"
+                                   FontSize="16"
+                                   VerticalTextAlignment="Center" />
+                            <Label Text="Giải thích đáp án"
+                                   FontFamily="OpenSans-Semibold"
+                                   FontSize="13"
+                                   TextColor="#166534"
+                                   VerticalTextAlignment="Center" />
+                        </HorizontalStackLayout>
+
+                        <Label Text="{Binding CurrentQuestion.Explanation}"
+                               FontSize="13"
+                               LineHeight="1.35"
+                               TextColor="#14532D" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid Grid.Row="4"
                       ColumnDefinitions="*,*"
                       ColumnSpacing="10">
                     <Button Text="QUAY LẠI"

@@ -123,6 +123,30 @@ public class ExamSessionRepository : IExamSessionRepository
             .ToListAsync();
     }
 
+    public async Task<Dictionary<long, string>> GetPrimaryQuestionImageUrlsAsync(IEnumerable<long> questionIds)
+    {
+        var ids = questionIds.Distinct().ToList();
+        if (ids.Count == 0)
+        {
+            return new Dictionary<long, string>();
+        }
+
+        return await _context.file_usages
+            .Include(x => x.file)
+            .Where(x => x.entity_name == "cau_hoi"
+                && x.field_name == "question_image"
+                && x.is_primary
+                && ids.Contains(x.entity_id)
+                && x.file.trang_thai == "active")
+            .GroupBy(x => x.entity_id)
+            .Select(g => new
+            {
+                QuestionId = g.Key,
+                ImageUrl = g.OrderBy(x => x.sort_order).ThenBy(x => x.id).Select(x => x.file.public_url).First()
+            })
+            .ToDictionaryAsync(x => x.QuestionId, x => x.ImageUrl);
+    }
+
     public async Task AddSystemLogAsync(nhat_ky_he_thong log)
     {
         await _context.nhat_ky_he_thongs.AddAsync(log);

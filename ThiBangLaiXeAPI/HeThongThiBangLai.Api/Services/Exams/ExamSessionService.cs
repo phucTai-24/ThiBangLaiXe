@@ -126,7 +126,8 @@ public class ExamSessionService : IExamSessionService
         }
 
         var detail = details[number - 1];
-        var dto = MapQuestion(detail, number);
+        var imageUrls = await _repository.GetPrimaryQuestionImageUrlsAsync([detail.cau_hoi_id]);
+        var dto = MapQuestion(detail, number, imageUrls.GetValueOrDefault(detail.cau_hoi_id));
         return ApiResponseFactory.Success(dto, "Exam question retrieved successfully");
     }
 
@@ -299,7 +300,7 @@ public class ExamSessionService : IExamSessionService
         };
     }
 
-    private static ExamSessionQuestionDto MapQuestion(chi_tiet_bai_thi detail, int number)
+    private static ExamSessionQuestionDto MapQuestion(chi_tiet_bai_thi detail, int number, string? imageUrl)
     {
         return new ExamSessionQuestionDto
         {
@@ -309,6 +310,7 @@ public class ExamSessionService : IExamSessionService
             TopicId = detail.cau_hoi.chu_de_id,
             IsCritical = detail.cau_hoi.la_cau_diem_liet,
             SelectedAnswerId = detail.dap_an_chon_id,
+            ImageUrl = imageUrl,
             Answers = detail.cau_hoi.dap_ans
                 .OrderBy(x => x.thu_tu)
                 .Select(x => new ExamSessionAnswerOptionDto

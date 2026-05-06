@@ -16,6 +16,7 @@ public interface IExamSessionRepository
 
     Task<bai_thi?> GetSessionByIdForUserAsync(long sessionId, long userId);
     Task<List<chi_tiet_bai_thi>> GetSessionDetailsAsync(long sessionId);
+    Task<Dictionary<long, string>> GetPrimaryQuestionImageUrlsAsync(IEnumerable<long> questionIds);
 
     Task AddSystemLogAsync(nhat_ky_he_thong log);
     Task SaveChangesAsync();

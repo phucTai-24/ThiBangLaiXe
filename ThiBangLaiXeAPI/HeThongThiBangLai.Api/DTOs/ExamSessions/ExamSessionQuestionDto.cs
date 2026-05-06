@@ -8,5 +8,6 @@ public class ExamSessionQuestionDto
     public long TopicId { get; set; }
     public bool IsCritical { get; set; }
     public long? SelectedAnswerId { get; set; }
+    public string? ImageUrl { get; set; }
     public List<ExamSessionAnswerOptionDto> Answers { get; set; } = [];
 }

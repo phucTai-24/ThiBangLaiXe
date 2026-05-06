@@ -230,6 +230,20 @@ public sealed class ZaloPayPaymentService : IZaloPayPaymentService
                 && receipt.chi_tiet_phieu_thus.Any(detail => detail.ghi_chu != null && detail.ghi_chu.Contains($"DKKH:{registration.id}")));
         if (existedReceipt is not null)
         {
+            // ZaloPay yêu cầu app_trans_id là duy nhất cho mỗi lần gọi Create Order.
+            // Vẫn giữ một phiếu thu pending cho cùng đăng ký, nhưng rotate ma_phieu_thu
+            // trước khi gửi lại ZaloPay để tránh lỗi SubReturnCode=-68 / trùng mã giao dịch.
+            existedReceipt.ma_phieu_thu = GenerateAppTransId();
+            existedReceipt.ngay_thu = DateTime.UtcNow;
+            existedReceipt.tong_tien = amount;
+            existedReceipt.nguoi_lap_id = currentUserId;
+
+            foreach (var detail in existedReceipt.chi_tiet_phieu_thus)
+            {
+                detail.so_tien = amount;
+            }
+
+            await _dbContext.SaveChangesAsync();
             return existedReceipt;
         }
 

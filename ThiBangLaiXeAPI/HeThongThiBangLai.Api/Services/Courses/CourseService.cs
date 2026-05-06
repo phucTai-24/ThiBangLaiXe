@@ -174,10 +174,90 @@ public sealed class CourseService : ICourseService
                     DiaDiem = schedule.phong_hoc
                 })
                 .ToList() ?? new List<CourseScheduleDto>(),
+            Classes = (await GetCourseClassesAsync(courseId)).Data ?? new List<CourseClassDto>(),
             HinhAnh = BuildCourseImage(course.Course.ma_khoa_hoc)
         };
 
         return ApiResponseFactory.Success(dto, "Lấy chi tiết khóa học thành công");
+    }
+
+    public async Task<ApiResponse<List<CourseClassDto>>> GetCourseClassesAsync(long courseId)
+    {
+        var courseExists = await _dbContext.khoa_hocs
+            .AsNoTracking()
+            .AnyAsync(course => course.id == courseId);
+
+        if (!courseExists)
+        {
+            return ApiResponseFactory.Fail<List<CourseClassDto>>("Không tìm thấy khóa học");
+        }
+
+        var classes = await _dbContext.lop_hocs
+            .AsNoTracking()
+            .Where(classroom => classroom.khoa_hoc_id == courseId)
+            .OrderByDescending(classroom => classroom.trang_thai == "dang_mo")
+            .ThenBy(classroom => classroom.ngay_bat_dau ?? DateOnly.MaxValue)
+            .ThenBy(classroom => classroom.id)
+            .Select(classroom => new
+            {
+                classroom.id,
+                classroom.ma_lop,
+                classroom.ten_lop,
+                classroom.si_so_toi_da,
+                classroom.ngay_bat_dau,
+                classroom.ngay_ket_thuc,
+                classroom.trang_thai,
+                CurrentStudents = classroom.lop_hoc_hoc_viens.Count(student => student.trang_thai == "dang_hoc"),
+                Teacher = classroom.giao_vien == null ? null : new
+                {
+                    classroom.giao_vien.id,
+                    classroom.giao_vien.ten_dang_nhap,
+                    classroom.giao_vien.so_dien_thoai,
+                    HoTenHocVien = classroom.giao_vien.hoc_vien == null ? null : classroom.giao_vien.hoc_vien.ho_ten
+                },
+                Schedules = classroom.buoi_hocs
+                    .OrderBy(session => session.ngay_hoc)
+                    .ThenBy(session => session.gio_bat_dau)
+                    .Select(session => new
+                    {
+                        session.ngay_hoc,
+                        session.gio_bat_dau,
+                        session.gio_ket_thuc,
+                        session.phong_hoc
+                    })
+                    .ToList()
+            })
+            .ToListAsync();
+
+        var dtos = classes.Select(classroom => new CourseClassDto
+        {
+            ClassId = classroom.id,
+            MaLop = classroom.ma_lop,
+            TenLop = classroom.ten_lop,
+            SiSoToiDa = classroom.si_so_toi_da,
+            SoLuongHienTai = classroom.CurrentStudents,
+            NgayBatDau = classroom.ngay_bat_dau,
+            NgayKetThuc = classroom.ngay_ket_thuc,
+            TrangThai = ToApiCourseStatus(classroom.trang_thai),
+            IsOpenForRegistration = IsOpenForRegistration(classroom.trang_thai, classroom.si_so_toi_da, classroom.CurrentStudents),
+            GiaoVien = classroom.Teacher is null
+                ? null
+                : new CourseTeacherDto
+                {
+                    TeacherId = classroom.Teacher.id,
+                    HoTen = classroom.Teacher.HoTenHocVien ?? classroom.Teacher.ten_dang_nhap,
+                    SoDienThoai = classroom.Teacher.so_dien_thoai
+                },
+            LichHoc = classroom.Schedules.Select(schedule => new CourseScheduleDto
+            {
+                ThuTrongTuan = ToVietnameseDayOfWeek(schedule.ngay_hoc),
+                GioBatDau = schedule.gio_bat_dau.ToString("HH\\:mm"),
+                GioKetThuc = schedule.gio_ket_thuc.ToString("HH\\:mm"),
+                DiaDiem = schedule.phong_hoc
+            }).ToList()
+        }).ToList();
+
+        return ApiResponseFactory.Success(dtos, "Lấy danh sách lớp của khóa học thành công");
     }
 
     public async Task<ApiResponse<CourseRegistrationDto>> RegisterCourseAsync(CreateCourseRegistrationRequestDto request, long currentUserId)

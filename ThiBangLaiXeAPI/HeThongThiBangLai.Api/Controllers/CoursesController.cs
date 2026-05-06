@@ -39,6 +39,16 @@ public sealed class CoursesController : ControllerBase
         return result.Success ? Ok(result) : NotFound(result);
     }
 
+    [HttpGet("courses/{courseId:long}/classes")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(ApiResponse<List<CourseClassDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCourseClasses(long courseId)
+    {
+        var result = await _courseService.GetCourseClassesAsync(courseId);
+        return result.Success ? Ok(result) : NotFound(result);
+    }
+
     [HttpPost("course-registrations")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<CourseRegistrationDto>), StatusCodes.Status201Created)]

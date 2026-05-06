@@ -35,7 +35,23 @@ public sealed class CourseDetailDto
     public string TrangThai { get; set; } = string.Empty;
     public CourseTeacherDto? GiaoVienChinh { get; set; }
     public List<CourseScheduleDto> LichHocMau { get; set; } = new();
+    public List<CourseClassDto> Classes { get; set; } = new();
     public string? HinhAnh { get; set; }
+}
+
+public sealed class CourseClassDto
+{
+    public long ClassId { get; set; }
+    public string MaLop { get; set; } = string.Empty;
+    public string TenLop { get; set; } = string.Empty;
+    public int SiSoToiDa { get; set; }
+    public int SoLuongHienTai { get; set; }
+    public DateOnly? NgayBatDau { get; set; }
+    public DateOnly? NgayKetThuc { get; set; }
+    public string TrangThai { get; set; } = string.Empty;
+    public bool IsOpenForRegistration { get; set; }
+    public CourseTeacherDto? GiaoVien { get; set; }
+    public List<CourseScheduleDto> LichHoc { get; set; } = new();
 }
 
 public sealed class CourseTeacherDto

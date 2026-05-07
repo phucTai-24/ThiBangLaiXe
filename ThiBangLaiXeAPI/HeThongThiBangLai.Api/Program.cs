@@ -161,6 +161,8 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 // Payments
 builder.Services.Configure<ZaloPayOptions>(builder.Configuration.GetSection("ZaloPay"));
 builder.Services.AddHttpClient<IZaloPayPaymentService, ZaloPayPaymentService>();
+builder.Services.Configure<VnPayOptions>(builder.Configuration.GetSection("VnPay"));
+builder.Services.AddScoped<IVnPayPaymentService, VnPayPaymentService>();
 
 // Sample exams
 builder.Services.AddScoped<ISampleExamRepository, SampleExamRepository>();

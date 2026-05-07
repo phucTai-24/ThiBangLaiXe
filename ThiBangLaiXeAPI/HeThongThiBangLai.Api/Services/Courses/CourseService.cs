@@ -448,7 +448,10 @@ public sealed class CourseService : ICourseService
                     .OrderByDescending(classroom => classroom.trang_thai == "dang_mo")
                     .ThenBy(classroom => classroom.ngay_bat_dau ?? DateOnly.MaxValue)
                     .FirstOrDefault(),
-                HasPaidReceipt = _dbContext.phieu_thus.Any(receipt => receipt.hoc_vien_id == student.id && receipt.trang_thai == "da_xac_nhan")
+                HasPaidReceipt = _dbContext.phieu_thus.Any(receipt =>
+                    receipt.hoc_vien_id == student.id
+                    && receipt.trang_thai == "da_xac_nhan"
+                    && receipt.chi_tiet_phieu_thus.Any(detail => detail.ghi_chu != null && detail.ghi_chu.Contains("DKKH:" + registration.id)))
             })
             .ToListAsync();
 

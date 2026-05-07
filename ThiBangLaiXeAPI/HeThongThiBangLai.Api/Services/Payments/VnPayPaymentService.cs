@@ -19,6 +19,7 @@ public sealed class VnPayOptions
     public string HashSecret { get; set; } = string.Empty;
     public string PaymentUrl { get; set; } = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public string ReturnUrl { get; set; } = "http://localhost:5135/KhoaHoc/VnPayReturn";
+    public string MobileReturnUrl { get; set; } = "hethongthibanglai://payments/vnpay/return";
     public string IpnUrl { get; set; } = "http://localhost:5017/api/v1/payments/vnpay/ipn";
     public string Version { get; set; } = "2.1.0";
     public string Command { get; set; } = "pay";
@@ -409,6 +410,7 @@ public sealed class VnPayPaymentService : IVnPayPaymentService
             throw new InvalidOperationException("Missing required configuration: VnPay:ReturnUrl");
         }
     }
+
 
     private static Dictionary<string, string> NormalizeQuery(IQueryCollection query)
     {

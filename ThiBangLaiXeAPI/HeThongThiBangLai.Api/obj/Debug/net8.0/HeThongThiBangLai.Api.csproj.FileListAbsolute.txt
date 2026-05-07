@@ -751,7 +751,6 @@ d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck\HeThongThiBangLai.Api.deps.jso
 d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck\HeThongThiBangLai.Api.runtimeconfig.json
 d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck\HeThongThiBangLai.Api.dll
 d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck\HeThongThiBangLai.Api.pdb
-d:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\Debug\net8.0\swae.build.ex.cache
 d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck3\appsettings.Development.json
 d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck3\appsettings.json
 d:\full sờ tắc\ThiBangLaiXeAPI\TempBuildCheck3\global.json
@@ -1070,3 +1069,4 @@ c:\Users\Bao\OneDrive\Máy tính\thibanglai\ThiBangLaiXe\API\ThiBangLaiXeAPI\HeT
 c:\Users\Bao\OneDrive\Máy tính\thibanglai\ThiBangLaiXe\API\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 c:\Users\Bao\OneDrive\Máy tính\thibanglai\ThiBangLaiXe\API\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 c:\Users\Bao\OneDrive\Máy tính\thibanglai\ThiBangLaiXe\API\ThiBangLaiXeAPI\HeThongThiBangLai.Api\obj\verify-build\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\full sờ tắc\ThiBangLaiXeAPI\HeThongThiBangLai.Api\bin\Debug\net8.0\HeThongThiBangLai.Api.exe

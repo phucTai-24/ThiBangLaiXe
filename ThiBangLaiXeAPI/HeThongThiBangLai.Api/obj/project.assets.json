@@ -8989,21 +8989,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Bao\\.nuget\\packages\\": {}
+    "C:\\Users\\PC\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Bao\\OneDrive\\Máy tính\\thibanglai\\ThiBangLaiXe\\API\\ThiBangLaiXeAPI\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
+      "projectUniqueName": "D:\\full sờ tắc\\ThiBangLaiXeAPI\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
       "projectName": "HeThongThiBangLai.Api",
-      "projectPath": "C:\\Users\\Bao\\OneDrive\\Máy tính\\thibanglai\\ThiBangLaiXe\\API\\ThiBangLaiXeAPI\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
-      "packagesPath": "C:\\Users\\Bao\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Bao\\OneDrive\\Máy tính\\thibanglai\\ThiBangLaiXe\\API\\ThiBangLaiXeAPI\\HeThongThiBangLai.Api\\obj\\",
+      "projectPath": "D:\\full sờ tắc\\ThiBangLaiXeAPI\\HeThongThiBangLai.Api\\HeThongThiBangLai.Api.csproj",
+      "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+      "outputPath": "D:\\full sờ tắc\\ThiBangLaiXeAPI\\HeThongThiBangLai.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Bao\\OneDrive\\Máy tính\\thibanglai\\ThiBangLaiXe\\API\\ThiBangLaiXeAPI\\NuGet.Config",
-        "C:\\Users\\Bao\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.2.config",
+        "D:\\full sờ tắc\\ThiBangLaiXeAPI\\NuGet.Config",
+        "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -9100,7 +9099,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.312/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.313/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

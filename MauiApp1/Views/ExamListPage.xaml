@@ -36,26 +36,6 @@
 
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Padding="24,24,24,40" Spacing="18">
-                <Border Padding="20"
-                        BackgroundColor="#FFF8EA"
-                        Stroke="#1AD5C4AB"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 28">
-                    <VerticalStackLayout Spacing="10">
-                        <Label Text="Bước 1: chọn bộ đề thi thử"
-                               FontFamily="OpenSans-Semibold"
-                               FontSize="22"
-                               TextColor="#271900" />
-                        <Label Text="Trước khi bắt đầu thi, bạn cần chọn đúng bộ đề từ API backend. Danh sách này được đọc trực tiếp từ các đề published trong hệ thống."
-                               FontSize="14"
-                               LineHeight="1.35"
-                               TextColor="#5F564B" />
-                        <Label Text="{Binding HeaderText}"
-                               FontSize="13"
-                               TextColor="#7C5800" />
-                    </VerticalStackLayout>
-                </Border>
-
                 <Border Padding="16"
                         BackgroundColor="#FFFFFF"
                         Stroke="#14D5C4AB"
@@ -117,16 +97,6 @@
                                                    TextColor="#6B6257" />
                                         </VerticalStackLayout>
 
-                                        <Border Grid.Column="1"
-                                                Padding="10,6"
-                                                BackgroundColor="#E8F6EA"
-                                                StrokeThickness="0"
-                                                StrokeShape="RoundRectangle 999">
-                                            <Label Text="API"
-                                                   FontSize="11"
-                                                   FontFamily="OpenSans-Semibold"
-                                                   TextColor="#2E7D32" />
-                                        </Border>
                                     </Grid>
 
                                     <Grid ColumnDefinitions="*,*,*"

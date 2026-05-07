@@ -132,6 +132,18 @@ build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.OnboardingP
 build_metadata.AdditionalFiles.TargetPath = Views\OnboardingPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\OnboardingPage.xaml
 
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/PaymentResultPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.PaymentResultPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\PaymentResultPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\PaymentResultPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/PaymentResultPopupPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.PaymentResultPopupPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\PaymentResultPopupPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\PaymentResultPopupPage.xaml
+
 [c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/PracticeResultPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.PracticeResultPage.xaml
@@ -173,6 +185,12 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.TrafficSignsPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\TrafficSignsPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\TrafficSignsPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/VnPayPaymentPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.VnPayPaymentPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\VnPayPaymentPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\VnPayPaymentPage.xaml
 
 [c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/WrongAnswersPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml

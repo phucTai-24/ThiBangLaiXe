@@ -1,298 +1,103 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:MauiApp1.Models.Entitlements"
+             xmlns:cm="clr-namespace:MauiApp1.Models.CourseModule"
+             xmlns:controls="clr-namespace:MauiApp1.Controls"
              x:Class="MauiApp1.Views.CourseRegistrationPage"
              Title="Đăng ký khóa học"
-             Style="{StaticResource AppPageStyle}">
-
-    <Grid RowDefinitions="Auto,*">
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F8FAFC">
+    <Grid RowDefinitions="Auto,*,Auto">
         <Border Grid.Row="0"
-                Style="{StaticResource AppHeaderContainer}">
-            <Grid ColumnDefinitions="Auto,*"
-                  ColumnSpacing="12">
-                <Border BackgroundColor="{StaticResource AppSurfaceAccent}"
-                        WidthRequest="40"
+                BackgroundColor="#FFFFFF"
+                Padding="20,14"
+                StrokeThickness="0"
+                Shadow="0,4,12,#14000000">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <Border WidthRequest="40"
                         HeightRequest="40"
+                        BackgroundColor="#F2F3F5"
                         StrokeThickness="0"
-                        StrokeShape="RoundRectangle 14">
-                    <Label Text="←"
-                           FontSize="20"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center" />
+                        StrokeShape="RoundRectangle 14"
+                        VerticalOptions="Center">
+                    <Label Text="←" FontSize="18" TextColor="#111827" HorizontalOptions="Center" VerticalOptions="Center" />
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBackTapped" />
                     </Border.GestureRecognizers>
                 </Border>
 
-                <VerticalStackLayout Grid.Column="1"
-                                     Spacing="2"
-                                     VerticalOptions="Center">
-                    <Label Text="Đăng ký khóa học ngay"
-                           Style="{StaticResource AppSectionTitle}" />
-                    <Label Text="Danh sách toàn bộ khóa học mở đăng ký"
-                           Style="{StaticResource AppCaptionLabel}" />
+                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                    <Label Text="Đăng ký khóa học" FontAttributes="Bold" FontSize="22" TextColor="#111827" />
+                    <Label Text="Chọn lớp, nhập thông tin và thanh toán VNPAY" FontSize="13" TextColor="#64748B" />
                 </VerticalStackLayout>
             </Grid>
         </Border>
 
         <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="24,20,24,120"
-                                 Spacing="14">
+            <VerticalStackLayout Padding="20,20,20,140" Spacing="12">
+            <Label Text="Luồng đăng ký 3 bước" FontAttributes="Bold" FontSize="22" />
+            <Label Text="Bước 1: Chọn lớp • Bước 2: Nhập thông tin • Bước 3: Thanh toán VNPAY" FontSize="12" TextColor="#64748B" />
 
-                <ActivityIndicator x:Name="LoadingIndicator"
-                                   IsVisible="False"
-                                   IsRunning="False"
-                                   Color="{StaticResource AppBrand}" />
+            <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" />
+            <Label Text="{Binding StatusMessage}" FontAttributes="Bold" />
 
-                <Label x:Name="StatusLabel"
-                       Text="Đang tải toàn bộ khóa học..."
-                       Style="{StaticResource AppCaptionLabel}" />
-
-                <VerticalStackLayout Spacing="10"
-                                     BindableLayout.ItemsSource="{Binding CoursePackages}">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="models:EntitlementPackageItem">
-                            <Border Style="{StaticResource AppCard}">
-                                <Grid RowDefinitions="Auto,Auto,Auto"
-                                      ColumnDefinitions="*,Auto"
-                                      RowSpacing="6"
-                                      ColumnSpacing="10">
-                                    <Label Text="{Binding Name}"
-                                           FontFamily="OpenSans-Semibold"
-                                           FontSize="16"
-                                           TextColor="{StaticResource AppPrimaryText}" />
-
+            <Label Text="1) Danh sách khóa học" FontAttributes="Bold" />
+            <CollectionView ItemsSource="{Binding Courses}" SelectionMode="Single" SelectionChanged="OnCourseSelected">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="cm:Course">
+                        <Border Stroke="#E2E8F0" StrokeThickness="1" Padding="12" Margin="0,0,0,8">
+                            <VerticalStackLayout Spacing="4">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <Label Grid.Column="0" Text="{Binding Name}" FontAttributes="Bold" />
                                     <Border Grid.Column="1"
-                                            BackgroundColor="#E8F6EA"
-                                            Padding="10,5"
-                                            StrokeThickness="0"
-                                            StrokeShape="RoundRectangle 999"
+                                            BackgroundColor="#DCFCE7"
+                                            Stroke="#86EFAC"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 10"
+                                            Padding="8,2"
                                             IsVisible="{Binding IsRegistered}">
-                                        <Label Text="Đã đăng ký"
-                                               FontFamily="OpenSans-Semibold"
-                                               FontSize="11"
-                                               TextColor="{StaticResource AppSuccess}" />
+                                        <Label Text="Đã đăng ký" FontSize="11" FontAttributes="Bold" TextColor="#15803D" />
                                     </Border>
-
-                                    <Label Grid.Row="1"
-                                           Grid.ColumnSpan="2"
-                                           Text="{Binding Description}"
-                                           Style="{StaticResource AppCaptionLabel}" />
-
-                                    <VerticalStackLayout Grid.Row="2"
-                                                         Grid.Column="1"
-                                                         Spacing="8">
-                                        <Button Text="Chi tiết"
-                                                BackgroundColor="#FFF4CC"
-                                                TextColor="{StaticResource AppPrimaryText}"
-                                                FontFamily="OpenSans-Semibold"
-                                                CornerRadius="16"
-                                                Padding="14,8"
-                                                Clicked="OnCourseDetailClicked"
-                                                CommandParameter="{Binding Id}" />
-
-                                        <Button Text="Đăng ký"
-                                                BackgroundColor="{StaticResource AppBrandAccent}"
-                                                TextColor="{StaticResource AppPrimaryText}"
-                                                FontFamily="OpenSans-Semibold"
-                                                CornerRadius="16"
-                                                Padding="14,8"
-                                                Clicked="OnRegisterCourseClicked"
-                                                CommandParameter="{Binding Id}">
-                                            <Button.Triggers>
-                                                <DataTrigger TargetType="Button"
-                                                             Binding="{Binding IsRegistered}"
-                                                             Value="True">
-                                                    <Setter Property="IsVisible" Value="False" />
-                                                </DataTrigger>
-                                            </Button.Triggers>
-                                        </Button>
-                                    </VerticalStackLayout>
                                 </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </VerticalStackLayout>
+                                <Label Text="{Binding LicenseType}" FontSize="12" TextColor="#475569" />
+                                <Label Text="{Binding Description}" FontSize="12" TextColor="#64748B" />
+                                <Label Text="{Binding TuitionFee, StringFormat='Học phí: {0:N0}đ'}" FontAttributes="Bold" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="2) Danh sách lớp học" FontAttributes="Bold" />
+            <CollectionView ItemsSource="{Binding Classes}" SelectionMode="Single" SelectionChanged="OnClassSelected">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="cm:DrivingClass">
+                        <Border Stroke="#E2E8F0" StrokeThickness="1" Padding="12" Margin="0,0,0,8">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="{Binding Name}" FontAttributes="Bold" />
+                                <Label Text="{Binding ClassCode, StringFormat='Mã lớp: {0}'}" FontSize="12" />
+                                <Label Text="{Binding ScheduleText}" FontSize="12" TextColor="#64748B" />
+                                <Label Text="{Binding AvailableSlots, StringFormat='Còn chỗ: {0}'}" FontAttributes="Bold" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="3) Thông tin học viên" FontAttributes="Bold" />
+            <Entry x:Name="FullNameEntry" Placeholder="Họ và tên" />
+            <Entry x:Name="PhoneEntry" Placeholder="Số điện thoại" Keyboard="Telephone" />
+            <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" />
+            <Entry x:Name="IdentityEntry" Placeholder="CCCD/CMND" Keyboard="Numeric" />
+            <Editor x:Name="AddressEditor" Placeholder="Địa chỉ" AutoSize="TextChanges" />
+
+            <Button Text="Tạo phiếu đăng ký (Chờ thanh toán)" Clicked="OnSubmitRegistrationClicked" />
+            <Button x:Name="PayWithVnPayButton" Text="Thanh toán qua VNPAY" Clicked="OnPayWithVnPayClicked" />
+            <Button Text="Kiểm tra kết quả thanh toán" Clicked="OnRefreshPaymentStatusClicked" />
             </VerticalStackLayout>
         </ScrollView>
 
-        <Grid x:Name="StudentProfileOverlay"
-              Grid.RowSpan="2"
-              IsVisible="False"
-              BackgroundColor="#80000000"
-              Padding="20">
-            <Border Style="{StaticResource AppCard}"
-                    VerticalOptions="Center">
-                <ScrollView>
-                    <VerticalStackLayout Spacing="10"
-                                         Padding="8">
-                        <Label Text="Đăng ký trở thành học viên"
-                               Style="{StaticResource AppSectionTitle}" />
-                        <Label Text="Vui lòng nhập đầy đủ thông tin trước khi đăng ký khóa học"
-                               Style="{StaticResource AppCaptionLabel}" />
-
-                        <Label Text="Họ và tên *" Style="{StaticResource AppCaptionLabel}" />
-                        <Entry x:Name="FullNameEntry" Placeholder="Nhập họ tên" />
-
-                        <Label Text="Ngày sinh (yyyy-MM-dd)" Style="{StaticResource AppCaptionLabel}" />
-                        <Entry x:Name="DateOfBirthEntry" Placeholder="Ví dụ: 2000-05-20" Keyboard="Text" />
-
-                        <Label Text="Giới tính" Style="{StaticResource AppCaptionLabel}" />
-                        <Picker x:Name="GenderPicker" Title="Chọn giới tính">
-                            <Picker.Items>
-                                <x:String>Nam</x:String>
-                                <x:String>Nữ</x:String>
-                                <x:String>Khác</x:String>
-                            </Picker.Items>
-                        </Picker>
-
-                        <Label Text="CCCD" Style="{StaticResource AppCaptionLabel}" />
-                        <Entry x:Name="CccdEntry" Placeholder="Nhập số CCCD" Keyboard="Numeric" MaxLength="20" />
-
-                        <Label Text="Địa chỉ" Style="{StaticResource AppCaptionLabel}" />
-                        <Editor x:Name="AddressEditor" Placeholder="Nhập địa chỉ" AutoSize="TextChanges" MaxLength="255" />
-
-                        <Label Text="Ảnh chân dung (URL)" Style="{StaticResource AppCaptionLabel}" />
-                        <Entry x:Name="AvatarUrlEntry" Placeholder="https://example.com/avatar.jpg" Keyboard="Url" MaxLength="255" />
-
-                        <Label x:Name="StudentProfileErrorLabel"
-                               TextColor="Red"
-                               IsVisible="False" />
-
-                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,8,0,0">
-                            <Button Grid.Column="0"
-                                    Text="Hủy"
-                                    Clicked="OnCancelStudentProfileClicked"
-                                    BackgroundColor="#ECECEC"
-                                    TextColor="Black" />
-                            <Button x:Name="SubmitStudentProfileButton"
-                                    Grid.Column="1"
-                                    Text="Lưu và tiếp tục"
-                                    Clicked="OnSubmitStudentProfileClicked"
-                                    BackgroundColor="{StaticResource AppBrandAccent}"
-                                    TextColor="{StaticResource AppPrimaryText}" />
-                        </Grid>
-                    </VerticalStackLayout>
-                </ScrollView>
-            </Border>
-        </Grid>
-
-        <Grid x:Name="CourseDetailOverlay"
-              Grid.RowSpan="2"
-              IsVisible="False"
-              BackgroundColor="#99000000"
-              Padding="18">
-            <Border BackgroundColor="White"
-                    StrokeThickness="0"
-                    StrokeShape="RoundRectangle 28"
-                    VerticalOptions="Center"
-                    Padding="18">
-                <ScrollView>
-                    <VerticalStackLayout Spacing="12">
-                        <Grid ColumnDefinitions="*,Auto">
-                            <VerticalStackLayout Spacing="2">
-                                <Label x:Name="DetailTitleLabel"
-                                       FontFamily="OpenSans-Semibold"
-                                       FontSize="22"
-                                       TextColor="{StaticResource AppPrimaryText}" />
-                                <Label x:Name="DetailSubtitleLabel"
-                                       Style="{StaticResource AppCaptionLabel}" />
-                            </VerticalStackLayout>
-
-                            <Button Grid.Column="1"
-                                    Text="✕"
-                                    WidthRequest="42"
-                                    HeightRequest="42"
-                                    CornerRadius="21"
-                                    BackgroundColor="#F3F0EA"
-                                    TextColor="{StaticResource AppPrimaryText}"
-                                    Clicked="OnCloseCourseDetailClicked" />
-                        </Grid>
-
-                        <Border BackgroundColor="#FFF8E1"
-                                StrokeThickness="0"
-                                StrokeShape="RoundRectangle 20"
-                                Padding="14">
-                            <Grid RowDefinitions="Auto,Auto,Auto"
-                                  ColumnDefinitions="*,*"
-                                  RowSpacing="8"
-                                  ColumnSpacing="12">
-                                <Label Text="Học phí" Style="{StaticResource AppCaptionLabel}" />
-                                <Label Text="Số buổi" Grid.Column="1" Style="{StaticResource AppCaptionLabel}" />
-                                <Label x:Name="DetailFeeLabel" Grid.Row="1" FontFamily="OpenSans-Semibold" FontSize="16" />
-                                <Label x:Name="DetailSessionsLabel" Grid.Row="1" Grid.Column="1" FontFamily="OpenSans-Semibold" FontSize="16" />
-                                <Label x:Name="DetailCapacityLabel" Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource AppCaptionLabel}" />
-                            </Grid>
-                        </Border>
-
-                        <Label Text="Mô tả khóa học" FontFamily="OpenSans-Semibold" FontSize="16" />
-                        <Label x:Name="DetailDescriptionLabel" Style="{StaticResource AppCaptionLabel}" />
-
-                        <Label Text="Giảng viên chính" FontFamily="OpenSans-Semibold" FontSize="16" />
-                        <Label x:Name="DetailTeacherLabel" Style="{StaticResource AppCaptionLabel}" />
-
-                        <Label Text="Thời gian" FontFamily="OpenSans-Semibold" FontSize="16" />
-                        <Label x:Name="DetailDateRangeLabel" Style="{StaticResource AppCaptionLabel}" />
-
-                        <Grid ColumnDefinitions="*,Auto" Margin="0,4,0,0">
-                            <VerticalStackLayout Spacing="2">
-                                <Label Text="Lịch học mẫu"
-                                       FontFamily="OpenSans-Semibold"
-                                       FontSize="17"
-                                       TextColor="{StaticResource AppPrimaryText}" />
-                                <Label Text="Theo dõi ngày học, khung giờ và phòng học"
-                                       FontSize="12"
-                                       TextColor="#8A8177" />
-                            </VerticalStackLayout>
-
-                            <Border Grid.Column="1"
-                                    BackgroundColor="#EFF6FF"
-                                    StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 999"
-                                    Padding="10,5"
-                                    VerticalOptions="Center">
-                                <Label Text="📅"
-                                       FontSize="14" />
-                            </Border>
-                        </Grid>
-
-                        <Grid ColumnDefinitions="Auto,*,Auto"
-                              ColumnSpacing="10"
-                              Margin="0,2,0,0">
-                            <Button x:Name="PreviousScheduleWeekButton"
-                                    Text="‹"
-                                    WidthRequest="38"
-                                    HeightRequest="38"
-                                    CornerRadius="19"
-                                    BackgroundColor="#F1F5F9"
-                                    TextColor="#334155"
-                                    FontSize="20"
-                                    Clicked="OnPreviousScheduleWeekClicked" />
-                            <Label x:Name="ScheduleWeekLabel"
-                                   Grid.Column="1"
-                                   FontFamily="OpenSans-Semibold"
-                                   FontSize="13"
-                                   TextColor="#334155"
-                                   HorizontalTextAlignment="Center"
-                                   VerticalTextAlignment="Center" />
-                            <Button x:Name="NextScheduleWeekButton"
-                                    Grid.Column="2"
-                                    Text="›"
-                                    WidthRequest="38"
-                                    HeightRequest="38"
-                                    CornerRadius="19"
-                                    BackgroundColor="#F1F5F9"
-                                    TextColor="#334155"
-                                    FontSize="20"
-                                    Clicked="OnNextScheduleWeekClicked" />
-                        </Grid>
-
-                        <VerticalStackLayout x:Name="DetailSchedulesLayout"
-                                             Spacing="8" />
-                    </VerticalStackLayout>
-                </ScrollView>
-            </Border>
-        </Grid>
+        <controls:AppBottomNavView Grid.Row="2"
+                                   CurrentTab="home" />
     </Grid>
 </ContentPage>

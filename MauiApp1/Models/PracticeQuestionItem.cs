@@ -55,9 +55,49 @@ public class PracticeQuestionItem : INotifyPropertyChanged
                 return null;
             }
 
+            if (TryCreateDataImageSource(ImageUrl, out var dataImageSource))
+            {
+                return dataImageSource;
+            }
+
             return Uri.TryCreate(ImageUrl, UriKind.Absolute, out var uri)
                 ? ImageSource.FromUri(uri)
                 : null;
+        }
+    }
+
+    private static bool TryCreateDataImageSource(string? imageUrl, out ImageSource? imageSource)
+    {
+        imageSource = null;
+
+        if (string.IsNullOrWhiteSpace(imageUrl)
+            || !imageUrl.StartsWith("data:image", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        var commaIndex = imageUrl.IndexOf(',');
+        if (commaIndex < 0 || commaIndex == imageUrl.Length - 1)
+        {
+            return false;
+        }
+
+        var metadata = imageUrl[..commaIndex];
+        if (!metadata.Contains(";base64", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        var base64 = imageUrl[(commaIndex + 1)..].Trim();
+        try
+        {
+            var bytes = Convert.FromBase64String(base64);
+            imageSource = ImageSource.FromStream(() => new MemoryStream(bytes));
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 

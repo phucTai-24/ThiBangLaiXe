@@ -7,6 +7,7 @@ namespace MauiApp1.Services;
 public sealed class ChatService : IChatService
 {
     private const string GeminiApiKeyPreferenceKey = "Gemini.ApiKey";
+    private const string RouterApiChatCompletionsEndpoint = "https://routerapi.vovantin.online/v1/chat/completions";
     private const string PolitePivot = "Mình tập trung hỗ trợ ôn thi bằng lái: biển báo, câu điểm liệt, sa hình/tình huống và mẹo học. Bạn hỏi theo các chủ đề đó để mình giúp chính xác hơn nhé!";
 
     private static readonly string[] PracticeActionKeywords =
@@ -38,11 +39,41 @@ public sealed class ChatService : IChatService
 
     private static readonly string[] PracticeTopicKeywords =
     {
+        "ôn tập",
+        "on tap",
+        "ôn thi",
+        "on thi",
+        "luyện tập",
+        "luyen tap",
+        "câu hỏi",
+        "cau hoi",
+        "đề ôn tập",
+        "de on tap",
+        "đề thi",
+        "de thi",
         "biển báo",
         "bien bao",
         "báo hiệu",
         "bao hieu",
         "traffic sign",
+        "quy tắc",
+        "quy tac",
+        "luật giao thông",
+        "luat giao thong",
+        "lý thuyết",
+        "ly thuyet",
+        "kỹ thuật",
+        "ky thuat",
+        "kỹ thuật lái xe",
+        "ky thuat lai xe",
+        "kỹ năng lái",
+        "ky nang lai",
+        "văn hóa",
+        "van hoa",
+        "đạo đức",
+        "dao duc",
+        "nghiệp vụ",
+        "nghiep vu",
         "sa hình",
         "sa hinh",
         "mô phỏng",
@@ -59,16 +90,18 @@ public sealed class ChatService : IChatService
         "hay sai"
     };
 
-    private static readonly string[] GeminiApiVersions =
+    private static readonly string[] WeaknessKeywords =
     {
-        "v1beta",
-        "v1"
+        "yeu",
+        "chua vung",
+        "kem",
+        "hong tot",
+        "can on"
     };
 
-    private static readonly string[] GeminiModels =
+    private static readonly string[] GptModels =
     {
-        // Theo yêu cầu hiện tại: thử model gemini-2.0-flash-001.
-        "gemini-2.0-flash-001"
+        "gpt-5.4"
     };
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -109,10 +142,10 @@ public sealed class ChatService : IChatService
         if (string.IsNullOrWhiteSpace(geminiKey))
             return SerializeAiResponse(CreateLocalResponse(userMessage, wantsPracticeSession));
 
-        var geminiResponse = await TryCallGeminiAsync(userMessage, history, geminiKey, wantsPracticeSession, cancellationToken);
-        return geminiResponse.IsSuccess && !string.IsNullOrWhiteSpace(geminiResponse.Content)
-            ? geminiResponse.Content
-            : SerializeAiResponse(CreateLocalResponse(userMessage, wantsPracticeSession, geminiResponse.ErrorMessage));
+        var gptResponse = await TryCallGptAsync(userMessage, history, geminiKey, wantsPracticeSession, cancellationToken);
+        return gptResponse.IsSuccess && !string.IsNullOrWhiteSpace(gptResponse.Content)
+            ? gptResponse.Content
+            : SerializeAiResponse(CreateLocalResponse(userMessage, wantsPracticeSession, gptResponse.ErrorMessage));
     }
 
     public AiResponse ParseAiResponse(string aiResponseJson)
@@ -136,37 +169,33 @@ public sealed class ChatService : IChatService
         }
     }
 
-    private async Task<GeminiCallResult> TryCallGeminiAsync(string userMessage, IReadOnlyList<ChatHistoryMessage> history, string apiKey, bool wantsPracticeSession, CancellationToken cancellationToken)
+    private async Task<GeminiCallResult> TryCallGptAsync(string userMessage, IReadOnlyList<ChatHistoryMessage> history, string apiKey, bool wantsPracticeSession, CancellationToken cancellationToken)
     {
         try
         {
-            var payload = BuildGeminiRequestPayload(userMessage, history, wantsPracticeSession);
+            var payload = BuildGptRequestPayload(userMessage, history, wantsPracticeSession);
             var attemptedErrors = new List<string>();
 
-            foreach (var apiVersion in GeminiApiVersions)
+            foreach (var model in GptModels)
             {
-                foreach (var model in GeminiModels)
-                {
-                    var parsed = await CallGeminiModelAsync(apiVersion, model, apiKey, payload, cancellationToken);
-                    if (parsed.IsSuccess && !string.IsNullOrWhiteSpace(parsed.Content))
-                        return parsed;
+                var parsed = await CallGptModelAsync(model, apiKey, payload, cancellationToken);
+                if (parsed.IsSuccess && !string.IsNullOrWhiteSpace(parsed.Content))
+                    return parsed;
 
-                    attemptedErrors.Add(parsed.ErrorMessage ?? $"{apiVersion}/{model}: response rỗng.");
-                }
+                attemptedErrors.Add(parsed.ErrorMessage ?? $"{model}: response rỗng.");
             }
 
-            return GeminiCallResult.Fail($"Không có Gemini model nào khả dụng cho key hiện tại. Đã thử: {string.Join(" | ", attemptedErrors)}");
+            return GeminiCallResult.Fail($"Không có GPT model nào khả dụng cho key hiện tại. Đã thử: {string.Join(" | ", attemptedErrors)}");
         }
         catch (Exception ex)
         {
-            return GeminiCallResult.Fail($"Exception khi gọi Gemini: {ex.GetType().Name}: {ex.Message}");
+            return GeminiCallResult.Fail($"Exception khi gọi GPT: {ex.GetType().Name}: {ex.Message}");
         }
     }
 
-    private async Task<GeminiCallResult> CallGeminiModelAsync(string apiVersion, string model, string apiKey, object payload, CancellationToken cancellationToken)
+    private async Task<GeminiCallResult> CallGptModelAsync(string model, string apiKey, object payload, CancellationToken cancellationToken)
     {
-        var endpoint = $"https://generativelanguage.googleapis.com/{apiVersion}/models/{model}:generateContent?key={Uri.EscapeDataString(apiKey)}";
-        using var response = await SendWithRateLimitBackoffAsync(endpoint, payload, cancellationToken);
+        using var response = await SendWithRateLimitBackoffAsync(RouterApiChatCompletionsEndpoint, apiKey, payload, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -177,34 +206,34 @@ public sealed class ChatService : IChatService
                 || errorBody.Contains("API key expired", StringComparison.OrdinalIgnoreCase)
                 || errorBody.Contains("invalid API key", StringComparison.OrdinalIgnoreCase))
             {
-                return GeminiCallResult.Fail($"{apiVersion}/{model}: API key không hợp lệ hoặc đã hết hạn. Vào Cài đặt -> Gemini API Key để dán key mới từ AI Studio.");
+                return GeminiCallResult.Fail($"{model}: API key không hợp lệ hoặc đã hết hạn.");
             }
 
             if (statusCode == 403
                 || errorBody.Contains("PERMISSION_DENIED", StringComparison.OrdinalIgnoreCase)
                 || errorBody.Contains("permission", StringComparison.OrdinalIgnoreCase))
             {
-                return GeminiCallResult.Fail($"{apiVersion}/{model}: Key hợp lệ nhưng chưa có quyền dùng model này (hoặc project chưa bật Generative Language API / billing). Thử model khác hoặc kiểm tra quyền project trên Google Cloud.");
+                return GeminiCallResult.Fail($"{model}: Key hợp lệ nhưng chưa có quyền dùng model này.");
             }
 
             if (statusCode == 429 || errorBody.Contains("rate", StringComparison.OrdinalIgnoreCase))
-                return GeminiCallResult.Fail($"{apiVersion}/{model}: Bạn hỏi hơi nhanh rồi. Chờ vài giây rồi hỏi tiếp giúp mình nhé.");
+                return GeminiCallResult.Fail($"{model}: Bạn hỏi hơi nhanh rồi. Chờ vài giây rồi hỏi tiếp giúp mình nhé.");
 
             if (statusCode == 503 || errorBody.Contains("UNAVAILABLE", StringComparison.OrdinalIgnoreCase))
-                return GeminiCallResult.Fail($"{apiVersion}/{model}: Máy chủ Gemini đang đông người dùng.");
+                return GeminiCallResult.Fail($"{model}: Máy chủ AI đang đông người dùng.");
 
             if (statusCode is 404 or 410)
-                return GeminiCallResult.Fail($"{apiVersion}/{model}: model không khả dụng cho key hiện tại.");
+                return GeminiCallResult.Fail($"{model}: model không khả dụng cho key hiện tại.");
 
-            return GeminiCallResult.Fail($"{apiVersion}/{model}: HTTP {statusCode} {response.ReasonPhrase}. Body: {TrimForDebug(errorBody)}");
+            return GeminiCallResult.Fail($"{model}: HTTP {statusCode} {response.ReasonPhrase}. Body: {TrimForDebug(errorBody)}");
         }
 
         using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
         using var document = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
-        return ParseGeminiResponse(document, apiVersion, model);
+        return ParseGptResponse(document, model);
     }
 
-    private async Task<HttpResponseMessage> SendWithRateLimitBackoffAsync(string endpoint, object payload, CancellationToken cancellationToken)
+    private async Task<HttpResponseMessage> SendWithRateLimitBackoffAsync(string endpoint, string apiKey, object payload, CancellationToken cancellationToken)
     {
         var delays = new[] { 0, 1200, 2500, 5000 }; // ms
         HttpResponseMessage? lastResponse = null;
@@ -215,7 +244,12 @@ public sealed class ChatService : IChatService
                 await Task.Delay(delays[attempt], cancellationToken);
 
             lastResponse?.Dispose();
-            lastResponse = await _httpClient.PostAsJsonAsync(endpoint, payload, cancellationToken);
+            using var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
+            {
+                Content = JsonContent.Create(payload)
+            };
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+            lastResponse = await _httpClient.SendAsync(request, cancellationToken);
 
             if ((int)lastResponse.StatusCode != 429)
                 return lastResponse;
@@ -224,33 +258,30 @@ public sealed class ChatService : IChatService
         return lastResponse!;
     }
 
-    private static object BuildGeminiRequestPayload(string userMessage, IReadOnlyList<ChatHistoryMessage> history, bool wantsPracticeSession)
+    private static object BuildGptRequestPayload(string userMessage, IReadOnlyList<ChatHistoryMessage> history, bool wantsPracticeSession)
     {
         var systemPrompt = BuildSystemPrompt(wantsPracticeSession);
-        var contents = BuildGeminiContents(userMessage, history);
-
-        // Đưa system prompt vào đầu hội thoại như user text để tương thích rộng với nhiều model/version.
-        contents.Insert(0, new
+        var messages = BuildGptMessages(userMessage, history);
+        messages.Insert(0, new
         {
-            role = "user",
-            parts = new[]
-            {
-                new { text = systemPrompt }
-            }
+            role = "system",
+            content = systemPrompt
         });
 
         return new
         {
-            generationConfig = new
+            model = GptModels[0],
+            temperature = 0.2,
+            max_tokens = 360,
+            response_format = new
             {
-                temperature = 0.2,
-                maxOutputTokens = 360
+                type = "json_object"
             },
-            contents
+            messages
         };
     }
 
-    private static List<object> BuildGeminiContents(string userMessage, IReadOnlyList<ChatHistoryMessage> history)
+    private static List<object> BuildGptMessages(string userMessage, IReadOnlyList<ChatHistoryMessage> history)
     {
         var recentHistory = history
             .Where(message => !string.IsNullOrWhiteSpace(message.Text))
@@ -275,42 +306,27 @@ public sealed class ChatService : IChatService
         return recentHistory
             .Select(message => (object)new
             {
-                role = message.IsFromUser ? "user" : "model",
-                parts = new[]
-                {
-                    new { text = message.Text.Trim() }
-                }
+                role = message.IsFromUser ? "user" : "assistant",
+                content = message.Text.Trim()
             })
             .ToList();
     }
 
-    private static GeminiCallResult ParseGeminiResponse(JsonDocument document, string apiVersion, string model)
+    private static GeminiCallResult ParseGptResponse(JsonDocument document, string model)
     {
-        if (document.RootElement.TryGetProperty("promptFeedback", out var promptFeedback)
-            && promptFeedback.TryGetProperty("blockReason", out var blockReason)
-            && !string.IsNullOrWhiteSpace(blockReason.GetString()))
+        if (!document.RootElement.TryGetProperty("choices", out var choices) || choices.GetArrayLength() == 0)
+            return GeminiCallResult.Fail($"{model}: GPT response không có choices. Body: {TrimForDebug(document.RootElement.GetRawText())}");
+
+        var choice = choices[0];
+        if (!choice.TryGetProperty("message", out var message)
+            || !message.TryGetProperty("content", out var content))
         {
-            return GeminiCallResult.Fail($"{apiVersion}/{model}: Gemini chặn prompt vì {blockReason.GetString()}.");
+            return GeminiCallResult.Fail($"{model}: GPT response thiếu message.content. Body: {TrimForDebug(document.RootElement.GetRawText())}");
         }
 
-        if (!document.RootElement.TryGetProperty("candidates", out var candidates) || candidates.GetArrayLength() == 0)
-            return GeminiCallResult.Fail($"{apiVersion}/{model}: Gemini response không có candidates. Body: {TrimForDebug(document.RootElement.GetRawText())}");
-
-        var candidate = candidates[0];
-        if (candidate.TryGetProperty("finishReason", out var finishReason) && string.Equals(finishReason.GetString(), "SAFETY", StringComparison.OrdinalIgnoreCase))
-            return GeminiCallResult.Fail($"{apiVersion}/{model}: Gemini chặn vì safety. Body: {TrimForDebug(candidate.GetRawText())}");
-
-        if (!candidate.TryGetProperty("content", out var content)
-            || !content.TryGetProperty("parts", out var parts)
-            || parts.GetArrayLength() == 0
-            || !parts[0].TryGetProperty("text", out var text))
-        {
-            return GeminiCallResult.Fail($"{apiVersion}/{model}: Gemini response thiếu content.parts[0].text. Body: {TrimForDebug(document.RootElement.GetRawText())}");
-        }
-
-        var resultText = text.GetString();
+        var resultText = content.GetString();
         return string.IsNullOrWhiteSpace(resultText)
-            ? GeminiCallResult.Fail($"{apiVersion}/{model}: Gemini content text rỗng. Body: {TrimForDebug(document.RootElement.GetRawText())}")
+            ? GeminiCallResult.Fail($"{model}: GPT content rỗng. Body: {TrimForDebug(document.RootElement.GetRawText())}")
             : GeminiCallResult.Ok(resultText);
     }
 
@@ -329,7 +345,7 @@ JSON format:
   "type": "practice",
   "message": "...",
   "practice": {
-    "topic": "traffic_sign | simulation | critical",
+    "topic": "traffic_sign | simulation | critical | rules | technical | culture | mixed",
     "source": "wrong | random",
     "questionCount": number
   }
@@ -339,6 +355,10 @@ Mapping rules:
 - 'biển báo', 'bien bao', 'báo hiệu', 'bao hieu' → topic = traffic_sign
 - 'sa hình', 'sa hinh', 'tình huống', 'tinh huong', 'mô phỏng', 'mo phong' → topic = simulation
 - 'điểm liệt', 'diem liet', 'câu liệt', 'cau liet' → topic = critical
+- 'quy tắc', 'quy tac', 'luật giao thông', 'luat giao thong', 'lý thuyết', 'ly thuyet' → topic = rules
+- 'kỹ thuật', 'ky thuat', 'kỹ thuật lái xe', 'ky thuat lai xe', 'kỹ năng lái', 'ky nang lai' → topic = technical
+- 'văn hóa', 'van hoa', 'đạo đức', 'dao duc' → topic = culture
+- Nếu người dùng nêu nhiều chủ đề hoặc nói chung như 'yếu nhiều phần', 'đề ôn tập', 'ôn thi', 'các phần liên quan' → topic = mixed
 - 'hay sai', 'ôn sai', 'on sai', 'câu sai', 'cau sai' → source = wrong
 - otherwise source = random
 - If the user says a number, use that number for questionCount.
@@ -377,7 +397,8 @@ JSON format:
         var normalized = NormalizeText(userMessage);
         var hasActionKeyword = PracticeActionKeywords.Any(keyword => normalized.Contains(NormalizeText(keyword), StringComparison.Ordinal));
         var hasTopicKeyword = PracticeTopicKeywords.Any(keyword => normalized.Contains(NormalizeText(keyword), StringComparison.Ordinal));
-        return hasActionKeyword && hasTopicKeyword;
+        var hasWeaknessKeyword = WeaknessKeywords.Any(keyword => normalized.Contains(keyword, StringComparison.Ordinal));
+        return hasTopicKeyword && (hasActionKeyword || hasWeaknessKeyword);
     }
 
     private static bool IsSmallTalk(string text)
@@ -474,16 +495,44 @@ JSON format:
         var normalized = NormalizeText(userMessage);
         var request = PracticeRequest.CreateDefault();
 
-        if (ContainsAny(normalized, "diem liet", "cau liet", "critical"))
-            request.Topic = "critical";
-        else if (ContainsAny(normalized, "sa hinh", "mo phong", "tinh huong", "simulation"))
-            request.Topic = "simulation";
-        else
-            request.Topic = "traffic_sign";
+        request.Topic = ResolveHeuristicPracticeTopic(normalized);
 
         request.Source = ContainsAny(normalized, "hay sai", "on sai", "cau sai", "wrong") ? "wrong" : PracticeRequest.DefaultSource;
         request.QuestionCount = ExtractRequestedQuestionCount(normalized);
         return NormalizePracticeRequest(request);
+    }
+
+    private static string ResolveHeuristicPracticeTopic(string normalized)
+    {
+        var topics = new List<string>();
+
+        if (ContainsAny(normalized, "bien bao", "bao hieu", "bien cam", "bien nguy hiem", "bien hieu lenh", "traffic sign"))
+            topics.Add("traffic_sign");
+
+        if (ContainsAny(normalized, "sa hinh", "mo phong", "tinh huong", "simulation"))
+            topics.Add("simulation");
+
+        if (ContainsAny(normalized, "diem liet", "cau liet", "critical"))
+            topics.Add("critical");
+
+        if (ContainsAny(normalized, "quy tac", "luat giao thong", "ly thuyet", "toc do", "lan duong", "nhuong duong", "xu phat"))
+            topics.Add("rules");
+
+        if (ContainsAny(normalized, "ky thuat", "ky nang lai", "thao tac", "bao duong", "xe mo to", "xe may", "dong co", "phanh", "con", "ga", "lop xe"))
+            topics.Add("technical");
+
+        if (ContainsAny(normalized, "van hoa", "dao duc", "ung xu", "trach nhiem", "van minh"))
+            topics.Add("culture");
+
+        if (ContainsAny(normalized, "tong hop", "nhieu phan", "cac phan", "de on tap", "de thi", "on thi", "on tap", "luyen tap") && topics.Count == 0)
+            return "mixed";
+
+        return topics.Count switch
+        {
+            0 => PracticeRequest.DefaultTopic,
+            1 => topics[0],
+            _ => string.Join(",", topics.Distinct(StringComparer.OrdinalIgnoreCase))
+        };
     }
 
     private static string CreateLocalChatReply(string userMessage, string? debugReason)
@@ -541,7 +590,9 @@ JSON format:
         }
 
         if (normalized.Contains("không có candidates", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("không có choices", StringComparison.OrdinalIgnoreCase)
             || normalized.Contains("thiếu content.parts", StringComparison.OrdinalIgnoreCase)
+            || normalized.Contains("thiếu message.content", StringComparison.OrdinalIgnoreCase)
             || normalized.Contains("content text rỗng", StringComparison.OrdinalIgnoreCase))
             return "INVALID_RESPONSE_FORMAT";
 
@@ -648,7 +699,9 @@ JSON format:
                 : "Hiện tại AI đang bận, bạn thử lại sau nhé!";
 
         if (response.Type == AiResponse.PracticeType)
+        {
             response.Practice = NormalizePracticeRequest(response.Practice);
+        }
         else
             response.Practice = null;
 
@@ -659,15 +712,43 @@ JSON format:
     {
         request ??= PracticeRequest.CreateDefault();
         request.Action = PracticeRequest.DefaultAction;
-        request.Topic = request.Topic?.Trim().ToLowerInvariant() switch
-        {
-            "simulation" or "critical" or "traffic_sign" => request.Topic.Trim().ToLowerInvariant(),
-            "traffic-sign" or "traffic signs" or "traffic_signs" => "traffic_sign",
-            _ => PracticeRequest.DefaultTopic
-        };
+        request.Topic = NormalizePracticeTopicExpression(request.Topic);
         request.Source = string.Equals(request.Source, "wrong", StringComparison.OrdinalIgnoreCase) ? "wrong" : PracticeRequest.DefaultSource;
         request.QuestionCount = request.QuestionCount is >= 1 and <= 100 ? request.QuestionCount : PracticeRequest.DefaultQuestionCount;
         return request;
+    }
+
+    private static string NormalizePracticeTopicExpression(string? topic)
+    {
+        var parts = (topic ?? string.Empty)
+            .Split(new[] { ',', '|', ';', '+', '&' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(NormalizePracticeTopicToken)
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        if (parts.Count == 0)
+            return PracticeRequest.DefaultTopic;
+
+        if (parts.Contains("mixed", StringComparer.OrdinalIgnoreCase))
+            return "mixed";
+
+        return string.Join(",", parts);
+    }
+
+    private static string NormalizePracticeTopicToken(string? topic)
+    {
+        return topic?.Trim().ToLowerInvariant() switch
+        {
+            "simulation" or "situational" or "sa_hinh" or "sa-hinh" or "cd_sh" => "simulation",
+            "critical" or "diem_liet" or "diem-liet" or "cd_liet" => "critical",
+            "traffic_sign" or "traffic-sign" or "traffic signs" or "traffic_signs" or "cd_bh" => "traffic_sign",
+            "rules" or "rule" or "theory" or "traffic_rules" or "traffic-rules" or "cd_qtgt" => "rules",
+            "technical" or "technique" or "driving_technique" or "driving-technique" or "cd_kt" => "technical",
+            "culture" or "ethics" or "driving_culture" or "driving-culture" or "cd_vh" => "culture",
+            "mixed" or "all" or "general" or "random" => "mixed",
+            _ => string.Empty
+        };
     }
 
     private static string ExtractJsonObject(string value)

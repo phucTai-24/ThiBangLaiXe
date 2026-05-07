@@ -152,19 +152,33 @@
                                 Completed="OnMessageEntryCompleted" />
                     </Border>
 
-                    <Button Grid.Column="1"
-                            WidthRequest="52"
-                            HeightRequest="52"
-                            MinimumWidthRequest="52"
-                            MinimumHeightRequest="52"
+                     <Button Grid.Column="1"
+                             WidthRequest="52"
+                             HeightRequest="52"
+                             MinimumWidthRequest="52"
+                             MinimumHeightRequest="52"
                             Padding="0"
                              BackgroundColor="{StaticResource AppBrand}"
                              Clicked="OnSendButtonClicked"
                              CornerRadius="26"
                             FontSize="20"
-                            Text="➤"
-                            TextColor="White" />
+                             Text="➤"
+                             TextColor="White" />
                 </Grid>
+
+                <Button Grid.Row="2"
+                        Margin="16,0,16,84"
+                        HeightRequest="40"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="End"
+                        BackgroundColor="#16A34A"
+                        CornerRadius="20"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="13"
+                        IsVisible="{Binding HasPendingPracticeSession}"
+                        Command="{Binding StartPracticeCommand}"
+                        Text="Bắt đầu ôn tập"
+                        TextColor="White" />
             </Grid>
         </Border>
 

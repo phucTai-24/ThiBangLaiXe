@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiApp1.Views.VnPayPaymentPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Thanh toán VNPAY">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12">
+            <Label
+                FontAttributes="Bold"
+                FontSize="22"
+                Text="Thanh toán khóa học qua VNPAY" />
+
+            <Label
+                FontSize="13"
+                TextColor="#64748B"
+                Text="Luồng này chỉ mở thanh toán khi registration đã được duyệt bởi admin." />
+
+            <Entry
+                x:Name="RegistrationIdEntry"
+                Keyboard="Numeric"
+                Placeholder="Nhập registrationId đã được duyệt" />
+
+            <Button
+                x:Name="CreateOrderButton"
+                Clicked="OnCreateOrderClicked"
+                Text="Tạo đơn VNPAY" />
+
+            <Button
+                x:Name="OpenOrderButton"
+                Clicked="OnOpenOrderClicked"
+                IsEnabled="False"
+                Text="Mở trang thanh toán" />
+
+            <Button
+                x:Name="CheckStatusButton"
+                Clicked="OnCheckStatusClicked"
+                IsEnabled="False"
+                Text="Kiểm tra trạng thái" />
+
+            <ActivityIndicator
+                x:Name="LoadingIndicator"
+                IsRunning="False"
+                IsVisible="False" />
+
+            <Label
+                x:Name="StatusLabel"
+                FontAttributes="Bold"
+                Text="Sẵn sàng." />
+
+            <Label x:Name="ReceiptIdLabel" Text="ReceiptId: -" />
+            <Label x:Name="TransactionRefLabel" Text="TransactionRef: -" />
+            <Label x:Name="AmountLabel" Text="Amount: -" />
+            <Label x:Name="PaymentStatusLabel" Text="PaymentStatus: -" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+

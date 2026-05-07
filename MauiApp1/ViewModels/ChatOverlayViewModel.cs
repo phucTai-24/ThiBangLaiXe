@@ -13,6 +13,17 @@ public sealed class ChatOverlayViewModel : BaseViewModel
     private bool _isChatOpen;
     private bool _isSending;
     private string _draftMessage = string.Empty;
+    private PracticeSession? _pendingPracticeSession;
+    private bool _hasPendingPracticeSession;
+
+    private static readonly string[] StartPracticeKeywords =
+    {
+        "bat dau on tap",
+        "bat dau luyen tap",
+        "bat dau",
+        "vao on tap",
+        "vao luyen tap"
+    };
 
     public ChatOverlayViewModel()
         : this(
@@ -41,6 +52,7 @@ public sealed class ChatOverlayViewModel : BaseViewModel
         ToggleChatCommand = new Command(ToggleChat);
         CloseChatCommand = new Command(() => IsChatOpen = false);
         SendMessageCommand = new Command(SendMessage, CanSendMessage);
+        StartPracticeCommand = new Command(async () => await StartPendingPracticeAsync(), () => HasPendingPracticeSession);
     }
 
     public ObservableCollection<ChatMessageViewModel> Messages { get; }
@@ -82,6 +94,18 @@ public sealed class ChatOverlayViewModel : BaseViewModel
     public ICommand CloseChatCommand { get; }
 
     public ICommand SendMessageCommand { get; }
+
+    public ICommand StartPracticeCommand { get; }
+
+    public bool HasPendingPracticeSession
+    {
+        get => _hasPendingPracticeSession;
+        set
+        {
+            if (SetProperty(ref _hasPendingPracticeSession, value) && StartPracticeCommand is Command command)
+                command.ChangeCanExecute();
+        }
+    }
 
     private void ToggleChat()
     {
@@ -134,6 +158,9 @@ public sealed class ChatOverlayViewModel : BaseViewModel
         if (string.IsNullOrEmpty(message))
             return;
 
+        if (TryHandleStartPracticeRequest(message))
+            return;
+
         Messages.Add(new ChatMessageViewModel("Bạn", message, true));
         DraftMessage = string.Empty;
 
@@ -170,13 +197,13 @@ public sealed class ChatOverlayViewModel : BaseViewModel
             var session = await _practiceService.CreateSessionAsync(aiResponse.Practice);
             _practiceSessionStore.SetCurrentSession(session);
             await _practiceSessionStore.SaveAsync(session);
+            _pendingPracticeSession = session;
+            HasPendingPracticeSession = true;
 
             Messages.Add(new ChatMessageViewModel(
                 "AI",
-                $"Đã tạo phiên {session.TopicName.ToLowerInvariant()} gồm {session.TotalQuestions} câu. Mình sẽ chuyển bạn sang màn hình luyện tập.",
+                $"Đã tạo phiên {session.TopicName.ToLowerInvariant()} gồm {session.TotalQuestions} câu. Khi sẵn sàng, bạn nhắn 'bắt đầu ôn tập' để vào màn hình luyện tập.",
                 false));
-
-            await Shell.Current.GoToAsync($"{nameof(Views.PracticeSessionPage)}?sessionId={Uri.EscapeDataString(session.Id)}");
         }
         catch (Exception ex)
         {
@@ -189,6 +216,66 @@ public sealed class ChatOverlayViewModel : BaseViewModel
         {
             IsSending = false;
         }
+    }
+
+    private bool TryHandleStartPracticeRequest(string message)
+    {
+        var normalized = NormalizeText(message);
+        var isStartIntent = StartPracticeKeywords.Any(keyword => normalized.Contains(keyword, StringComparison.Ordinal));
+        if (!isStartIntent)
+            return false;
+
+        if (_pendingPracticeSession == null)
+        {
+            Messages.Add(new ChatMessageViewModel(
+                "AI",
+                "Mình chưa có phiên ôn tập nào vừa tạo. Bạn hãy nêu phần cần ôn (ví dụ: biển báo, sa hình, điểm liệt), mình sẽ tạo phiên ngay.",
+                false));
+            DraftMessage = string.Empty;
+            return true;
+        }
+
+        var sessionId = _pendingPracticeSession.Id;
+        _pendingPracticeSession = null;
+        HasPendingPracticeSession = false;
+        DraftMessage = string.Empty;
+        _ = Shell.Current.GoToAsync($"{nameof(Views.PracticeSessionPage)}?sessionId={Uri.EscapeDataString(sessionId)}");
+        return true;
+    }
+
+    private async Task StartPendingPracticeAsync()
+    {
+        if (_pendingPracticeSession == null)
+            return;
+
+        var sessionId = _pendingPracticeSession.Id;
+        _pendingPracticeSession = null;
+        HasPendingPracticeSession = false;
+        await Shell.Current.GoToAsync($"{nameof(Views.PracticeSessionPage)}?sessionId={Uri.EscapeDataString(sessionId)}");
+    }
+
+    private static string NormalizeText(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return string.Empty;
+
+        var normalized = value.Trim().ToLowerInvariant();
+        normalized = normalized
+            .Replace("đ", "d")
+            .Replace("á", "a").Replace("à", "a").Replace("ả", "a").Replace("ã", "a").Replace("ạ", "a")
+            .Replace("ă", "a").Replace("ắ", "a").Replace("ằ", "a").Replace("ẳ", "a").Replace("ẵ", "a").Replace("ặ", "a")
+            .Replace("â", "a").Replace("ấ", "a").Replace("ầ", "a").Replace("ẩ", "a").Replace("ẫ", "a").Replace("ậ", "a")
+            .Replace("é", "e").Replace("è", "e").Replace("ẻ", "e").Replace("ẽ", "e").Replace("ẹ", "e")
+            .Replace("ê", "e").Replace("ế", "e").Replace("ề", "e").Replace("ể", "e").Replace("ễ", "e").Replace("ệ", "e")
+            .Replace("í", "i").Replace("ì", "i").Replace("ỉ", "i").Replace("ĩ", "i").Replace("ị", "i")
+            .Replace("ó", "o").Replace("ò", "o").Replace("ỏ", "o").Replace("õ", "o").Replace("ọ", "o")
+            .Replace("ô", "o").Replace("ố", "o").Replace("ồ", "o").Replace("ổ", "o").Replace("ỗ", "o").Replace("ộ", "o")
+            .Replace("ơ", "o").Replace("ớ", "o").Replace("ờ", "o").Replace("ở", "o").Replace("ỡ", "o").Replace("ợ", "o")
+            .Replace("ú", "u").Replace("ù", "u").Replace("ủ", "u").Replace("ũ", "u").Replace("ụ", "u")
+            .Replace("ư", "u").Replace("ứ", "u").Replace("ừ", "u").Replace("ử", "u").Replace("ữ", "u").Replace("ự", "u")
+            .Replace("ý", "y").Replace("ỳ", "y").Replace("ỷ", "y").Replace("ỹ", "y").Replace("ỵ", "y");
+
+        return normalized;
     }
 
     private static T ResolveService<T>() where T : notnull

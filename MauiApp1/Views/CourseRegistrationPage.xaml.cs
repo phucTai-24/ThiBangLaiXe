@@ -1,703 +1,417 @@
-using MauiApp1.Models.Entitlements;
-using MauiApp1.Models.Auth;
+using MauiApp1.Models.CourseModule;
 using MauiApp1.Services;
-using System.Collections.ObjectModel;
-using MauiApp1.Helpers;
+using MauiApp1.ViewModels;
 
 namespace MauiApp1.Views;
 
 public partial class CourseRegistrationPage : ContentPage
 {
-    private readonly IEntitlementService _entitlementService;
-    private readonly IAuthService _authService;
-    private bool _isLoadingPackages;
-    private long? _pendingCourseId;
-    private Button? _pendingRegisterButton;
-    private CourseDetailItem? _currentCourseDetail;
-    private DateTime _currentScheduleWeekStart;
+    private readonly CourseEnrollmentFlowViewModel _viewModel;
+    private bool _isWaitingForPaymentReturn;
+    private bool _paymentFlowCompleted;
+    private bool _isShowingPaymentResultPopup;
+    private bool _isNavigatingBack;
 
-    public ObservableCollection<EntitlementPackageItem> CoursePackages { get; } = new();
-
-    public CourseRegistrationPage(IEntitlementService entitlementService, IAuthService authService)
+    public CourseRegistrationPage(CourseEnrollmentFlowViewModel viewModel)
     {
-        _entitlementService = entitlementService;
-        _authService = authService;
         InitializeComponent();
-        BindingContext = this;
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
+        UpdatePaymentButtonState();
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await LoadCoursePackagesAsync();
+        if (_viewModel.Courses.Count == 0)
+            await _viewModel.InitializeAsync();
+
+        if (_isWaitingForPaymentReturn)
+        {
+            _isWaitingForPaymentReturn = false;
+            _paymentFlowCompleted = true;
+            MarkPaymentAsSuccessLocally();
+            await SyncPaymentStatusWithRetryAsync();
+        }
+
+        if (VnPayDeepLinkState.TryConsume(out var deepLink) && deepLink is not null)
+        {
+            _paymentFlowCompleted = true;
+            MarkPaymentAsSuccessLocally();
+            await SyncPaymentStatusWithRetryAsync();
+        }
+
+        UpdatePaymentButtonState();
     }
 
-    private async Task LoadCoursePackagesAsync()
+    private async void OnCourseSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (_isLoadingPackages)
-            return;
-
-        try
+        if (e.CurrentSelection.FirstOrDefault() is Course course)
         {
-            _isLoadingPackages = true;
-            LoadingIndicator.IsVisible = true;
-            LoadingIndicator.IsRunning = true;
-            StatusLabel.Text = "Đang tải toàn bộ khóa học...";
-
-            var packages = await _entitlementService.GetPackagesAsync();
-
-            CoursePackages.Clear();
-            foreach (var package in packages)
-            {
-                CoursePackages.Add(package);
-            }
-
-            if (CoursePackages.Count == 0)
-            {
-                StatusLabel.Text = "Hiện chưa có khóa học mở đăng ký.";
-            }
-            else
-            {
-                StatusLabel.Text = $"Có {CoursePackages.Count} khóa học mở đăng ký.";
-            }
-
-        }
-        catch (UnauthorizedAccessException)
-        {
-            StatusLabel.Text = "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.";
-            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
-        }
-        catch (Exception ex)
-        {
-            StatusLabel.Text = "Không tải được danh sách khóa học.";
-            Console.WriteLine($"[CourseRegistration][Load][Error] {ex.Message}");
-        }
-        finally
-        {
-            _isLoadingPackages = false;
-            LoadingIndicator.IsVisible = false;
-            LoadingIndicator.IsRunning = false;
+            _paymentFlowCompleted = false;
+            await _viewModel.SelectCourseAsync(course);
+            UpdatePaymentButtonState();
         }
     }
 
-    private async void OnRegisterCourseClicked(object? sender, EventArgs e)
+    private async void OnClassSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (sender is not Button button || button.CommandParameter is null)
-            return;
+        if (e.CurrentSelection.FirstOrDefault() is DrivingClass drivingClass)
+        {
+            _paymentFlowCompleted = false;
+            _viewModel.SelectClass(drivingClass);
 
-        if (!long.TryParse(button.CommandParameter.ToString(), out var packageId) || packageId <= 0)
-            return;
+            // Tải ngầm đăng ký hiện có của học viên cho đúng khóa/lớp vừa chọn.
+            await _viewModel.LoadExistingRegistrationForSelectedClassAsync();
 
+            // Nếu đăng ký đã có trạng thái thanh toán thì khóa nút VNPAY ngay.
+            if (_viewModel.Registration?.PaymentStatus == PaymentStatus.Paid)
+            {
+                _paymentFlowCompleted = true;
+                _viewModel.StatusMessage = "Thanh toán thành công";
+            }
+
+            UpdatePaymentButtonState();
+        }
+    }
+
+    private async void OnSubmitRegistrationClicked(object? sender, EventArgs e)
+    {
+        if (_viewModel.SelectedClass is null)
+        {
+            await DisplayAlert("Chưa chọn lớp", "Vui lòng chọn lớp học trước khi tạo phiếu đăng ký.", "OK");
+            return;
+        }
+
+        if (_viewModel.SelectedClass.AvailableSlots <= 0)
+        {
+            await DisplayAlert("Lớp đã đầy", "Lớp học đã hết chỗ, vui lòng chọn lớp khác.", "OK");
+            return;
+        }
+
+        var request = new CreateRegistrationRequest
+        {
+            FullName = FullNameEntry.Text?.Trim() ?? string.Empty,
+            PhoneNumber = PhoneEntry.Text?.Trim() ?? string.Empty,
+            Email = EmailEntry.Text?.Trim() ?? string.Empty,
+            IdentityNumber = IdentityEntry.Text?.Trim() ?? string.Empty,
+            Address = AddressEditor.Text?.Trim() ?? string.Empty
+        };
+
+        if (string.IsNullOrWhiteSpace(request.FullName)
+            || string.IsNullOrWhiteSpace(request.PhoneNumber)
+            || string.IsNullOrWhiteSpace(request.Email)
+            || string.IsNullOrWhiteSpace(request.IdentityNumber)
+            || string.IsNullOrWhiteSpace(request.Address))
+        {
+            await DisplayAlert("Thiếu thông tin", "Vui lòng nhập đầy đủ thông tin học viên.", "OK");
+            return;
+        }
+
+        var success = await _viewModel.SubmitRegistrationAsync(request);
+        if (success)
+        {
+            await DisplayAlert("Thành công", "Đã tạo phiếu đăng ký ở trạng thái Chờ thanh toán.", "OK");
+        }
+        else
+        {
+            await DisplayAlert("Không thể tạo phiếu", _viewModel.StatusMessage, "OK");
+        }
+    }
+
+    private async void OnPayWithVnPayClicked(object? sender, EventArgs e)
+    {
         try
         {
-            button.IsEnabled = false;
-
-            var profile = await _authService.GetCurrentUserProfileAsync();
-            if (profile is null)
-                throw new UnauthorizedAccessException("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.");
-
-            var studentProfile = await _authService.GetCurrentStudentProfileAsync();
-            if (studentProfile is null)
+            var ok = await _viewModel.CreatePaymentAsync();
+            if (!ok || _viewModel.Payment is null)
             {
-                _pendingCourseId = packageId;
-                _pendingRegisterButton = button;
-                OpenStudentProfileForm(profile);
-                StatusLabel.Text = "Vui lòng nhập thông tin học viên để tiếp tục đăng ký khóa học.";
+                await DisplayAlert("Chưa thể thanh toán", _viewModel.StatusMessage, "OK");
                 return;
             }
 
-            await RegisterCourseAsync(packageId);
-        }
-        catch (UnauthorizedAccessException)
-        {
-            StatusLabel.Text = "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.";
-            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
-        }
-        catch (Exception ex)
-        {
-            StatusLabel.Text = "Đăng ký khóa học thất bại.";
-            Console.WriteLine($"[CourseRegistration][Register][Error] {ex.Message}");
-            await DisplayAlert("Lỗi", ex.Message, "OK");
-        }
-        finally
-        {
-            button.IsEnabled = true;
-        }
-    }
+            var confirm = await DisplayAlert(
+                "Mở VNPAY",
+                "Ứng dụng sẽ mở trang thanh toán VNPAY. Bạn có muốn tiếp tục?",
+                "Tiếp tục",
+                "Hủy");
 
-    private async Task RegisterCourseAsync(long packageId)
-    {
-        await _entitlementService.RegisterPackageAsync(packageId);
-
-        var item = CoursePackages.FirstOrDefault(x => x.Id == packageId);
-        if (item != null)
-            item.IsRegistered = true;
-
-        StatusLabel.Text = "Đăng ký khóa học thành công.";
-    }
-
-    private async void OnSubmitStudentProfileClicked(object? sender, EventArgs e)
-    {
-        if (_pendingCourseId is null)
-            return;
-
-        try
-        {
-            SubmitStudentProfileButton.IsEnabled = false;
-            StudentProfileErrorLabel.IsVisible = false;
-
-            var request = BuildStudentProfileRequestFromForm();
-            if (request is null)
+            if (!confirm)
                 return;
 
-            await _authService.RegisterStudentProfileAsync(request);
+            // Trước khi mở VNPAY, tải ngầm đăng ký để đồng bộ đúng hồ sơ hiện có.
+            await _viewModel.LoadExistingRegistrationForSelectedClassAsync();
 
-            var studentProfile = await _authService.GetCurrentStudentProfileAsync();
-            if (studentProfile is null)
-                throw new InvalidOperationException("Không lấy lại được thông tin học viên sau khi đăng ký.");
+            var paymentUrl = _viewModel.Payment.PaymentUrl?.Trim();
+
+            if (string.IsNullOrWhiteSpace(paymentUrl)
+                || !Uri.TryCreate(paymentUrl, UriKind.Absolute, out var uri)
+                || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
+            {
+                await DisplayAlert("URL không hợp lệ", "Không thể mở trang thanh toán vì URL VNPAY không hợp lệ.", "OK");
+                return;
+            }
+
+            _isWaitingForPaymentReturn = true;
+            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
 
             await DisplayAlert(
-                "Đăng ký học viên thành công",
-                $"Họ tên: {studentProfile.ho_ten}\nCCCD: {(string.IsNullOrWhiteSpace(studentProfile.cccd) ? "Chưa cập nhật" : studentProfile.cccd)}\nĐịa chỉ: {(string.IsNullOrWhiteSpace(studentProfile.dia_chi) ? "Chưa cập nhật" : studentProfile.dia_chi)}",
-                "Tiếp tục");
-
-            CloseStudentProfileForm();
-
-            await RegisterCourseAsync(_pendingCourseId.Value);
+                "Lưu ý sau thanh toán",
+                "Nếu bước cuối VNPAY trả về trang localhost lỗi, hãy quay lại app. Ứng dụng sẽ tự kiểm tra trạng thái thanh toán từ backend.",
+                "Đã hiểu");
         }
         catch (Exception ex)
         {
-            StudentProfileErrorLabel.Text = ex.Message;
-            StudentProfileErrorLabel.IsVisible = true;
-            Console.WriteLine($"[CourseRegistration][StudentProfile][Error] {ex.Message}");
-        }
-        finally
-        {
-            SubmitStudentProfileButton.IsEnabled = true;
-            if (_pendingRegisterButton is not null)
-                _pendingRegisterButton.IsEnabled = true;
+            await DisplayAlert("Lỗi mở VNPAY", ex.Message, "OK");
         }
     }
 
-    private void OnCancelStudentProfileClicked(object? sender, EventArgs e)
+    private async void OnBackTapped(object? sender, TappedEventArgs e)
     {
-        CloseStudentProfileForm();
-        if (_pendingRegisterButton is not null)
-            _pendingRegisterButton.IsEnabled = true;
-        StatusLabel.Text = "Bạn đã hủy nhập thông tin học viên.";
+        await BackAsync();
     }
 
-    private async void OnBackTapped(object? sender, EventArgs e)
+    protected override bool OnBackButtonPressed()
     {
-        await NavigationHelper.GoBackAsync();
-    }
-
-    private async void OnCourseDetailClicked(object? sender, EventArgs e)
-    {
-        if (sender is not Button button || button.CommandParameter is null)
-            return;
-
-        if (!long.TryParse(button.CommandParameter.ToString(), out var courseId) || courseId <= 0)
-            return;
-
-        try
-        {
-            button.IsEnabled = false;
-            StatusLabel.Text = "Đang tải chi tiết khóa học...";
-
-            var detail = await _entitlementService.GetCourseDetailAsync(courseId);
-            if (detail is null)
-            {
-                await DisplayAlert("Thông báo", "Không lấy được chi tiết khóa học.", "OK");
-                return;
-            }
-
-            ShowCourseDetail(detail);
-            StatusLabel.Text = $"Có {CoursePackages.Count} khóa học mở đăng ký.";
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[CourseRegistration][Detail][Error] {ex.Message}");
-            await DisplayAlert("Lỗi", "Không tải được chi tiết khóa học.", "OK");
-        }
-        finally
-        {
-            button.IsEnabled = true;
-        }
-    }
-
-    private void ShowCourseDetail(CourseDetailItem detail)
-    {
-        DetailTitleLabel.Text = detail.TenKhoaHoc;
-        DetailSubtitleLabel.Text = $"{detail.MaKhoaHoc} • {detail.LoaiBangLai} • {detail.TrangThai}";
-        DetailFeeLabel.Text = $"{detail.HocPhi:N0}đ";
-        DetailSessionsLabel.Text = $"{detail.SoBuoiHoc} buổi";
-        DetailCapacityLabel.Text = $"Sĩ số: {detail.SoLuongHienTai}/{detail.SoLuongToiDa} học viên";
-        DetailDescriptionLabel.Text = string.IsNullOrWhiteSpace(detail.MoTa) ? "Chưa có mô tả chi tiết." : detail.MoTa;
-        DetailTeacherLabel.Text = detail.GiaoVienChinh is null
-            ? "Chưa phân công giảng viên"
-            : $"{detail.GiaoVienChinh.HoTen} • {detail.GiaoVienChinh.SoDienThoai ?? "Chưa có SĐT"}";
-        DetailDateRangeLabel.Text = $"{FormatDate(detail.NgayBatDau)} - {FormatDate(detail.NgayKetThuc)}";
-
-        _currentCourseDetail = detail;
-        _currentScheduleWeekStart = GetWeekStart(detail.NgayBatDau ?? DateTime.Today);
-        RenderScheduleWeek();
-
-        CourseDetailOverlay.IsVisible = true;
-    }
-
-    private void OnCloseCourseDetailClicked(object? sender, EventArgs e)
-    {
-        CourseDetailOverlay.IsVisible = false;
-    }
-
-    private void OnPreviousScheduleWeekClicked(object? sender, EventArgs e)
-    {
-        if (_currentCourseDetail is null)
-            return;
-
-        _currentScheduleWeekStart = _currentScheduleWeekStart.AddDays(-7);
-        RenderScheduleWeek();
-    }
-
-    private void OnNextScheduleWeekClicked(object? sender, EventArgs e)
-    {
-        if (_currentCourseDetail is null)
-            return;
-
-        _currentScheduleWeekStart = _currentScheduleWeekStart.AddDays(7);
-        RenderScheduleWeek();
-    }
-
-    private void RenderScheduleWeek()
-    {
-        if (_currentCourseDetail is null)
-            return;
-
-        DetailSchedulesLayout.Children.Clear();
-
-        var weekEnd = _currentScheduleWeekStart.AddDays(6);
-        ScheduleWeekLabel.Text = $"{_currentScheduleWeekStart:dd/MM} - {weekEnd:dd/MM/yyyy}";
-
-        PreviousScheduleWeekButton.IsEnabled = !_currentCourseDetail.NgayBatDau.HasValue
-            || _currentScheduleWeekStart > GetWeekStart(_currentCourseDetail.NgayBatDau.Value);
-        NextScheduleWeekButton.IsEnabled = !_currentCourseDetail.NgayKetThuc.HasValue
-            || weekEnd < _currentCourseDetail.NgayKetThuc.Value.Date;
-
-        if (_currentCourseDetail.LichHocMau.Count == 0)
-        {
-            DetailSchedulesLayout.Children.Add(CreateEmptyScheduleCard("Chưa có lịch học mẫu."));
-            return;
-        }
-
-        DetailSchedulesLayout.Children.Add(CreateScheduleTable(_currentCourseDetail, _currentScheduleWeekStart));
-    }
-
-    private static string FormatDate(DateTime? value)
-    {
-        return value.HasValue ? value.Value.ToString("dd/MM/yyyy") : "Chưa cập nhật";
-    }
-
-    private static View CreateEmptyScheduleCard(string message)
-    {
-        return new Border
-        {
-            BackgroundColor = Color.FromArgb("#F8FAFC"),
-            Stroke = Color.FromArgb("#E2E8F0"),
-            StrokeThickness = 1,
-            StrokeShape = new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = 18 },
-            Padding = 14,
-            Content = new Label
-            {
-                Text = message,
-                TextColor = Color.FromArgb("#64748B"),
-                FontSize = 13
-            }
-        };
-    }
-
-    private static View CreateScheduleTable(CourseDetailItem detail, DateTime weekStart)
-    {
-        var table = new VerticalStackLayout
-        {
-            Spacing = 10
-        };
-
-        var days = Enumerable.Range(0, 7)
-            .Select(offset => weekStart.AddDays(offset))
-            .ToArray();
-        var sessions = new[] { "Sáng", "Chiều", "Tối" };
-
-        foreach (var date in days)
-        {
-            var day = ToVietnameseDayOfWeek(date.DayOfWeek);
-            var daySchedules = detail.LichHocMau
-                .Where(x => x.ThuTrongTuan == day)
-                .OrderBy(x => x.GioBatDau)
-                .ToList();
-
-            var isInCourseRange = IsDateInCourseRange(date, detail.NgayBatDau, detail.NgayKetThuc);
-            table.Children.Add(CreateDayScheduleRow(date, sessions, isInCourseRange ? daySchedules : new List<CourseScheduleItem>(), isInCourseRange));
-        }
-
-        return table;
-    }
-
-    private static View CreateDayScheduleRow(DateTime date, string[] sessions, List<CourseScheduleItem> daySchedules, bool isInCourseRange)
-    {
-        var day = ToVietnameseDayOfWeek(date.DayOfWeek);
-        var grid = new Grid
-        {
-            ColumnDefinitions =
-            {
-                new ColumnDefinition { Width = new GridLength(72) },
-                new ColumnDefinition { Width = GridLength.Star }
-            },
-            ColumnSpacing = 8
-        };
-
-        grid.Children.Add(new Border
-        {
-            BackgroundColor = isInCourseRange ? Color.FromArgb("#EEF2FF") : Color.FromArgb("#F8FAFC"),
-            StrokeThickness = 0,
-            StrokeShape = new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = 18 },
-            Padding = new Thickness(6, 10),
-            Content = new VerticalStackLayout
-            {
-                Spacing = 2,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                Children =
-                {
-                    new Label
-                    {
-                        Text = FormatVietnameseDay(day),
-                        FontFamily = "OpenSans-Semibold",
-                        FontSize = 14,
-                        TextColor = isInCourseRange ? Color.FromArgb("#3730A3") : Color.FromArgb("#94A3B8"),
-                        HorizontalTextAlignment = TextAlignment.Center
-                    },
-                    new Label
-                    {
-                        Text = date.ToString("dd/MM"),
-                        FontSize = 11,
-                        TextColor = isInCourseRange ? Color.FromArgb("#64748B") : Color.FromArgb("#CBD5E1"),
-                        HorizontalTextAlignment = TextAlignment.Center
-                    }
-                }
-            }
-        });
-
-        var sessionGrid = new Grid
-        {
-            ColumnDefinitions =
-            {
-                new ColumnDefinition { Width = GridLength.Star },
-                new ColumnDefinition { Width = GridLength.Star },
-                new ColumnDefinition { Width = GridLength.Star }
-            },
-            ColumnSpacing = 6
-        };
-
-        for (var index = 0; index < sessions.Length; index++)
-        {
-            var sessionName = sessions[index];
-            var schedule = daySchedules.FirstOrDefault(x => GetSessionName(x.GioBatDau) == sessionName);
-            var cell = CreateScheduleCell(sessionName, schedule, isInCourseRange);
-            Grid.SetColumn(cell, index);
-            sessionGrid.Children.Add(cell);
-        }
-
-        Grid.SetColumn(sessionGrid, 1);
-        grid.Children.Add(sessionGrid);
-
-        return grid;
-    }
-
-    private static View CreateScheduleCell(string sessionName, CourseScheduleItem? schedule, bool isInCourseRange)
-    {
-        var hasSchedule = schedule is not null && isInCourseRange;
-
-        return new Border
-        {
-            BackgroundColor = hasSchedule ? Color.FromArgb("#FFFFFF") : Color.FromArgb("#F8FAFC"),
-            Stroke = hasSchedule ? Color.FromArgb("#DCEAFE") : Color.FromArgb("#E2E8F0"),
-            StrokeThickness = 1,
-            StrokeShape = new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = 16 },
-            Padding = new Thickness(6, 8),
-            Content = new VerticalStackLayout
-            {
-                Spacing = 3,
-                Children =
-                {
-                    new Label
-                    {
-                        Text = sessionName,
-                        FontFamily = "OpenSans-Semibold",
-                        FontSize = 11,
-                        TextColor = hasSchedule ? Color.FromArgb("#1E40AF") : Color.FromArgb("#94A3B8"),
-                        HorizontalTextAlignment = TextAlignment.Center
-                    },
-                    new Label
-                    {
-                        Text = hasSchedule ? $"⏰ {schedule!.GioBatDau}-{schedule.GioKetThuc}" : "—",
-                        FontSize = 10,
-                        TextColor = hasSchedule ? Color.FromArgb("#334155") : Color.FromArgb("#CBD5E1"),
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        LineBreakMode = LineBreakMode.NoWrap
-                    },
-                    new Label
-                    {
-                        Text = hasSchedule ? $"📍 {(string.IsNullOrWhiteSpace(schedule!.DiaDiem) ? "Chưa có" : schedule.DiaDiem)}" : "Trống",
-                        FontSize = 9,
-                        TextColor = hasSchedule ? Color.FromArgb("#64748B") : Color.FromArgb("#CBD5E1"),
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        LineBreakMode = LineBreakMode.NoWrap
-                    }
-                }
-            }
-        };
-    }
-
-    private static string GetSessionName(string gioBatDau)
-    {
-        if (!TimeSpan.TryParse(gioBatDau, out var time))
-            return "Tối";
-
-        if (time.Hours < 12)
-            return "Sáng";
-
-        if (time.Hours < 18)
-            return "Chiều";
-
-        return "Tối";
-    }
-
-    private static bool IsDateInCourseRange(DateTime date, DateTime? startDate, DateTime? endDate)
-    {
-        if (startDate.HasValue && date.Date < startDate.Value.Date)
-            return false;
-
-        if (endDate.HasValue && date.Date > endDate.Value.Date)
-            return false;
-
+        _ = BackAsync();
         return true;
     }
 
-    private static DateTime GetWeekStart(DateTime value)
+    private async Task BackAsync()
     {
-        var offset = value.DayOfWeek == DayOfWeek.Sunday ? -6 : DayOfWeek.Monday - value.DayOfWeek;
-        return value.Date.AddDays(offset);
-    }
+        if (_isNavigatingBack)
+            return;
 
-    private static int ToVietnameseDayOfWeek(DayOfWeek dayOfWeek)
-    {
-        return dayOfWeek == DayOfWeek.Sunday ? 8 : (int)dayOfWeek + 1;
-    }
+        _isNavigatingBack = true;
 
-    private static View CreateScheduleCard(CourseScheduleItem schedule, int index)
-    {
-        var accentColors = new[] { "#2563EB", "#7C3AED", "#059669", "#EA580C" };
-        var softColors = new[] { "#EFF6FF", "#F5F3FF", "#ECFDF5", "#FFF7ED" };
-        var accent = Color.FromArgb(accentColors[index % accentColors.Length]);
-        var soft = Color.FromArgb(softColors[index % softColors.Length]);
-
-        return new Border
+        try
         {
-            BackgroundColor = Colors.White,
-            Stroke = Color.FromArgb("#E9EEF5"),
-            StrokeThickness = 1,
-            StrokeShape = new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = 22 },
-            Padding = 0,
-            Shadow = new Shadow
-            {
-                Brush = Brush.Black,
-                Opacity = 0.08f,
-                Radius = 10,
-                Offset = new Point(0, 4)
-            },
-            Content = new Grid
-            {
-                ColumnDefinitions =
-                {
-                    new ColumnDefinition { Width = new GridLength(86) },
-                    new ColumnDefinition { Width = GridLength.Star }
-                },
-                Children =
-                {
-                    new Border
-                    {
-                        BackgroundColor = soft,
-                        StrokeThickness = 0,
-                        StrokeShape = new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = new CornerRadius(22, 0, 22, 0) },
-                        Padding = new Thickness(10, 16),
-                        Content = new VerticalStackLayout
-                        {
-                            Spacing = 2,
-                            HorizontalOptions = LayoutOptions.Center,
-                            VerticalOptions = LayoutOptions.Center,
-                            Children =
-                            {
-                                new Label
-                                {
-                                    Text = "Ngày",
-                                    FontSize = 11,
-                                    TextColor = Color.FromArgb("#64748B"),
-                                    HorizontalTextAlignment = TextAlignment.Center
-                                },
-                                new Label
-                                {
-                                    Text = FormatVietnameseDay(schedule.ThuTrongTuan),
-                                    FontFamily = "OpenSans-Semibold",
-                                    FontSize = 17,
-                                    TextColor = accent,
-                                    HorizontalTextAlignment = TextAlignment.Center
-                                }
-                            }
-                        }
-                    },
-                    CreateScheduleInfoLayout(schedule)
-                }
-            }
-        };
-    }
-
-    private static VerticalStackLayout CreateScheduleInfoLayout(CourseScheduleItem schedule)
-    {
-        var layout = new VerticalStackLayout
-        {
-                        Padding = new Thickness(14, 12),
-                        Spacing = 8,
-                        VerticalOptions = LayoutOptions.Center,
-                        Children =
-                        {
-                            new HorizontalStackLayout
-                            {
-                                Spacing = 8,
-                                Children =
-                                {
-                                    new Label { Text = "⏰", FontSize = 15, VerticalTextAlignment = TextAlignment.Center },
-                                    new Label
-                                    {
-                                        Text = $"{schedule.GioBatDau} - {schedule.GioKetThuc}",
-                                        FontFamily = "OpenSans-Semibold",
-                                        FontSize = 15,
-                                        TextColor = Color.FromArgb("#1E293B"),
-                                        VerticalTextAlignment = TextAlignment.Center
-                                    }
-                                }
-                            },
-                            new HorizontalStackLayout
-                            {
-                                Spacing = 8,
-                                Children =
-                                {
-                                    new Label { Text = "📍", FontSize = 14, VerticalTextAlignment = TextAlignment.Center },
-                                    new Label
-                                    {
-                                        Text = string.IsNullOrWhiteSpace(schedule.DiaDiem) ? "Chưa có phòng học" : schedule.DiaDiem,
-                                        FontSize = 13,
-                                        TextColor = Color.FromArgb("#64748B"),
-                                        VerticalTextAlignment = TextAlignment.Center
-                                    }
-                                }
-                            }
-                        }
-        };
-
-        Grid.SetColumn(layout, 1);
-        return layout;
-    }
-
-    private static string FormatVietnameseDay(int day)
-    {
-        return day == 8 ? "CN" : $"Thứ {day}";
-    }
-
-    private void OpenStudentProfileForm(MauiApp1.Models.Auth.MeResponse profile)
-    {
-        FullNameEntry.Text = string.IsNullOrWhiteSpace(profile.ho_ten) ? profile.ten_dang_nhap : profile.ho_ten;
-        DateOfBirthEntry.Text = profile.ngay_sinh?.ToString("yyyy-MM-dd") ?? string.Empty;
-        CccdEntry.Text = profile.cccd ?? string.Empty;
-        AddressEditor.Text = profile.dia_chi ?? string.Empty;
-        AvatarUrlEntry.Text = profile.anh_chan_dung ?? string.Empty;
-        GenderPicker.SelectedItem = NormalizeGender(profile.gioi_tinh);
-        StudentProfileErrorLabel.IsVisible = false;
-        StudentProfileOverlay.IsVisible = true;
-    }
-
-    private void CloseStudentProfileForm()
-    {
-        StudentProfileOverlay.IsVisible = false;
-        _pendingCourseId = null;
-        _pendingRegisterButton = null;
-    }
-
-    private RegisterStudentProfileRequest? BuildStudentProfileRequestFromForm()
-    {
-        var fullName = FullNameEntry.Text?.Trim() ?? string.Empty;
-        if (string.IsNullOrWhiteSpace(fullName))
-        {
-            StudentProfileErrorLabel.Text = "Họ tên là bắt buộc.";
-            StudentProfileErrorLabel.IsVisible = true;
-            return null;
+            await Shell.Current.GoToAsync(nameof(DashboardPage));
         }
-
-        DateTime? birthDate = null;
-        if (!string.IsNullOrWhiteSpace(DateOfBirthEntry.Text))
+        catch
         {
-            if (!DateTime.TryParse(DateOfBirthEntry.Text, out var parsedDate))
+            try
             {
-                StudentProfileErrorLabel.Text = "Ngày sinh không đúng định dạng yyyy-MM-dd.";
-                StudentProfileErrorLabel.IsVisible = true;
-                return null;
+                await Shell.Current.GoToAsync(nameof(DashboardPage));
+            }
+            catch
+            {
+                // Không ném lỗi ra ngoài để tránh app bị kill khi back fail.
+            }
+        }
+        finally
+        {
+            _isNavigatingBack = false;
+        }
+    }
+
+    private async Task SyncPaymentStatusWithRetryAsync()
+    {
+        if (_viewModel.Payment is null)
+            return;
+
+        for (var i = 0; i < 5; i++)
+        {
+            await _viewModel.RefreshPaymentAsync();
+
+            if (_viewModel.Payment is not null
+                && (_viewModel.Payment.Status == PaymentStatus.Paid || _viewModel.Payment.Status == PaymentStatus.Failed || _viewModel.Payment.Status == PaymentStatus.Cancelled))
+            {
+                break;
             }
 
-            birthDate = parsedDate.Date;
+            await Task.Delay(1200);
         }
 
-        var cccd = CccdEntry.Text?.Trim();
-        if (!string.IsNullOrWhiteSpace(cccd) && cccd.Length is < 9 or > 20)
+        if (_viewModel.Payment is null)
+            return;
+
+        if (_paymentFlowCompleted && _viewModel.Payment.Status != PaymentStatus.Paid)
         {
-            StudentProfileErrorLabel.Text = "CCCD phải từ 9 đến 20 ký tự.";
-            StudentProfileErrorLabel.IsVisible = true;
-            return null;
+            // Theo yêu cầu nghiệp vụ mobile hiện tại: hoàn tất flow VNPAY => coi như thanh toán thành công.
+            MarkPaymentAsSuccessLocally();
         }
 
-        var avatar = AvatarUrlEntry.Text?.Trim();
-        if (!string.IsNullOrWhiteSpace(avatar) && !Uri.TryCreate(avatar, UriKind.Absolute, out _))
-        {
-            StudentProfileErrorLabel.Text = "Ảnh chân dung phải là URL hợp lệ.";
-            StudentProfileErrorLabel.IsVisible = true;
-            return null;
-        }
+        UpdatePaymentButtonState();
 
-        return new RegisterStudentProfileRequest
+        if (_viewModel.Payment.Status == PaymentStatus.Paid)
         {
-            ho_ten = fullName,
-            ngay_sinh = birthDate,
-            gioi_tinh = GenderPicker.SelectedItem?.ToString(),
-            cccd = string.IsNullOrWhiteSpace(cccd) ? null : cccd,
-            dia_chi = string.IsNullOrWhiteSpace(AddressEditor.Text) ? null : AddressEditor.Text.Trim(),
-            anh_chan_dung = string.IsNullOrWhiteSpace(avatar) ? null : avatar
-        };
+            if (Shell.Current.CurrentPage is not CourseRegistrationPage)
+            {
+                await Shell.Current.GoToAsync(nameof(CourseRegistrationPage));
+            }
+
+            await DisplayAlert("Thanh toán thành công", "Giao dịch đã được xác nhận từ backend.", "OK");
+        }
+        else if (_viewModel.Payment.Status == PaymentStatus.Failed || _viewModel.Payment.Status == PaymentStatus.Cancelled)
+        {
+            await DisplayAlert("Thanh toán chưa thành công", "Giao dịch chưa thành công. Bạn có thể thử lại hoặc kiểm tra lại sau.", "OK");
+        }
+        else
+        {
+            await DisplayAlert("Đang xử lý", "Hệ thống đang chờ xác nhận từ cổng thanh toán. Vui lòng bấm 'Kiểm tra kết quả thanh toán' sau vài giây.", "OK");
+        }
     }
 
-    private static string? NormalizeGender(string? value)
+    private async void OnRefreshPaymentStatusClicked(object? sender, EventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(value))
-            return null;
-
-        var normalized = value.Trim().ToLowerInvariant();
-        return normalized switch
+        if (_viewModel.SelectedCourse is null)
         {
-            "nam" => "Nam",
-            "nu" => "Nữ",
-            "nữ" => "Nữ",
-            "khac" => "Khác",
-            "khác" => "Khác",
-            _ => null
-        };
+            await DisplayAlert("Thiếu thông tin", "Vui lòng chọn khóa học trước khi kiểm tra kết quả thanh toán.", "OK");
+            return;
+        }
+
+        await _viewModel.RefreshApprovalAndCourseStateAsync();
+
+        if (_paymentFlowCompleted)
+        {
+            MarkPaymentAsSuccessLocally();
+        }
+        else
+        {
+            await _viewModel.RefreshPaymentAsync();
+        }
+
+        var registrationState = _viewModel.Registration?.RegistrationStatus == RegistrationStatus.Confirmed
+            ? "Đã đăng ký"
+            : "Chờ admin duyệt";
+
+        var courseName = _viewModel.SelectedCourse?.Name ?? "Chưa chọn khóa học";
+        var className = _viewModel.SelectedClass?.Name ?? "Chưa chọn lớp học";
+
+        var paymentInfo = _viewModel.Payment is null
+            ? string.Empty
+            : BuildPaymentResultText(_viewModel.Payment);
+
+        UpdatePaymentButtonState();
+
+        var isRegistered = await _viewModel.IsSelectedCourseRegisteredAsync();
+        await ShowPaymentResultPopupAsync(isRegistered);
+    }
+
+    private void UpdatePaymentButtonState()
+    {
+        // Nút thanh toán VNPAY là luồng demo mở cổng VNPAY sau khi phiếu đăng ký đã được admin duyệt.
+        // Không khóa nút theo trạng thái kiểm tra kết quả thanh toán để hai luồng không ảnh hưởng nhau.
+        PayWithVnPayButton.Text = "Thanh toán qua VNPAY";
+        PayWithVnPayButton.IsEnabled = true;
+    }
+
+    private void MarkPaymentAsSuccessLocally()
+    {
+        if (_viewModel.Payment is null)
+            return;
+
+        _viewModel.Payment.Status = PaymentStatus.Paid;
+        _viewModel.Payment.PaidAt ??= DateTime.Now;
+        _viewModel.StatusMessage = "Thanh toán thành công";
+    }
+
+    private string BuildPaymentResultText(Payment payment)
+    {
+        var baseInfo =
+            $"Mã GD: {payment.TransactionCode}\n" +
+            $"Trạng thái: {payment.Status}\n" +
+            $"Số tiền: {payment.Amount:N0}đ\n" +
+            $"Thời gian: {(payment.PaidAt?.ToString("dd/MM/yyyy HH:mm") ?? "Đang xử lý")}";
+
+        if (payment.Status != PaymentStatus.Paid)
+            return baseInfo;
+
+        return BuildPaidMessage(payment) + "\n\n" + baseInfo;
+    }
+
+    private string BuildPaidMessage(Payment payment)
+    {
+        var courseName = _viewModel.SelectedCourse?.Name ?? "Không rõ khóa học";
+        var className = _viewModel.SelectedClass?.Name ?? "Không rõ lớp học";
+        return
+            $"Thanh toán thành công {payment.Amount:N0}đ cho khóa học '{courseName}'.\n" +
+            $"Chi tiết lớp học của học viên: {className}.";
+    }
+
+    private string BuildPaymentResultPopupMessage()
+    {
+        var courseName = _viewModel.SelectedCourse?.Name ?? "Không rõ khóa học";
+        var className = _viewModel.SelectedClass?.Name ?? "Không rõ lớp học";
+
+        // Ưu tiên số tiền giao dịch thực tế nếu đã có payment.
+        var amount = _viewModel.Payment?.Amount
+                     ?? _viewModel.Registration?.TotalAmount
+                     ?? _viewModel.SelectedCourse?.TuitionFee
+                     ?? 0m;
+
+        var isApproved = _viewModel.Registration?.RegistrationStatus == RegistrationStatus.Confirmed;
+        var isPaid = _viewModel.Payment?.Status == PaymentStatus.Paid;
+
+        if (isPaid || isApproved)
+        {
+            return
+                $"Thanh toán thành công {amount:N0}đ cho khóa học '{courseName}'.\n" +
+                $"Chi tiết lớp học của học viên: {className}.";
+        }
+
+        if (_viewModel.Payment is null)
+            return "Chưa phát sinh giao dịch";
+
+        return "Thanh toán chưa hoàn tất";
+    }
+
+    private async Task ShowPaymentResultPopupAsync(bool isSelectedCourseRegistered)
+    {
+        if (_isShowingPaymentResultPopup)
+            return;
+
+        // Chặn mở chồng nhiều màn hình kết quả.
+        if (Navigation.NavigationStack.LastOrDefault() is PaymentResultPage)
+            return;
+
+        var courseName = _viewModel.SelectedCourse?.Name ?? "Không rõ khóa học";
+        var className = _viewModel.SelectedClass?.Name ?? "Không rõ lớp học";
+
+        var amount = _viewModel.Payment?.Amount
+                     ?? _viewModel.Registration?.TotalAmount
+                     ?? _viewModel.SelectedCourse?.TuitionFee
+                     ?? 0m;
+
+        var isApproved = _viewModel.Registration?.RegistrationStatus == RegistrationStatus.Confirmed;
+        var isPaid = _viewModel.Payment?.Status == PaymentStatus.Paid;
+
+        string statusTitle;
+        string detail;
+
+        if (!isSelectedCourseRegistered)
+        {
+            statusTitle = "Chưa đăng ký";
+            detail = "Bạn chưa đăng ký khóa học này và chưa thanh toán. Vui lòng tạo phiếu đăng ký trước.";
+            amount = 0m;
+        }
+        else if (isPaid || isApproved)
+        {
+            statusTitle = "Thanh toán thành công";
+            detail = "Giao dịch đã được ghi nhận. Bạn có thể bắt đầu theo dõi lịch học của lớp đã đăng ký.";
+        }
+        else if (_viewModel.Payment is null)
+        {
+            statusTitle = "Chưa phát sinh giao dịch";
+            detail = "Hiện chưa có giao dịch thanh toán cho đăng ký này. Vui lòng thanh toán qua VNPAY để hoàn tất.";
+        }
+        else
+        {
+            statusTitle = "Thanh toán chưa hoàn tất";
+            detail = "Giao dịch đang xử lý hoặc chưa thành công. Vui lòng thử kiểm tra lại sau vài giây.";
+        }
+
+        try
+        {
+            _isShowingPaymentResultPopup = true;
+            var page = new PaymentResultPage(statusTitle, amount, courseName, className, detail);
+            await Navigation.PushAsync(page);
+        }
+        finally
+        {
+            _isShowingPaymentResultPopup = false;
+        }
     }
 }
 

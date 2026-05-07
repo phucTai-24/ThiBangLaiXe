@@ -36,6 +36,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Controls.AppBotto
 build_metadata.AdditionalFiles.TargetPath = Controls\AppBottomNavView.xaml
 build_metadata.AdditionalFiles.RelativePath = Controls\AppBottomNavView.xaml
 
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Controls/ChatOverlayView.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Controls.ChatOverlayView.xaml
+build_metadata.AdditionalFiles.TargetPath = Controls\ChatOverlayView.xaml
+build_metadata.AdditionalFiles.RelativePath = Controls\ChatOverlayView.xaml
+
 [c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Resources/Styles/Colors.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Resources.Styles.Colors.xaml
@@ -47,6 +53,18 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Resources.Styles.Styles.xaml
 build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
 build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/CourseRegistrationPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.CourseRegistrationPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\CourseRegistrationPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\CourseRegistrationPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/CriticalPracticePage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.CriticalPracticePage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\CriticalPracticePage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\CriticalPracticePage.xaml
 
 [c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/DashboardPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
@@ -149,6 +167,12 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.TrafficSignsPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\TrafficSignsPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\TrafficSignsPage.xaml
+
+[c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/VnPayPaymentPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.VnPayPaymentPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\VnPayPaymentPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\VnPayPaymentPage.xaml
 
 [c:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/WrongAnswersPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml

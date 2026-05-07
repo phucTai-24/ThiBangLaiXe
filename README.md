@@ -57,8 +57,7 @@ Shell entry hiện tại vào trang login tại [`AppShell.xaml`](MauiApp1/MauiA
 
 Định nghĩa trong [`ApiEndpoints.GetBaseUrl()`](MauiApp1/MauiApp1/Services/ApiEndpoints.cs:5):
 
-- Android emulator: `http://10.0.2.2:5017/`
-- Nền tảng khác: `http://localhost:5017/`
+- Tất cả nền tảng: `https://crop-unshackle-lavender.ngrok-free.dev/`
 
 Nếu BE chạy cổng khác, sửa trực tiếp file [`ApiEndpoints.cs`](MauiApp1/MauiApp1/Services/ApiEndpoints.cs:1).
 

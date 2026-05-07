@@ -67,6 +67,17 @@ namespace MauiApp1
               {
                   client.Timeout = TimeSpan.FromSeconds(60);
               });
+              builder.Services.AddHttpClient<VnPayMobileService>(client =>
+              {
+                  client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
+                  client.Timeout = TimeSpan.FromSeconds(30);
+              });
+              builder.Services.AddHttpClient<ICourseModuleService, ApiCourseModuleService>(client =>
+              {
+                  client.BaseAddress = new Uri(ApiEndpoints.GetBaseUrl());
+                  client.Timeout = TimeSpan.FromSeconds(30);
+              });
+              builder.Services.AddSingleton<ITokenStore, SecureTokenStore>();
               builder.Services.AddSingleton<IPracticeSessionStore, PracticeSessionStore>();
                
                // ViewModels
@@ -79,7 +90,8 @@ namespace MauiApp1
              builder.Services.AddTransient<CriticalPracticeViewModel>();
              builder.Services.AddTransient<PracticeSessionViewModel>();
              builder.Services.AddTransient<PracticeResultViewModel>();
-             builder.Services.AddTransient<StudyScheduleViewModel>();
+              builder.Services.AddTransient<StudyScheduleViewModel>();
+              builder.Services.AddTransient<CourseEnrollmentFlowViewModel>();
              
               // Views
                builder.Services.AddTransient<DashboardPage>();
@@ -92,6 +104,7 @@ namespace MauiApp1
              builder.Services.AddTransient<PracticeSessionPage>();
              builder.Services.AddTransient<PracticeResultPage>();
              builder.Services.AddTransient<StudySchedulePage>();
+             builder.Services.AddTransient<VnPayPaymentPage>();
             
             builder.Services.AddSingleton<AppShell>();
 

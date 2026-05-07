@@ -6,6 +6,7 @@ namespace MauiApp1.Views;
 public partial class RegisterPage : ContentPage
 {
     private readonly AuthController _authController;
+    private bool _isPasswordVisible;
 
     public RegisterPage()
     {
@@ -94,5 +95,13 @@ public partial class RegisterPage : ContentPage
             RegisterButton.IsEnabled = true;
             RegisterButton.Text = "Đăng ký ngay  →";
         }
+    }
+
+    private void OnTogglePasswordVisibilityTapped(object? sender, TappedEventArgs e)
+    {
+        _isPasswordVisible = !_isPasswordVisible;
+        PasswordEntry.IsPassword = !_isPasswordVisible;
+        ConfirmPasswordEntry.IsPassword = !_isPasswordVisible;
+        PasswordVisibilityIcon.Text = _isPasswordVisible ? "🙈" : "👁";
     }
 }

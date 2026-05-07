@@ -33,6 +33,10 @@ public sealed class ApiEntitlementService : IEntitlementService
 
         if (wrapped?.Data?.Items is { Count: > 0 } items)
         {
+            var registrationMap = (await GetMyRegisteredPackagesAsync())
+                .GroupBy(x => x.Id)
+                .ToDictionary(g => g.Key, g => g.First());
+
             return items.Select(x => new EntitlementPackageItem
             {
                 Id = x.CourseId,
@@ -41,7 +45,14 @@ public sealed class ApiEntitlementService : IEntitlementService
                 Description = BuildCourseDescription(x),
                 IsActive = string.Equals(x.TrangThai, "OPEN", StringComparison.OrdinalIgnoreCase)
                            || x.IsOpenForRegistration,
-                IsRegistered = registeredCourseIds.Contains(x.CourseId)
+                IsRegistered = registeredCourseIds.Contains(x.CourseId),
+                RegistrationId = registrationMap.TryGetValue(x.CourseId, out var reg) ? reg.RegistrationId : 0,
+                RegistrationStatus = registrationMap.TryGetValue(x.CourseId, out var reg2) ? reg2.RegistrationStatus : string.Empty,
+                PaymentStatus = registrationMap.TryGetValue(x.CourseId, out var reg3) ? reg3.PaymentStatus : string.Empty,
+                TuitionFee = x.HocPhi,
+                RegistrationBadgeText = registrationMap.TryGetValue(x.CourseId, out var reg4)
+                    ? MapRegistrationBadgeText(reg4.RegistrationStatus, reg4.PaymentStatus)
+                    : "Đã đăng ký"
             }).ToList();
         }
 
@@ -67,7 +78,12 @@ public sealed class ApiEntitlementService : IEntitlementService
                 Name = string.IsNullOrWhiteSpace(x.TenKhoaHoc) ? $"Khóa học #{x.CourseId}" : x.TenKhoaHoc,
                 Description = $"{x.LoaiBangLai} • Học phí {x.HocPhi:N0}đ • Trạng thái: {x.TrangThai}",
                 IsActive = true,
-                IsRegistered = true
+                IsRegistered = true,
+                RegistrationId = x.RegistrationId,
+                RegistrationStatus = x.TrangThai,
+                PaymentStatus = x.PaymentStatus,
+                TuitionFee = x.HocPhi,
+                RegistrationBadgeText = MapRegistrationBadgeText(x.TrangThai, x.PaymentStatus)
             })
             .GroupBy(x => x.Id)
             .Select(g => g.First())
@@ -137,9 +153,12 @@ public sealed class ApiEntitlementService : IEntitlementService
     {
         await AttachAuthHeaderAsync();
 
+        var classId = await ResolveOpenClassIdAsync(packageId);
+
         var payload = new CreateCourseRegistrationRequestDto
         {
             CourseId = packageId,
+            ClassId = classId,
             GhiChu = "Đăng ký từ ứng dụng mobile"
         };
 
@@ -152,6 +171,24 @@ public sealed class ApiEntitlementService : IEntitlementService
 
             throw new InvalidOperationException(message);
         }
+    }
+
+    private async Task<long> ResolveOpenClassIdAsync(long packageId)
+    {
+        var wrapped = await GetWithFallbackAsync<ApiResponse<CourseDetailDto>>($"api/v1/courses/{packageId}");
+        var classes = wrapped?.Data?.Classes;
+        if (classes is null || classes.Count == 0)
+            throw new InvalidOperationException("Khóa học chưa có lớp để đăng ký. Vui lòng liên hệ quản trị viên.");
+
+        var openClass = classes.FirstOrDefault(x => x.ClassId > 0 && x.IsOpenForRegistration);
+        if (openClass is not null)
+            return openClass.ClassId;
+
+        var firstValidClass = classes.FirstOrDefault(x => x.ClassId > 0);
+        if (firstValidClass is not null)
+            return firstValidClass.ClassId;
+
+        throw new InvalidOperationException("Không tìm thấy lớp hợp lệ để đăng ký.");
     }
 
     private static string? ExtractApiErrorMessage(string body)
@@ -215,6 +252,23 @@ public sealed class ApiEntitlementService : IEntitlementService
         return $"{x.LoaiBangLai} • {hocPhi} • {lichHoc}";
     }
 
+    private static string MapRegistrationBadgeText(string? registrationStatus, string? paymentStatus)
+    {
+        if (string.Equals(paymentStatus, "DaThanhToan", StringComparison.OrdinalIgnoreCase))
+            return "Đã đăng ký";
+
+        if (string.Equals(registrationStatus, "ChoDuyet", StringComparison.OrdinalIgnoreCase))
+            return "Chờ duyệt";
+        if (string.Equals(registrationStatus, "DaDuyet", StringComparison.OrdinalIgnoreCase))
+            return "Đã đăng ký";
+        if (string.Equals(registrationStatus, "TuChoi", StringComparison.OrdinalIgnoreCase))
+            return "Từ chối";
+        if (string.Equals(registrationStatus, "DaHuy", StringComparison.OrdinalIgnoreCase))
+            return "Đã hủy";
+
+        return "Đã đăng ký";
+    }
+
     private sealed class CoursePagedListDto
     {
         public List<CourseListItemDto> Items { get; set; } = new();
@@ -248,7 +302,16 @@ public sealed class ApiEntitlementService : IEntitlementService
         public string TrangThai { get; set; } = string.Empty;
         public CourseTeacherDto? GiaoVienChinh { get; set; }
         public List<CourseScheduleDto> LichHocMau { get; set; } = new();
+        public List<CourseClassDto> Classes { get; set; } = new();
         public string? HinhAnh { get; set; }
+    }
+
+    private sealed class CourseClassDto
+    {
+        public long ClassId { get; set; }
+        public string MaLop { get; set; } = string.Empty;
+        public string TenLop { get; set; } = string.Empty;
+        public bool IsOpenForRegistration { get; set; }
     }
 
     private sealed class CourseTeacherDto
@@ -269,6 +332,7 @@ public sealed class ApiEntitlementService : IEntitlementService
     private sealed class CreateCourseRegistrationRequestDto
     {
         public long CourseId { get; set; }
+        public long ClassId { get; set; }
         public string? GhiChu { get; set; }
     }
 
@@ -279,11 +343,13 @@ public sealed class ApiEntitlementService : IEntitlementService
 
     private sealed class MyCourseRegistrationDto
     {
+        public long RegistrationId { get; set; }
         public long CourseId { get; set; }
         public string TenKhoaHoc { get; set; } = string.Empty;
         public string LoaiBangLai { get; set; } = string.Empty;
         public decimal HocPhi { get; set; }
         public string TrangThai { get; set; } = string.Empty;
+        public string PaymentStatus { get; set; } = string.Empty;
     }
 }
 

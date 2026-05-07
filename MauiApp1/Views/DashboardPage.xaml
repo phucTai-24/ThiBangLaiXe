@@ -61,19 +61,6 @@
                         Padding="24"
                         Shadow="0,12,28,#12000000">
                     <VerticalStackLayout Spacing="16">
-                        <Border x:Name="LoginSourceBadge"
-                                BackgroundColor="#EAF7EF"
-                                StrokeThickness="0"
-                                Padding="12,8"
-                                StrokeShape="RoundRectangle 14"
-                                HorizontalOptions="Start">
-                            <Label x:Name="LoginSourceLabel"
-                                   Text="Nguồn dữ liệu sau đăng nhập: chưa xác định"
-                                    FontFamily="OpenSans-Semibold"
-                                    FontSize="13"
-                                    TextColor="#2E7D32" />
-                        </Border>
-
                         <VerticalStackLayout Spacing="6">
                             <Label Text="Xin chào, học viên"
                                    Style="{StaticResource AppBodyLabel}"
@@ -148,13 +135,15 @@
                                         Style="{StaticResource AppCardTitle}"
                                         FontSize="15"
                                         TextColor="#666666" />
-                                 <Label Text="10/04 • 08:00"
-                                        FontFamily="OpenSans-Semibold"
-                                        FontSize="18"
-                                        TextColor="#2F80ED" />
-                                 <Label Text="Sân tập số 1"
-                                        Style="{StaticResource AppCaptionLabel}"
-                                        TextColor="#999999" />
+                                 <Label x:Name="NextSessionQuickValueLabel"
+                                        Text="Đang tải..."
+                                         FontFamily="OpenSans-Semibold"
+                                         FontSize="18"
+                                         TextColor="#2F80ED" />
+                                  <Label x:Name="NextSessionQuickCaptionLabel"
+                                         Text="Đang lấy lịch học"
+                                         Style="{StaticResource AppCaptionLabel}"
+                                         TextColor="#999999" />
                              </VerticalStackLayout>
                          </Border>
 
@@ -192,13 +181,15 @@
                                         Style="{StaticResource AppCardTitle}"
                                         FontSize="15"
                                         TextColor="#666666" />
-                                 <Label Text="Đã xác nhận"
-                                        FontFamily="OpenSans-Semibold"
-                                        FontSize="18"
-                                        TextColor="#2E7D32" />
-                                 <Label Text="Biên lai tháng 4/2026"
-                                        Style="{StaticResource AppCaptionLabel}"
-                                        TextColor="#999999" />
+                                  <Label x:Name="TuitionStatusLabel"
+                                         Text="Đang tải..."
+                                         FontFamily="OpenSans-Semibold"
+                                         FontSize="18"
+                                         TextColor="#2E7D32" />
+                                  <Label x:Name="TuitionCaptionLabel"
+                                         Text="Đang lấy học phí"
+                                         Style="{StaticResource AppCaptionLabel}"
+                                         TextColor="#999999" />
                              </VerticalStackLayout>
                          </Border>
 
@@ -357,12 +348,14 @@
                                  <Label Text="Buổi học tiếp theo"
                                         Style="{StaticResource AppCardTitle}"
                                         TextColor="#222222" />
-                                 <Label Text="Thứ tư, 10/04/2026 • 08:00 - 11:00"
-                                        Style="{StaticResource AppBodyLabel}"
-                                        TextColor="#2F80ED" />
-                                 <Label Text="Địa điểm: Sân tập số 1 • Nội dung: Làm quen xe và sa hình cơ bản"
-                                        Style="{StaticResource AppCaptionLabel}"
-                                        TextColor="#666666" />
+                                  <Label x:Name="NextSessionDetailTimeLabel"
+                                         Text="Đang tải lịch học..."
+                                         Style="{StaticResource AppBodyLabel}"
+                                         TextColor="#2F80ED" />
+                                  <Label x:Name="NextSessionDetailInfoLabel"
+                                         Text="Đang lấy dữ liệu từ hệ thống"
+                                         Style="{StaticResource AppCaptionLabel}"
+                                         TextColor="#666666" />
                             </VerticalStackLayout>
                         </Grid>
                     </Border>

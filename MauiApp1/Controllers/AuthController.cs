@@ -12,7 +12,7 @@ public sealed class AuthController : BaseController
         _authService = authService;
     }
 
-    public Task OpenLoginAsync() => GoToAsync(nameof(Views.LoginPage));
+    public Task OpenLoginAsync() => Shell.Current.GoToAsync($"//{nameof(Views.LoginPage)}");
 
     public Task OpenRegisterAsync() => GoToAsync(nameof(Views.RegisterPage));
 

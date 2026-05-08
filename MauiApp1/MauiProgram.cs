@@ -104,6 +104,8 @@ namespace MauiApp1
              builder.Services.AddTransient<PracticeSessionPage>();
              builder.Services.AddTransient<PracticeResultPage>();
              builder.Services.AddTransient<StudySchedulePage>();
+             builder.Services.AddTransient<CourseRegistrationPage>();
+             builder.Services.AddTransient<StudentProfileRegistrationPage>();
              builder.Services.AddTransient<VnPayPaymentPage>();
             
             builder.Services.AddSingleton<AppShell>();

@@ -88,7 +88,8 @@ public partial class RegisterPage : ContentPage
             }
 
             await DisplayAlert("Đăng ký thành công", result.Message, "OK");
-            await _authController.OpenLoginAsync();
+            // Điều hướng về trang đăng nhập sau khi đăng ký thành công
+            await Shell.Current.GoToAsync("..");
         }
         finally
         {

@@ -168,6 +168,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.SettingsPag
 build_metadata.AdditionalFiles.TargetPath = Views\SettingsPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\SettingsPage.xaml
 
+[C:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/StudentProfileRegistrationPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.StudentProfileRegistrationPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\StudentProfileRegistrationPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\StudentProfileRegistrationPage.xaml
+
 [C:/Users/Hoang Dinh Doanh/Desktop/MauiApp1/MauiApp1/MauiApp1/Views/StudySchedulePage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = MauiApp1.Views.StudySchedulePage.xaml

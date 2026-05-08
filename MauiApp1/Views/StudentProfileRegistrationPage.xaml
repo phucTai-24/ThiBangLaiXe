@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.StudentProfileRegistrationPage"
+             Title="Đăng ký học viên"
+             BackgroundColor="#F5F5F5">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            
+            <!-- Header -->
+            <Frame BackgroundColor="White" 
+                   CornerRadius="12" 
+                   Padding="20"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="📋 Hoàn tất hồ sơ học viên"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#2C3E50"/>
+                    <Label Text="Vui lòng điền đầy đủ thông tin để trở thành học viên và có thể đăng ký khóa học"
+                           FontSize="14"
+                           TextColor="#7F8C8D"
+                           HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Form đăng ký học viên -->
+            <Frame BackgroundColor="White" 
+                   CornerRadius="12" 
+                   Padding="20"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="15">
+                    
+                    <!-- Họ tên -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Họ và tên *" 
+                               FontSize="14" 
+                               TextColor="#2C3E50"
+                               FontAttributes="Bold"/>
+                        <Entry x:Name="FullNameEntry"
+                               Placeholder="Nhập họ và tên đầy đủ"
+                               PlaceholderColor="#BDC3C7"
+                               TextColor="#2C3E50"
+                               BackgroundColor="#ECF0F1"
+                               HeightRequest="45"/>
+                    </VerticalStackLayout>
+
+                    <!-- Ngày sinh -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Ngày sinh" 
+                               FontSize="14" 
+                               TextColor="#2C3E50"
+                               FontAttributes="Bold"/>
+                        <DatePicker x:Name="BirthDatePicker"
+                                    Format="dd/MM/yyyy"
+                                    TextColor="#2C3E50"
+                                    BackgroundColor="#ECF0F1"
+                                    HeightRequest="45"
+                                    MaximumDate="{x:Static x:DateTime.Now}"/>
+                    </VerticalStackLayout>
+
+                    <!-- Giới tính -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Giới tính" 
+                               FontSize="14" 
+                               TextColor="#2C3E50"
+                               FontAttributes="Bold"/>
+                        <Picker x:Name="GenderPicker"
+                                Title="Chọn giới tính"
+                                TextColor="#2C3E50"
+                                BackgroundColor="#ECF0F1"
+                                HeightRequest="45">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Nam</x:String>
+                                    <x:String>Nữ</x:String>
+                                    <x:String>Khác</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </VerticalStackLayout>
+
+                    <!-- CCCD -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Số CCCD/CMND" 
+                               FontSize="14" 
+                               TextColor="#2C3E50"
+                               FontAttributes="Bold"/>
+                        <Entry x:Name="IdentityNumberEntry"
+                               Placeholder="Nhập số CCCD hoặc CMND"
+                               PlaceholderColor="#BDC3C7"
+                               TextColor="#2C3E50"
+                               BackgroundColor="#ECF0F1"
+                               Keyboard="Numeric"
+                               HeightRequest="45"/>
+                    </VerticalStackLayout>
+
+                    <!-- Địa chỉ -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Địa chỉ" 
+                               FontSize="14" 
+                               TextColor="#2C3E50"
+                               FontAttributes="Bold"/>
+                        <Editor x:Name="AddressEditor"
+                                Placeholder="Nhập địa chỉ liên hệ"
+                                PlaceholderColor="#BDC3C7"
+                                TextColor="#2C3E50"
+                                BackgroundColor="#ECF0F1"
+                                HeightRequest="80"
+                                AutoSize="TextChanges"/>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Nút hành động -->
+            <VerticalStackLayout Spacing="10">
+                <Button x:Name="SubmitButton"
+                        Text="Hoàn tất đăng ký học viên"
+                        BackgroundColor="#3498DB"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        HeightRequest="50"
+                        CornerRadius="25"
+                        Clicked="OnSubmitClicked"/>
+                
+                <Button x:Name="CancelButton"
+                        Text="Hủy"
+                        BackgroundColor="Transparent"
+                        TextColor="#7F8C8D"
+                        FontSize="14"
+                        HeightRequest="40"
+                        Clicked="OnCancelClicked"/>
+            </VerticalStackLayout>
+
+            <!-- Loading indicator -->
+            <ActivityIndicator x:Name="LoadingIndicator"
+                             IsRunning="False"
+                             IsVisible="False"
+                             Color="#3498DB"
+                             HeightRequest="40"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

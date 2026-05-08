@@ -7,15 +7,18 @@ namespace MauiApp1.Views;
 public partial class CourseRegistrationPage : ContentPage
 {
     private readonly CourseEnrollmentFlowViewModel _viewModel;
+    private readonly IAuthService _authService;
     private bool _isWaitingForPaymentReturn;
     private bool _paymentFlowCompleted;
     private bool _isShowingPaymentResultPopup;
     private bool _isNavigatingBack;
+    private bool _studentProfileChecked;
 
-    public CourseRegistrationPage(CourseEnrollmentFlowViewModel viewModel)
+    public CourseRegistrationPage(CourseEnrollmentFlowViewModel viewModel, IAuthService authService)
     {
         InitializeComponent();
         _viewModel = viewModel;
+        _authService = authService;
         BindingContext = _viewModel;
         UpdatePaymentButtonState();
     }
@@ -23,6 +26,18 @@ public partial class CourseRegistrationPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        // Chỉ kiểm tra học viên lần đầu tiên vào trang
+        if (!_studentProfileChecked)
+        {
+            _studentProfileChecked = true;
+            var isStudent = await CheckStudentProfileAsync();
+            if (!isStudent)
+            {
+                return; // Đã điều hướng đến trang đăng ký học viên
+            }
+        }
+
         if (_viewModel.Courses.Count == 0)
             await _viewModel.InitializeAsync();
 
@@ -411,6 +426,54 @@ public partial class CourseRegistrationPage : ContentPage
         finally
         {
             _isShowingPaymentResultPopup = false;
+        }
+    }
+
+    private async Task<bool> CheckStudentProfileAsync()
+    {
+        try
+        {
+            var profile = await _authService.GetCurrentUserProfileAsync();
+            
+            if (profile is null)
+            {
+                await DisplayAlert("Lỗi xác thực", "Không thể xác thực người dùng. Vui lòng đăng nhập lại.", "OK");
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+                return false;
+            }
+
+            // Ưu tiên kiểm tra endpoint hồ sơ học viên riêng để tránh trường hợp /me chưa cập nhật hoc_vien_id ngay.
+            var studentProfile = await _authService.GetCurrentStudentProfileAsync();
+            if ((profile.hoc_vien_id > 0) || (studentProfile is not null && studentProfile.hoc_vien_id > 0))
+            {
+                return true; // Đã là học viên, cho phép tiếp tục
+            }
+
+            // Chưa là học viên, hiển thị thông báo và điều hướng đến trang đăng ký học viên
+            var confirm = await DisplayAlert(
+                "Không thể tạo phiếu",
+                "Không tìm thấy hồ sơ học viên của tài khoản hiện tại. Bạn cần hoàn tất hồ sơ học viên trước khi đăng ký khóa học.",
+                "Đăng ký ngay",
+                "Quay lại");
+
+            if (confirm)
+            {
+                // Điều hướng đến trang đăng ký học viên
+                await Shell.Current.GoToAsync($"{nameof(StudentProfileRegistrationPage)}");
+            }
+            else
+            {
+                // Quay về Dashboard
+                await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
+            }
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Lỗi", $"Không thể kiểm tra hồ sơ học viên: {ex.Message}", "OK");
+            await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
+            return false;
         }
     }
 }

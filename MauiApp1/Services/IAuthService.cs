@@ -10,4 +10,5 @@ public interface IAuthService
     Task<MeResponse?> GetCurrentUserProfileAsync(CancellationToken cancellationToken = default);
     Task<MeResponse?> RegisterStudentProfileAsync(RegisterStudentProfileRequest request, CancellationToken cancellationToken = default);
     Task<MeStudentProfileResponse?> GetCurrentStudentProfileAsync(CancellationToken cancellationToken = default);
+    Task<string?> UpdateCurrentUserProfileAsync(UpdateMeRequest request, CancellationToken cancellationToken = default);
 }

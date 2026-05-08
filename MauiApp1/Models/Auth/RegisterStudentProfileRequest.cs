@@ -10,3 +10,10 @@ public sealed class RegisterStudentProfileRequest
     public string? anh_chan_dung { get; set; }
 }
 
+public sealed class UpdateMeRequest
+{
+    public string? ten_dang_nhap { get; set; }
+    public string? email { get; set; }
+    public string? so_dien_thoai { get; set; }
+}
+

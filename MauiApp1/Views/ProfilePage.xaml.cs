@@ -15,7 +15,11 @@ public partial class ProfilePage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        await LoadProfileAsync();
+    }
 
+    private async Task LoadProfileAsync()
+    {
         var profile = await _authController.GetCurrentUserProfileAsync();
         var source = await SecureStorage.Default.GetAsync("login_source") ?? "UNKNOWN";
 
@@ -71,7 +75,62 @@ public partial class ProfilePage : ContentPage
 
     private async void OnEditTapped(object sender, EventArgs e)
     {
-        await DisplayAlert("Chỉnh sửa hồ sơ", "Điểm gắn API cập nhật hồ sơ sẽ được nối ở bước sau.", "Đã hiểu");
+        var profile = await _authController.GetCurrentUserProfileAsync();
+        if (profile is null)
+        {
+            await DisplayAlert("Không thể chỉnh sửa", "Không tải được hồ sơ hiện tại để chỉnh sửa.", "OK");
+            return;
+        }
+
+        var username = await DisplayPromptAsync(
+            "Cập nhật hồ sơ",
+            "Tên đăng nhập:",
+            initialValue: profile.ten_dang_nhap,
+            maxLength: 50,
+            accept: "Tiếp",
+            cancel: "Hủy");
+
+        if (username is null)
+            return;
+
+        var email = await DisplayPromptAsync(
+            "Cập nhật hồ sơ",
+            "Email:",
+            initialValue: profile.email,
+            keyboard: Keyboard.Email,
+            accept: "Tiếp",
+            cancel: "Hủy");
+
+        if (email is null)
+            return;
+
+        var phone = await DisplayPromptAsync(
+            "Cập nhật hồ sơ",
+            "Số điện thoại (để trống nếu muốn xóa):",
+            initialValue: profile.so_dien_thoai,
+            keyboard: Keyboard.Telephone,
+            maxLength: 20,
+            accept: "Lưu",
+            cancel: "Hủy");
+
+        if (phone is null)
+            return;
+
+        var updateError = await _authController.UpdateCurrentUserProfileAsync(new Models.Auth.UpdateMeRequest
+        {
+            ten_dang_nhap = username.Trim(),
+            email = email.Trim(),
+            so_dien_thoai = phone
+        });
+
+        if (!string.IsNullOrWhiteSpace(updateError))
+        {
+            await DisplayAlert("Cập nhật thất bại", updateError, "OK");
+            return;
+        }
+
+        await LoadProfileAsync();
+        await DisplayAlert("Thành công", "Đã cập nhật thông tin cá nhân và tải lại hồ sơ mới nhất.", "OK");
     }
 
     private async void OnSettingsTapped(object sender, TappedEventArgs e)

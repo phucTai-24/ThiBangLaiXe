@@ -239,6 +239,46 @@ public sealed class ApiAuthService : IAuthService
         }
     }
 
+    public async Task<string?> UpdateCurrentUserProfileAsync(UpdateMeRequest request, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var token = await SecureStorage.Default.GetAsync("access_token");
+            if (string.IsNullOrWhiteSpace(token))
+                return "Bạn chưa đăng nhập hoặc phiên đã hết hạn.";
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.PutAsJsonAsync("api/v1/auth/me", request, cancellationToken);
+
+            if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.Conflict)
+            {
+                var badRequest = await response.Content.ReadFromJsonAsync<ApiResponse<string>>(cancellationToken: cancellationToken);
+                return badRequest?.Errors?.FirstOrDefault()?.Detail
+                    ?? badRequest?.Message
+                    ?? "Dữ liệu cập nhật không hợp lệ.";
+            }
+
+            if (!response.IsSuccessStatusCode)
+                return $"Cập nhật thất bại. Mã lỗi: {(int)response.StatusCode}.";
+
+            return null;
+        }
+        catch (HttpRequestException)
+        {
+            return "Không kết nối được tới máy chủ API. Hãy kiểm tra backend đang chạy và base URL phù hợp với thiết bị.";
+        }
+        catch (TaskCanceledException)
+        {
+            return "Yêu cầu cập nhật đã hết thời gian chờ.";
+        }
+        catch (Exception ex)
+        {
+            return $"Đã xảy ra lỗi khi cập nhật: {ex.Message}";
+        }
+    }
+
     private sealed class RegisterStudentProfileApiRequest
     {
         public string ho_ten { get; set; } = string.Empty;

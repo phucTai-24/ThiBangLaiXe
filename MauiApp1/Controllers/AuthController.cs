@@ -45,4 +45,9 @@ public sealed class AuthController : BaseController
     {
         return _authService.GetCurrentUserProfileAsync(cancellationToken);
     }
+
+    public Task<string?> UpdateCurrentUserProfileAsync(UpdateMeRequest request, CancellationToken cancellationToken = default)
+    {
+        return _authService.UpdateCurrentUserProfileAsync(request, cancellationToken);
+    }
 }

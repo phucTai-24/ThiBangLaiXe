@@ -85,6 +85,14 @@ public sealed class MockAuthService : IAuthService
         return Task.FromResult(_studentProfile);
     }
 
+    public Task<string?> UpdateCurrentUserProfileAsync(UpdateMeRequest request, CancellationToken cancellationToken = default)
+    {
+        if (request is null)
+            return Task.FromResult<string?>("Dữ liệu cập nhật không hợp lệ.");
+
+        return Task.FromResult<string?>(null);
+    }
+
     public Task<bool> LogoutAsync(CancellationToken cancellationToken = default)
     {
         SecureStorage.Default.Remove("access_token");
